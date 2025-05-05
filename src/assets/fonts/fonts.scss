@@ -1,0 +1,25 @@
+//Onest
+@font-face {
+  font-family: 'TTFirs';
+  src: local('TTFirs'), local('TTFirs-Regular'),
+  url('/src/assets/fonts/tt-firs/TypeType - TT Firs Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTFirs';
+  src: local('TTFirs'), local('TTFirs-Medium'),
+  url('/src/assets/fonts/tt-firs/TypeType - TT Firs Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TTFirs';
+  src: local('TTFirs'), local('TTFirs-Bold'),
+  url('/src/assets/fonts/tt-firs/TypeType - TT Firs Bold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}

@@ -10,6 +10,9 @@ const commitHash = child.execSync('git rev-parse --short HEAD').toString()
 // https://vite.dev/config/
 export default defineConfig({
   envDir: './env',
+  server: {
+    allowedHosts: true,
+  },
   define: {
     APP_VERSION: JSON.stringify(process.env.npm_package_version),
     COMMIT_HASH: JSON.stringify(commitHash),
@@ -29,10 +32,12 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@shared': path.resolve(__dirname, './src/shared'),
-      '@features': path.resolve(__dirname, './src/features'),
-      '@widgets': path.resolve(__dirname, './src/widgets'),
-      '@pages': path.resolve(__dirname, './src/pages'),
+      '@views': path.resolve(__dirname, './src/views'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
+      '@assets': path.resolve(__dirname, './src/assets'),
+      '@stores': path.resolve(__dirname, './src/stores'),
+      '@constants': path.resolve(__dirname, './src/constants'),
     } as AliasOptions,
   },
 })

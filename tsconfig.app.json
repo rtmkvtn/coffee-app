@@ -23,17 +23,23 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": "./src",
     "paths": {
-      "@shared/*": [
-        "./shared/*"
+      "@views/*": [
+        "./views/*"
       ],
-      "@features/*": [
-        "./features/*"
+      "@components/*": [
+        "./components/*"
       ],
-      "@widgets/*": [
-        "./widgets/*"
+      "@hooks/*": [
+        "./hooks/*"
       ],
-      "@pages/*": [
-        "./pages/*"
+      "@assets/*": [
+        "./assets/*"
+      ],
+      "@stores/*": [
+        "./stores/*"
+      ],
+      "@constants/*": [
+        "./constants/*"
       ]
     }
   },
