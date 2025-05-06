@@ -1,4 +1,7 @@
+import { useNavigate } from 'react-router'
+
 import Button from '@components/button/Button'
+import { MENU_PATH } from '@constants/routes'
 import { useTelegram } from '@hooks/useTelegram'
 import { getGreeting } from '@views/homePage/homePage.helpers'
 
@@ -7,6 +10,7 @@ import Icon from '@assets/images/Icon'
 import styles from './HomePage.module.scss'
 
 const HomePage = () => {
+  const navigate = useNavigate()
   const { user } = useTelegram()
 
   return (
@@ -16,6 +20,7 @@ const HomePage = () => {
         text="Сделать заказ"
         mode="primary"
         icon={<Icon type="arrowRight" />}
+        onClick={() => navigate(MENU_PATH)}
       />
     </div>
   )

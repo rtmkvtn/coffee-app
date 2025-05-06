@@ -8,6 +8,7 @@ import HomePage from '@views/homePage/HomePage'
 import MenuPage from '@views/menuPage/MenuPage'
 
 import './App.scss'
+import Layout from './lib/layout/Layout'
 
 function App() {
   const { isInitialized } = useStore()
@@ -16,11 +17,21 @@ function App() {
     <div className="main-container">
       {isInitialized ? (
         <Routes>
-          <Route path={HOME_PATH} element={<HomePage />} />
+          <Route
+            path={HOME_PATH}
+            element={
+              <Layout>
+                <HomePage />
+              </Layout>
+            }
+          />
           <Route
             path={MENU_PATH}
-            element={<MenuPage />}
-            loader={async () => {}}
+            element={
+              <Layout withNavHeader headerText="Меню">
+                <MenuPage />
+              </Layout>
+            }
           />
         </Routes>
       ) : (
