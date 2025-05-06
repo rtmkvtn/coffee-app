@@ -35,8 +35,8 @@
       "@assets/*": [
         "./assets/*"
       ],
-      "@stores/*": [
-        "./stores/*"
+      "@context/*": [
+        "./context/*"
       ],
       "@constants/*": [
         "./constants/*"

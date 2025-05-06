@@ -1,0 +1,45 @@
+.bubbleLoader {
+  $size: 6px;
+
+  top: -$size;
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  animation-delay: -0.16s;
+
+  &,
+  &:before,
+  &:after {
+    border-radius: 50%;
+    width: $size;
+    height: $size;
+    animation-fill-mode: both;
+    animation: bubble-loader 1.8s infinite ease-in-out;
+  }
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+  }
+
+  &:before {
+    left: -$size * 1.5;
+    animation-delay: -0.32s;
+  }
+
+  &:after {
+    left: $size * 1.5;
+  }
+
+  @keyframes bubble-loader {
+    0%,
+    80%,
+    100% {
+      box-shadow: 0 $size 0 calc(-#{$size} * 0.41);
+    }
+    40% {
+      box-shadow: 0 $size 0 0;
+    }
+  }
+}

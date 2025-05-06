@@ -1,0 +1,102 @@
+@use 'sass:color';
+@use '@assets/styles/constants';
+
+.btn {
+  width: fit-content;
+  max-width: 100%;
+  word-break: keep-all;
+  white-space: nowrap;
+  font-weight: 500;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  line-height: 1;
+  cursor: pointer;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+
+
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 16px;
+  height: 40px;
+  max-height: 40px;
+
+  &:disabled {
+    cursor: default;
+    opacity: .4;
+  }
+
+  &.loading {
+    position: relative;
+    color: transparent;
+
+    .loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -150%);
+    }
+  }
+}
+
+//Colors
+.primary {
+  background-color: constants.$secondary-bg-color;
+  color: constants.$text-primary-color;
+  border-color: constants.$secondary-bg-color;
+
+  @media (hover: hover) {
+    button:hover {
+      background-color: color.adjust(constants.$secondary-bg-color, $lightness: -10%);
+    }
+  }
+
+  &:active {
+    background-color: color.adjust(constants.$secondary-bg-color, $lightness: -10%);
+
+  }
+
+  .loader {
+    color: constants.$text-primary-color;
+  }
+}
+.secondary {
+  background-color: constants.$text-primary-color;
+  color: constants.$color-orange;
+  border-color: constants.$color-orange;
+
+  @media (hover: hover) {
+    button:hover {
+      background-color: color.adjust(constants.$color-white, $lightness: -10%);
+    }
+  }
+
+  &:active {
+    background-color: color.adjust(constants.$color-white, $lightness: -10%);
+  }
+
+  .loader {
+    color: constants.$text-primary-color;
+  }
+
+}
+
+// hollow
+.hollow {
+  background-color: transparent;
+}
+
+// Additional
+.withIcon {
+  padding: 0 10px;
+
+  svg {
+    height: 20px;
+    width: 20px;
+    min-width: 20px;
+
+  }
+}
