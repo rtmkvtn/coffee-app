@@ -1,4 +1,6 @@
-export function getGreeting(user: TelegramUser | null): string {
+import { IUser } from '@models/user.model'
+
+export function getGreeting(user: IUser | null): string {
   const hour = new Date().getHours()
   let greeting: string
 
@@ -10,5 +12,5 @@ export function getGreeting(user: TelegramUser | null): string {
     greeting = 'Добрый вечер'
   }
 
-  return user?.first_name ? `${greeting},\n${user.first_name}` : greeting
+  return user?.firstName ? `${greeting},\n${user.firstName}` : greeting
 }

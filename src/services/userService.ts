@@ -1,15 +1,11 @@
+import { IUser } from '@models/user.model'
+
 import api from './api'
 import { ISingleTypeResponseWrapper } from './services.types'
 
 interface IAuthResponse {
   jwt: string
-  user: {
-    id: number
-    username: string
-    email: string
-    blocked: boolean
-    telegramId: string
-  }
+  user: IUser
   cart: {
     id: number
     documentId: string
