@@ -6,7 +6,9 @@ const api = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    Accept: 'application/json',
   },
+  withCredentials: true,
 })
 
 // Optional: add auth token interceptor
@@ -17,5 +19,18 @@ api.interceptors.request.use((config) => {
   }
   return config
 })
+
+// Add response interceptor to handle errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 426) {
+      // Handle upgrade required error
+      console.error('Connection upgrade required:', error)
+      // You might want to show a user-friendly message here
+    }
+    return Promise.reject(error)
+  }
+)
 
 export default api

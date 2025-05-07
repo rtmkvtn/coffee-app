@@ -21,3 +21,13 @@ export type IResponseWrapper<T> =
       success: false
       code: number
     }
+
+export type ISingleTypeResponseWrapper<T> =
+  | {
+      success: true
+      data: T
+    }
+  | {
+      success: false
+      code: number
+    }
