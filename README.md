@@ -1,3 +1,3 @@
 to serve thru web: 
-```ngrok gttp 5173```
+```ngrok http 5173```
 in iTerm
