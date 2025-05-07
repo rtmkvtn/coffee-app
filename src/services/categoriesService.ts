@@ -1,4 +1,5 @@
-import { ICategory } from '../models/category.model'
+import { ICategory } from '@models/index'
+
 import api from './api'
 import { IResponseWrapper } from './services.types'
 

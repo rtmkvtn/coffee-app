@@ -6,9 +6,9 @@ import {
   useState,
 } from 'react'
 
-import { ICategory } from '../models/category.model'
-import { IProduct } from '../models/product.model'
-import { getAllProducts, getCategories } from '../services'
+import { ICategory, IProduct } from '@models/index'
+import { getCategories } from '@services/categoriesService'
+import { getAllProducts } from '@services/productsService'
 
 type StoreState = {
   isInitialized: boolean
