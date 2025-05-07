@@ -1,1 +1,2 @@
-export * from './menuService'
+export * from './categoriesService'
+export * from './productsService'

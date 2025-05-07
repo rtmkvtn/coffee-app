@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 12px 24px;
+  padding: 6px 24px;
   background-color: constants.$text-primary-color;
 }
 
@@ -17,10 +17,20 @@
 }
 
 .back {
+  cursor: pointer;
   position: absolute;
   top: 50%;
   left: 12px;
   transform: translate(0, -50%) rotate(180deg);
   color: constants.$main-bg-color;
+  border-radius: 8px;
+
+  &:active {
+    background-color: constants.$main-bg-color;
+
+    svg {
+      color: constants.$text-primary-color;
+    }
+  }
 }
 

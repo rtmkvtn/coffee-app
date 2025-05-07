@@ -7,28 +7,39 @@ import {
 } from 'react'
 
 import { ICategory } from '../models/category.model'
-import { getMenu } from '../services'
+import { IProduct } from '../models/product.model'
+import { getAllProducts, getCategories } from '../services'
 
 type StoreState = {
   isInitialized: boolean
   cart: any
-  menu: ICategory[]
+  categories: ICategory[]
+  products: IProduct[]
 }
 
 const StoreContext = createContext<StoreState | undefined>(undefined)
 
 const MainContext = ({ children }: { children: ReactNode }) => {
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
-  const [menu, setMenu] = useState<StoreState['menu']>([])
+  const [categories, setCategories] = useState<StoreState['categories']>([])
+  const [products, setProducts] = useState<StoreState['products']>([])
   const [cart, setCart] = useState()
 
   const initScript = async () => {
-    const menuResponse = await getMenu()
-    if (!menuResponse.success) {
+    const categoriesResponse = await getCategories()
+    if (!categoriesResponse.success) {
       // error show
     } else {
-      setMenu(menuResponse.data.data)
+      setCategories(categoriesResponse.data.data)
     }
+
+    const productsResponse = await getAllProducts()
+    if (!productsResponse.success) {
+      // error show
+    } else {
+      setProducts(productsResponse.data.data)
+    }
+
     setIsInitialized(true)
   }
 
@@ -37,7 +48,9 @@ const MainContext = ({ children }: { children: ReactNode }) => {
   }, [])
 
   return (
-    <StoreContext.Provider value={{ isInitialized, cart, menu }}>
+    <StoreContext.Provider
+      value={{ isInitialized, cart, categories, products }}
+    >
       {children}
     </StoreContext.Provider>
   )

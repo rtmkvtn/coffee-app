@@ -5,5 +5,5 @@ export type ICategory = {
   documentId: string
   name: string
   description?: string
-  subcategories: ISubcategory
+  subcategories: ISubcategory[]
 }

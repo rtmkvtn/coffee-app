@@ -1,0 +1,10 @@
+import { BASE_URL } from '@constants/index'
+import { IStrapiMedia } from '@models/media.model'
+
+import placeholder from '@assets/images/common/logo-round.png'
+
+export const getImgUrlFromStrapiMediaOrDefault = (
+  mediaObject?: IStrapiMedia
+) => {
+  return mediaObject ? `${BASE_URL}${mediaObject.url}` : placeholder
+}

@@ -32,11 +32,17 @@
       "@hooks/*": [
         "./hooks/*"
       ],
+      "@lib/*": [
+        "./lib/*"
+      ],
       "@assets/*": [
         "./assets/*"
       ],
       "@context/*": [
         "./context/*"
+      ],
+      "@models/*": [
+        "./models/*"
       ],
       "@constants/*": [
         "./constants/*"

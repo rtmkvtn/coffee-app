@@ -1,0 +1,36 @@
+.wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    content: '';
+    display: block;
+    width: 100%;
+  }
+
+  * {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+// Orientations
+.portrait {
+  &:before {
+    padding-top: 166%;
+  }
+}
+.landscape {
+  &:before {
+    padding-top: 60%;
+  }
+}
+.square {
+  &:before {
+    padding-top: 100%;
+  }
+}

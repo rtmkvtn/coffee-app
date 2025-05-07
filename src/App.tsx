@@ -4,11 +4,11 @@ import { Routes } from 'react-router-dom'
 import GlobalLoader from '@components/loaders/globalLoader/GlobalLoader'
 import { HOME_PATH, MENU_PATH } from '@constants/routes'
 import { useStore } from '@context/mainContext'
+import Layout from '@lib/layout/Layout'
 import HomePage from '@views/homePage/HomePage'
 import MenuPage from '@views/menuPage/MenuPage'
 
 import './App.scss'
-import Layout from './lib/layout/Layout'
 
 function App() {
   const { isInitialized } = useStore()

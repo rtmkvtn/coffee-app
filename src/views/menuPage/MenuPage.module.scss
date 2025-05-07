@@ -1,0 +1,34 @@
+@use '@assets/styles/constants';
+
+.wrapper {
+  width: 100%;
+}
+
+.products {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product {
+  width: 100%;
+  background-color: constants.$text-primary-color;
+  border-radius: 12px;
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+
+  .avatar {
+    width: 82px;
+  }
+  .info {
+    flex-grow: 1;
+
+    .name {
+      color: constants.$main-bg-color;
+      font-weight: 600;
+      font-size: 24px;
+    }
+  }
+}
