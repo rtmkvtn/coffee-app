@@ -3,12 +3,15 @@ import {
   ReactNode,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react'
 
 import { MOCK_INIT_DATA } from '@constants/temp'
+import { useTelegram } from '@hooks/useTelegram'
 import { showToast } from '@lib/toasts/toast'
 import { ICart, ICategory, IProduct, IUser } from '@models/index'
+import { updateCart } from '@services/cartService'
 import { getCategories } from '@services/categoriesService'
 import { getAllProducts } from '@services/productsService'
 import { authenticateWithTelegram } from '@services/userService'
@@ -27,6 +30,7 @@ type StoreContextType = StoreState & {
   setUser: (user: IUser | null) => void
   refreshProducts: () => Promise<void>
   refreshCategories: () => Promise<void>
+  addToCart: (product: IProduct) => Promise<void>
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined)
@@ -53,11 +57,57 @@ const useStoreInitialization = () => {
     user: null,
     error: null,
   })
+  const initRef = useRef(false)
+  const { initData } = useTelegram()
 
   const setCart = (cart: ICart | null) =>
     setState((prev) => ({ ...prev, cart }))
   const setUser = (user: IUser | null) =>
     setState((prev) => ({ ...prev, user }))
+
+  const addToCart = async (product: IProduct) => {
+    if (!state.cart) {
+      showToast('Cart is not initialized', 'error')
+      return
+    }
+
+    try {
+      const currentItems = state.cart.items || []
+      const existingItemIndex = currentItems.findIndex(
+        (item: any) => item.productId === product.id
+      )
+
+      let newItems
+      if (existingItemIndex >= 0) {
+        newItems = [...currentItems]
+        newItems[existingItemIndex] = {
+          ...newItems[existingItemIndex],
+          quantity: (newItems[existingItemIndex].quantity || 0) + 1,
+        }
+      } else {
+        newItems = [
+          ...currentItems,
+          {
+            productId: product.id,
+            quantity: 1,
+            price: product.price,
+            name: product.name,
+            avatar: product.avatar,
+          },
+        ]
+      }
+
+      const response = await updateCart(state.cart.documentId, newItems)
+      if (!response.success) {
+        throw new Error('Failed to update cart')
+      }
+
+      setCart(response.data)
+    } catch (error) {
+      showToast('Failed to add item to cart', 'error')
+      console.error('Error adding to cart:', error)
+    }
+  }
 
   const refreshProducts = async () => {
     try {
@@ -96,19 +146,24 @@ const useStoreInitialization = () => {
   }
 
   const initialize = async () => {
+    if (initRef.current) return
+    initRef.current = true
+
     try {
-      const initData =
-        window.Telegram?.WebApp?.initData ||
+      const data =
+        initData ||
         (process.env.NODE_ENV === 'development' ? getMockInitData() : null)
 
-      if (!initData) {
+      if (!data) {
         throw new Error('No initialization data available')
       }
 
-      const authResponse = await authenticateWithTelegram(initData)
+      const authResponse = await authenticateWithTelegram(data)
       if (!authResponse.success) {
         throw new Error('Authentication failed')
       }
+
+      localStorage.setItem('token', authResponse.data.jwt)
 
       setState((prev) => ({
         ...prev,
@@ -140,6 +195,7 @@ const useStoreInitialization = () => {
     setUser,
     refreshProducts,
     refreshCategories,
+    addToCart,
   }
 }
 

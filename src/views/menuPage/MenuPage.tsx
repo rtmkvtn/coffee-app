@@ -14,7 +14,7 @@ type IProps = {
 }
 
 const MenuPage = ({ className }: IProps) => {
-  const { categories, products } = useStore()
+  const { categories, products, addToCart } = useStore()
   const [activeCategory, setActiveCategory] = useState<number>(
     categories[0]?.id
   )
@@ -90,6 +90,13 @@ const MenuPage = ({ className }: IProps) => {
               </ResponsiveImgWrapper>
               <div className={styles.info}>
                 <p className={styles.name}>{product.name}</p>
+                <p className={styles.price}>{product.price} ₽</p>
+                <button
+                  className={styles.addButton}
+                  onClick={() => addToCart(product)}
+                >
+                  Add to cart
+                </button>
               </div>
             </div>
           )
