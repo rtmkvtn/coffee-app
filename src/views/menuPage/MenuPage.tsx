@@ -2,11 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 
 import TabsNav from '@components/tabsNav/TabsNav'
 import { useStore } from '@context/mainContext'
-import { getImgUrlFromStrapiMediaOrDefault } from '@lib/helpers'
-import ResponsiveImgWrapper from '@lib/responsiveImgWrapper/ResponsiveImgWrapper'
 import { IProduct } from '@models/index'
 import classNames from 'classnames'
 
+import MenuItem from './menuItem/MenuItem'
 import styles from './MenuPage.module.scss'
 
 type IProps = {
@@ -78,29 +77,13 @@ const MenuPage = ({ className }: IProps) => {
         />
       )}
       <div className={styles.products}>
-        {productsList.map((product) => {
-          return (
-            <div key={`menu-product-${product.id}`} className={styles.product}>
-              <ResponsiveImgWrapper
-                className={styles.avatar}
-                orientation="square"
-                borderRadius={10}
-              >
-                <img src={getImgUrlFromStrapiMediaOrDefault(product.avatar)} />
-              </ResponsiveImgWrapper>
-              <div className={styles.info}>
-                <p className={styles.name}>{product.name}</p>
-                <p className={styles.price}>{product.price} ₽</p>
-                <button
-                  className={styles.addButton}
-                  onClick={() => addToCart(product)}
-                >
-                  Add to cart
-                </button>
-              </div>
-            </div>
-          )
-        })}
+        {productsList.map((product) => (
+          <MenuItem
+            key={`menu-product-${product.id}`}
+            product={product}
+            onAddToCart={addToCart}
+          />
+        ))}
       </div>
     </div>
   )
