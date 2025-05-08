@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef } from 'react'
 
+import CartProviderWrapper from '@components/cartProviderWrapper/CartProviderWrapper'
 import NavHeader from '@components/navHeader/NavHeader'
 import classNames from 'classnames'
 
@@ -8,10 +9,16 @@ import styles from './Layout.module.scss'
 type IProps = {
   withNavHeader?: boolean
   headerText?: string
+  withCartProvider?: boolean
   children: ReactNode
 }
 
-const Layout = ({ withNavHeader, headerText, children }: IProps) => {
+const Layout = ({
+  withNavHeader,
+  headerText,
+  withCartProvider,
+  children,
+}: IProps) => {
   const headerRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
@@ -39,7 +46,11 @@ const Layout = ({ withNavHeader, headerText, children }: IProps) => {
         </div>
       )}
       <div className={styles.content} ref={contentRef}>
-        {children}
+        {withCartProvider ? (
+          <CartProviderWrapper>{children}</CartProviderWrapper>
+        ) : (
+          children
+        )}
       </div>
     </div>
   )
