@@ -1,3 +1,5 @@
+import { forwardRef } from 'react'
+
 import { useNavigate } from 'react-router'
 
 import classNames from 'classnames'
@@ -11,22 +13,29 @@ type IProps = {
   text?: string
 }
 
-const NavHeader = ({ className, text }: IProps) => {
-  const navigate = useNavigate()
+const NavHeader = forwardRef<HTMLDivElement, IProps>(
+  ({ className, text }, ref) => {
+    const navigate = useNavigate()
 
-  return (
-    <div className={classNames(styles.wrapper, className && className)}>
+    return (
       <div
-        className={styles.back}
-        onClick={() => {
-          navigate(-1)
-        }}
+        ref={ref}
+        className={classNames(styles.wrapper, className && className)}
       >
-        <Icon type={'arrowRight'} size={24} />
+        <div
+          className={styles.back}
+          onClick={() => {
+            navigate(-1)
+          }}
+        >
+          <Icon type={'arrowRight'} size={24} />
+        </div>
+        {text && <p className={styles.text}>{text}</p>}
       </div>
-      {text && <p className={styles.text}>{text}</p>}
-    </div>
-  )
-}
+    )
+  }
+)
+
+NavHeader.displayName = 'NavHeader'
 
 export default NavHeader

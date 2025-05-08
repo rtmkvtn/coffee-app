@@ -8,6 +8,7 @@
   position: relative;
   padding: 6px 24px;
   background-color: constants.$text-primary-color;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .text {
@@ -33,4 +34,3 @@
     }
   }
 }
-

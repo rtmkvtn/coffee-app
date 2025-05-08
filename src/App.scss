@@ -31,6 +31,7 @@ html, body {
   background: url('@assets/images/common/bg-sheet.png') bottom no-repeat;
   background-size: cover;
   position: relative;
+  overflow: hidden;
 
   &:after {
     position: absolute;
