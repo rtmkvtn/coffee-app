@@ -8,3 +8,14 @@ export const getImgUrlFromStrapiMediaOrDefault = (
 ) => {
   return mediaObject ? `${BASE_URL}${mediaObject.url}` : placeholder
 }
+
+export const formatPrice = (price: number | string): string => {
+  const numPrice = typeof price === 'string' ? parseFloat(price) : price
+  return numPrice
+    .toLocaleString('ru-RU', {
+      currency: 'RUB',
+      style: 'currency',
+      currencyDisplay: 'symbol',
+    })
+    .replace('₽', ' ₽')
+}

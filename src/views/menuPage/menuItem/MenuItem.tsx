@@ -1,4 +1,4 @@
-import { getImgUrlFromStrapiMediaOrDefault } from '@lib/helpers'
+import { formatPrice, getImgUrlFromStrapiMediaOrDefault } from '@lib/helpers'
 import ResponsiveImgWrapper from '@lib/responsiveImgWrapper/ResponsiveImgWrapper'
 import { IProduct } from '@models/index'
 
@@ -21,7 +21,7 @@ const MenuItem = ({ product, onAddToCart }: Props) => {
       </ResponsiveImgWrapper>
       <div className={styles.info}>
         <p className={styles.name}>{product.name}</p>
-        <p className={styles.price}>{product.price} ₽</p>
+        <p className={styles.price}>{formatPrice(product.price)}</p>
         <button
           className={styles.addButton}
           onClick={() => onAddToCart(product)}
