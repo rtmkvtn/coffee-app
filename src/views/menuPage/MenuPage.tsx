@@ -13,7 +13,7 @@ type IProps = {
 }
 
 const MenuPage = ({ className }: IProps) => {
-  const { categories, products, addToCart } = useStore()
+  const { categories, products } = useStore()
   const [activeCategory, setActiveCategory] = useState<number>(
     categories[0]?.id
   )
@@ -78,11 +78,7 @@ const MenuPage = ({ className }: IProps) => {
       )}
       <div className={styles.products}>
         {productsList.map((product) => (
-          <MenuItem
-            key={`menu-product-${product.id}`}
-            product={product}
-            onAddToCart={addToCart}
-          />
+          <MenuItem key={`menu-product-${product.id}`} product={product} />
         ))}
       </div>
     </div>
