@@ -41,6 +41,8 @@ const MenuItem = ({ product }: Props) => {
       />
       <div className={styles.info}>
         <p className={styles.name}>{product.name}</p>
+      </div>
+      <div className={styles.footer}>
         <p className={styles.price}>{formatPrice(product.price)}</p>
         <ProductCartButton
           loading={isPending}

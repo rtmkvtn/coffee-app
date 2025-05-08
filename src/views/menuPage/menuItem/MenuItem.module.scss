@@ -5,13 +5,14 @@
   background-color: constants.$text-primary-color;
   border-radius: 12px;
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 24px;
+  row-gap: 0;
   padding: 12px;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 
   .avatar {
-    width: 80px;
-    height: 80px;
+    width: 60px;
   }
 
   .info {
@@ -26,8 +27,16 @@
       font-size: 20px;
     }
 
+  }
+  .footer {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
     .price {
       color: constants.$secondary-bg-color;
+      white-space: nowrap;
       font-weight: 600;
       font-size: 18px;
     }
