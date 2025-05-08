@@ -18,74 +18,131 @@ type StoreState = {
   categories: ICategory[]
   products: IProduct[]
   user: IUser | null
+  error: string | null
 }
 
-const StoreContext = createContext<StoreState | undefined>(undefined)
+type StoreContextType = StoreState & {
+  setCart: (cart: ICart | null) => void
+  setUser: (user: IUser | null) => void
+  refreshProducts: () => Promise<void>
+  refreshCategories: () => Promise<void>
+}
 
-const MainContext = ({ children }: { children: ReactNode }) => {
-  const [isInitialized, setIsInitialized] = useState<boolean>(false)
-  const [categories, setCategories] = useState<StoreState['categories']>([])
-  const [products, setProducts] = useState<StoreState['products']>([])
-  const [cart, setCart] = useState<ICart | null>(null)
-  const [user, setUser] = useState<IUser | null>(null)
+const StoreContext = createContext<StoreContextType | undefined>(undefined)
 
-  const initScript = async () => {
+const getMockInitData = () => {
+  if (process.env.NODE_ENV !== 'development') {
+    throw new Error('Mock data is only available in development environment')
+  }
+
+  const params = new URLSearchParams()
+  params.set('query_id', MOCK_INIT_DATA.query_id)
+  params.set('user', JSON.stringify(MOCK_INIT_DATA.user))
+  params.set('auth_date', MOCK_INIT_DATA.auth_date.toString())
+  params.set('hash', MOCK_INIT_DATA.hash)
+  return params.toString()
+}
+
+const useStoreInitialization = () => {
+  const [state, setState] = useState<StoreState>({
+    isInitialized: false,
+    cart: null,
+    categories: [],
+    products: [],
+    user: null,
+    error: null,
+  })
+
+  const setCart = (cart: ICart | null) =>
+    setState((prev) => ({ ...prev, cart }))
+  const setUser = (user: IUser | null) =>
+    setState((prev) => ({ ...prev, user }))
+
+  const refreshProducts = async () => {
     try {
-      // Get initData from Telegram WebApp or use mock data
+      const response = await getAllProducts()
+      if (!response.success) {
+        throw new Error('Failed to load products')
+      }
+      setState((prev) => ({
+        ...prev,
+        products: response.data.data,
+        error: null,
+      }))
+    } catch (error) {
+      setState((prev) => ({ ...prev, error: 'Failed to refresh products' }))
+      console.error('Error refreshing products:', error)
+    }
+  }
+
+  const refreshCategories = async () => {
+    try {
+      const response = await getCategories()
+      if (!response.success) {
+        throw new Error('Failed to load categories')
+      }
+      setState((prev) => ({
+        ...prev,
+        categories: response.data.data,
+        error: null,
+      }))
+    } catch (error) {
+      setState((prev) => ({ ...prev, error: 'Failed to refresh categories' }))
+      console.error('Error refreshing categories:', error)
+    }
+  }
+
+  const initialize = async () => {
+    try {
       const initData =
         window.Telegram?.WebApp?.initData ||
-        (() => {
-          const params = new URLSearchParams()
-          params.set('query_id', MOCK_INIT_DATA.query_id)
-          params.set('user', JSON.stringify(MOCK_INIT_DATA.user))
-          params.set('auth_date', MOCK_INIT_DATA.auth_date.toString())
-          params.set('hash', MOCK_INIT_DATA.hash)
-          return params.toString()
-        })()
-      console.log(initData)
+        (process.env.NODE_ENV === 'development' ? getMockInitData() : null)
+
+      if (!initData) {
+        throw new Error('No initialization data available')
+      }
+
       const authResponse = await authenticateWithTelegram(initData)
       if (!authResponse.success) {
         throw new Error('Authentication failed')
       }
-      console.log(authResponse)
-      // Set user and cart from auth response
-      setUser(authResponse.data.user)
-      setCart(authResponse.data.cart)
 
-      // Then fetch other data
-      const [categoriesResponse, productsResponse] = await Promise.all([
-        getCategories(),
-        getAllProducts(),
-      ])
+      setState((prev) => ({
+        ...prev,
+        user: authResponse.data.user,
+        cart: authResponse.data.cart,
+        error: null,
+      }))
 
-      if (!categoriesResponse.success) {
-        throw new Error('Failed to load categories')
-      }
-      setCategories(categoriesResponse.data.data)
-
-      if (!productsResponse.success) {
-        throw new Error('Failed to load products')
-      }
-      setProducts(productsResponse.data.data)
-
-      setIsInitialized(true)
+      await Promise.all([refreshCategories(), refreshProducts()])
+      setState((prev) => ({ ...prev, isInitialized: true }))
     } catch (error) {
+      setState((prev) => ({
+        ...prev,
+        error: 'Failed to initialize application',
+        isInitialized: true,
+      }))
       console.error('Initialization error:', error)
-      // Here you might want to show an error message to the user
     }
   }
 
   useEffect(() => {
-    initScript()
+    initialize()
   }, [])
 
-  return (
-    <StoreContext.Provider
-      value={{ isInitialized, cart, categories, products, user }}
-    >
-      {children}
-    </StoreContext.Provider>
-  )
+  return {
+    ...state,
+    setCart,
+    setUser,
+    refreshProducts,
+    refreshCategories,
+  }
+}
+
+const MainContext = ({ children }: { children: ReactNode }) => {
+  const store = useStoreInitialization()
+
+  return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
 }
 
 export default MainContext
