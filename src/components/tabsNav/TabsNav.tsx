@@ -45,7 +45,11 @@ const TabsNav = <T extends ITabProps[]>({
       `.${styles.tabActive}`
     )
     if (currentActiveEl) {
-      currentActiveEl.scrollIntoView({ behavior: 'smooth', inline: 'center' })
+      currentActiveEl.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+        block: 'nearest',
+      })
     }
   }, [activeTab, wrapperRef])
 
