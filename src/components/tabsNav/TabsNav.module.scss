@@ -26,13 +26,11 @@
     font-weight: 500;
 
     &:first-of-type {
-      margin-left: 12px;
+      margin-left: 24px;
     }
     &:first-of-type {
-      margin-left: 12px;
+      margin-left: 24px;
     }
-
-
   }
   &.primary > .tab {
     border: 1px solid constants.$color-white;
@@ -98,5 +96,4 @@
       }
     }
   }
-
 }
