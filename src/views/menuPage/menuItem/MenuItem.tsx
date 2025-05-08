@@ -1,8 +1,8 @@
 import { useTransition } from 'react'
 
+import ProductImage from '@components/productImage/ProductImage'
 import { useStore } from '@context/mainContext'
 import { formatPrice, getImgUrlFromStrapiMediaOrDefault } from '@lib/helpers'
-import ResponsiveImgWrapper from '@lib/responsiveImgWrapper/ResponsiveImgWrapper'
 import { IProduct } from '@models/index'
 
 import styles from './MenuItem.module.scss'
@@ -34,13 +34,11 @@ const MenuItem = ({ product }: Props) => {
 
   return (
     <div className={styles.product}>
-      <ResponsiveImgWrapper
+      <ProductImage
+        imgSrc={getImgUrlFromStrapiMediaOrDefault(product.avatar)}
         className={styles.avatar}
-        orientation="square"
-        borderRadius={10}
-      >
-        <img src={getImgUrlFromStrapiMediaOrDefault(product.avatar)} />
-      </ResponsiveImgWrapper>
+        altText={product.name}
+      />
       <div className={styles.info}>
         <p className={styles.name}>{product.name}</p>
         <p className={styles.price}>{formatPrice(product.price)}</p>

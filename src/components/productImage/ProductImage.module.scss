@@ -1,0 +1,7 @@
+@use '@assets/styles/constants';
+
+.wrapper {
+  padding: 12px;
+  border-radius: 50%;
+  background-color: rgba(constants.$main-bg-color, .9);
+}
