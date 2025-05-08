@@ -10,6 +10,7 @@ import {
 import { MOCK_INIT_DATA } from '@constants/temp'
 import { useTelegram } from '@hooks/useTelegram'
 import { showToast } from '@lib/toasts/toast'
+import { CartItem } from '@models/cart.model'
 import { ICart, ICategory, IProduct, IUser } from '@models/index'
 import { updateCart } from '@services/cartService'
 import { getCategories } from '@services/categoriesService'
@@ -72,27 +73,24 @@ const useStoreInitialization = () => {
     }
 
     try {
-      const currentItems = state.cart.items || []
+      const currentItems = (state.cart.items || []) as CartItem[]
       const existingItemIndex = currentItems.findIndex(
-        (item: any) => item.productId === product.id
+        (item) => item.id === product.id
       )
 
-      let newItems
+      let newItems: CartItem[]
       if (existingItemIndex >= 0) {
         newItems = [...currentItems]
         newItems[existingItemIndex] = {
           ...newItems[existingItemIndex],
-          quantity: (newItems[existingItemIndex].quantity || 0) + 1,
+          quantity: newItems[existingItemIndex].quantity + 1,
         }
       } else {
         newItems = [
           ...currentItems,
           {
-            productId: product.id,
+            ...product,
             quantity: 1,
-            price: product.price,
-            name: product.name,
-            avatar: product.avatar,
           },
         ]
       }
