@@ -6,6 +6,9 @@ import AddUserIcon from './ui/add-user.svg?react'
 import ArchiveIcon from './ui/archive.svg?react'
 import ArrowRightIcon from './ui/arrow-right.svg?react'
 import ArrowUpIcon from './ui/arrow.svg?react'
+import CartAddIcon from './ui/cart-add.svg?react'
+import CartRemoveIcon from './ui/cart-remove.svg?react'
+import CartIcon from './ui/cart.svg?react'
 import CheckIcon from './ui/check.svg?react'
 import ClockIcon from './ui/clock.svg?react'
 import CloseIcon from './ui/close.svg?react'
@@ -43,6 +46,9 @@ import addUserIcon from './ui/add-user.svg'
 import archiveIcon from './ui/archive.svg'
 import arrowRightIcon from './ui/arrow-right.svg'
 import arrowUpIcon from './ui/arrow.svg'
+import cartAddIcon from './ui/cart-add.svg'
+import cartRemoveIcon from './ui/cart-remove.svg'
+import cartIcon from './ui/cart.svg'
 import checkIcon from './ui/check.svg'
 import clockIcon from './ui/clock.svg'
 import closeIcon from './ui/close.svg'
@@ -82,6 +88,9 @@ export type IconTypes =
   | 'archive'
   | 'arrowUp'
   | 'arrowRight'
+  | 'cart'
+  | 'cartAdd'
+  | 'cartRemove'
   | 'check'
   | 'clock'
   | 'close'
@@ -148,6 +157,10 @@ const Icon = ({
   else if (type === 'arrowUp') result = { img: arrowUpIcon, svg: ArrowUpIcon }
   else if (type === 'arrowRight')
     result = { img: arrowRightIcon, svg: ArrowRightIcon }
+  else if (type === 'cart') result = { img: cartIcon, svg: CartIcon }
+  else if (type === 'cartAdd') result = { img: cartAddIcon, svg: CartAddIcon }
+  else if (type === 'cartRemove')
+    result = { img: cartRemoveIcon, svg: CartRemoveIcon }
   else if (type === 'check') result = { img: checkIcon, svg: CheckIcon }
   else if (type === 'clock') result = { img: clockIcon, svg: ClockIcon }
   else if (type === 'close') result = { img: closeIcon, svg: CloseIcon }
