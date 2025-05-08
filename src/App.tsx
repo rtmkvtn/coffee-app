@@ -1,6 +1,7 @@
 import { Route } from 'react-router'
 import { Routes } from 'react-router-dom'
 
+import CartProviderWrapper from '@components/cartProviderWrapper/CartProviderWrapper'
 import GlobalLoader from '@components/loaders/globalLoader/GlobalLoader'
 import { HOME_PATH, MENU_PATH } from '@constants/routes'
 import { useStore } from '@context/mainContext'
@@ -16,24 +17,26 @@ function App() {
   return (
     <div className="main-container">
       {isInitialized ? (
-        <Routes>
-          <Route
-            path={HOME_PATH}
-            element={
-              <Layout>
-                <HomePage />
-              </Layout>
-            }
-          />
-          <Route
-            path={MENU_PATH}
-            element={
-              <Layout withNavHeader headerText="Меню">
-                <MenuPage />
-              </Layout>
-            }
-          />
-        </Routes>
+        <CartProviderWrapper>
+          <Routes>
+            <Route
+              path={HOME_PATH}
+              element={
+                <Layout>
+                  <HomePage />
+                </Layout>
+              }
+            />
+            <Route
+              path={MENU_PATH}
+              element={
+                <Layout withNavHeader headerText="Меню">
+                  <MenuPage />
+                </Layout>
+              }
+            />
+          </Routes>
+        </CartProviderWrapper>
       ) : (
         <GlobalLoader />
       )}
