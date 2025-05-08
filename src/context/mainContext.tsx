@@ -7,6 +7,7 @@ import {
 } from 'react'
 
 import { MOCK_INIT_DATA } from '@constants/temp'
+import { showToast } from '@lib/toasts/toast'
 import { ICart, ICategory, IProduct, IUser } from '@models/index'
 import { getCategories } from '@services/categoriesService'
 import { getAllProducts } from '@services/productsService'
@@ -71,6 +72,7 @@ const useStoreInitialization = () => {
       }))
     } catch (error) {
       setState((prev) => ({ ...prev, error: 'Failed to refresh products' }))
+      showToast('Failed to refresh products', 'error')
       console.error('Error refreshing products:', error)
     }
   }
@@ -88,6 +90,7 @@ const useStoreInitialization = () => {
       }))
     } catch (error) {
       setState((prev) => ({ ...prev, error: 'Failed to refresh categories' }))
+      showToast('Failed to refresh categories', 'error')
       console.error('Error refreshing categories:', error)
     }
   }
@@ -122,6 +125,7 @@ const useStoreInitialization = () => {
         error: 'Failed to initialize application',
         isInitialized: true,
       }))
+      showToast('Failed to initialize application', 'error')
       console.error('Initialization error:', error)
     }
   }

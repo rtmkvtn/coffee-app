@@ -1,0 +1,39 @@
+@use '../../assets/styles/constants.scss' as *;
+
+.Toastify__toast {
+  border-radius: 8px;
+  padding: 16px;
+  font-family: $main-font-family;
+}
+
+.Toastify__toast--success {
+  border-left: 4px solid $color-green;
+  .Toastify__toast-icon {
+    color: $color-green;
+  }
+}
+
+.Toastify__toast--error {
+  border-left: 4px solid $color-red;
+  .Toastify__toast-icon {
+    color: $color-red;
+  }
+}
+
+.Toastify__toast--warning {
+  border-left: 4px solid $color-orange;
+  .Toastify__toast-icon {
+    color: $color-orange;
+  }
+}
+
+.Toastify__toast--info {
+  border-left: 4px solid $secondary-bg-color;
+  .Toastify__toast-icon {
+    color: $secondary-bg-color;
+  }
+}
+
+.toast-progress {
+  background: $secondary-bg-color !important;
+}
