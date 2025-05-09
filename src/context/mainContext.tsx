@@ -89,7 +89,12 @@ const useOrderOperations = (
         })
       }
 
-      await refreshOrders()
+      // Add new order to the state
+      setState((prev) => ({
+        ...prev,
+        orders: [response.data, ...prev.orders],
+      }))
+
       showToast('Order created successfully', 'success')
     } catch (error) {
       console.error('Error creating order:', error)
