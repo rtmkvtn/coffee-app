@@ -17,6 +17,7 @@ import { getCategories } from '@services/categoriesService'
 import { getAllProducts } from '@services/productsService'
 import { authenticateWithTelegram } from '@services/userService'
 
+// Types
 type StoreState = {
   isInitialized: boolean
   cart: ICart | null
@@ -39,38 +40,11 @@ type StoreContextType = StoreState & {
   ) => Promise<void>
 }
 
-const StoreContext = createContext<StoreContextType | undefined>(undefined)
-
-const getMockInitData = () => {
-  if (process.env.NODE_ENV !== 'development') {
-    throw new Error('Mock data is only available in development environment')
-  }
-
-  const params = new URLSearchParams()
-  params.set('query_id', MOCK_INIT_DATA.query_id)
-  params.set('user', JSON.stringify(MOCK_INIT_DATA.user))
-  params.set('auth_date', MOCK_INIT_DATA.auth_date.toString())
-  params.set('hash', MOCK_INIT_DATA.hash)
-  return params.toString()
-}
-
-const useStoreInitialization = () => {
-  const [state, setState] = useState<StoreState>({
-    isInitialized: false,
-    cart: null,
-    categories: [],
-    products: [],
-    user: null,
-    error: null,
-  })
-  const initRef = useRef(false)
-  const { initData } = useTelegram()
-
-  const setCart = (cart: ICart | null) =>
-    setState((prev) => ({ ...prev, cart }))
-  const setUser = (user: IUser | null) =>
-    setState((prev) => ({ ...prev, user }))
-
+// Custom hooks
+const useCartOperations = (
+  state: StoreState,
+  setCart: (cart: ICart | null) => void
+) => {
   const addToCart = async (product: IProduct) => {
     if (!state.cart) {
       showToast('Cart is not initialized', 'error')
@@ -172,6 +146,16 @@ const useStoreInitialization = () => {
     }
   }
 
+  return {
+    addToCart,
+    removeFromCart,
+    updateCartItemQuantity,
+  }
+}
+
+const useDataRefresh = (
+  setState: React.Dispatch<React.SetStateAction<StoreState>>
+) => {
   const refreshProducts = async () => {
     try {
       const response = await getAllProducts()
@@ -207,6 +191,46 @@ const useStoreInitialization = () => {
       console.error('Error refreshing categories:', error)
     }
   }
+
+  return {
+    refreshProducts,
+    refreshCategories,
+  }
+}
+
+const getMockInitData = () => {
+  if (process.env.NODE_ENV !== 'development') {
+    throw new Error('Mock data is only available in development environment')
+  }
+
+  const params = new URLSearchParams()
+  params.set('query_id', MOCK_INIT_DATA.query_id)
+  params.set('user', JSON.stringify(MOCK_INIT_DATA.user))
+  params.set('auth_date', MOCK_INIT_DATA.auth_date.toString())
+  params.set('hash', MOCK_INIT_DATA.hash)
+  return params.toString()
+}
+
+const useStoreInitialization = () => {
+  const [state, setState] = useState<StoreState>({
+    isInitialized: false,
+    cart: null,
+    categories: [],
+    products: [],
+    user: null,
+    error: null,
+  })
+  const initRef = useRef(false)
+  const { initData } = useTelegram()
+
+  const setCart = (cart: ICart | null) =>
+    setState((prev) => ({ ...prev, cart }))
+  const setUser = (user: IUser | null) =>
+    setState((prev) => ({ ...prev, user }))
+
+  const { addToCart, removeFromCart, updateCartItemQuantity } =
+    useCartOperations(state, setCart)
+  const { refreshProducts, refreshCategories } = useDataRefresh(setState)
 
   const initialize = async () => {
     if (initRef.current) return
@@ -264,9 +288,11 @@ const useStoreInitialization = () => {
   }
 }
 
+// Context
+const StoreContext = createContext<StoreContextType | undefined>(undefined)
+
 const MainContext = ({ children }: { children: ReactNode }) => {
   const store = useStoreInitialization()
-
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
 }
 
