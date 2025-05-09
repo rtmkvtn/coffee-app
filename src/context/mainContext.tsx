@@ -38,6 +38,7 @@ type StoreContextType = StoreState & {
     productId: number,
     newQuantity: number
   ) => Promise<void>
+  clearCart: () => Promise<void>
 }
 
 // Custom hooks
@@ -146,10 +147,30 @@ const useCartOperations = (
     }
   }
 
+  const clearCart = async () => {
+    if (!state.cart) {
+      showToast('Cart is not initialized', 'error')
+      return
+    }
+
+    try {
+      const response = await updateCart(state.cart.documentId, [])
+      if (!response.success) {
+        throw new Error('Failed to clear cart')
+      }
+
+      setCart(response.data)
+    } catch (error) {
+      showToast('Failed to clear cart', 'error')
+      console.error('Error clearing cart:', error)
+    }
+  }
+
   return {
     addToCart,
     removeFromCart,
     updateCartItemQuantity,
+    clearCart,
   }
 }
 
@@ -228,7 +249,7 @@ const useStoreInitialization = () => {
   const setUser = (user: IUser | null) =>
     setState((prev) => ({ ...prev, user }))
 
-  const { addToCart, removeFromCart, updateCartItemQuantity } =
+  const { addToCart, removeFromCart, updateCartItemQuantity, clearCart } =
     useCartOperations(state, setCart)
   const { refreshProducts, refreshCategories } = useDataRefresh(setState)
 
@@ -285,6 +306,7 @@ const useStoreInitialization = () => {
     addToCart,
     removeFromCart,
     updateCartItemQuantity,
+    clearCart,
   }
 }
 

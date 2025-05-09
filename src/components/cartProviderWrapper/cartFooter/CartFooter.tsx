@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 
 import Button from '@components/button/Button'
 import { getGoodsPlural } from '@components/cartProviderWrapper/cartFooter/cartFooter.helpers'
 import { useStore } from '@context/mainContext'
 import { formatPrice } from '@lib/helpers'
+import { showToast } from '@lib/toasts/toast'
+import { createOrder } from '@services/ordersService'
 import classNames from 'classnames'
 
 import Icon from '@assets/images/Icon'
@@ -12,10 +14,16 @@ import styles from './CartFooter.module.scss'
 import CartItem from './cartItem/CartItem'
 
 const CartFooter = () => {
-  const { cart, removeFromCart, updateCartItemQuantity, categories } =
-    useStore()
+  const {
+    cart,
+    removeFromCart,
+    updateCartItemQuantity,
+    categories,
+    clearCart,
+  } = useStore()
   const hasItems = cart?.items && cart.items.length > 0
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   const handleIconsClick = () => {
     setIsExpanded(!isExpanded)
@@ -30,7 +38,27 @@ const CartFooter = () => {
   }
 
   const handleOrder = () => {
-    // TODO: Implement order functionality
+    if (!cart?.id) {
+      showToast('Cart is not initialized', 'error')
+      return
+    }
+
+    startTransition(async () => {
+      try {
+        const response = await createOrder(cart.id)
+
+        if (!response.success) {
+          throw new Error('Failed to create order')
+        }
+
+        clearCart()
+        showToast('Order created successfully', 'success')
+        setIsExpanded(false)
+      } catch (error) {
+        console.error('Error creating order:', error)
+        showToast('Failed to create order', 'error')
+      }
+    })
   }
 
   const totalPrice =
@@ -130,6 +158,8 @@ const CartFooter = () => {
             mode="primary"
             onClick={handleOrder}
             className={styles.orderButton}
+            loading={isPending}
+            disabled={isPending}
           />
         </div>
       )}
