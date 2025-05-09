@@ -7,9 +7,22 @@ export const getAllProducts = async (): Promise<
   IResponseWrapper<IProduct[]>
 > => {
   try {
-    const response = await api.get(
-      '/api/products?populate[category][fields][0]=id&populate[subcategory][fields][0]=id&populate[avatar][fields][0]=url&populate[avatar][fields][1]=name'
-    )
+    const response = await api.get('/api/products', {
+      params: {
+        sort: ['order:asc'],
+        populate: {
+          category: {
+            fields: ['id'],
+          },
+          subcategory: {
+            fields: ['id'],
+          },
+          avatar: {
+            fields: ['url', 'name'],
+          },
+        },
+      },
+    })
 
     return {
       success: true,
