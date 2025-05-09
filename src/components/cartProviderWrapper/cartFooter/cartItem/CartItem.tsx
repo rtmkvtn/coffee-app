@@ -24,6 +24,7 @@ const CartItem: FC<CartItemProps> = ({
   onQuantityChange,
 }) => {
   const [isFlashing, setIsFlashing] = useState(false)
+  const [isRemoving, setIsRemoving] = useState(false)
 
   useEffect(() => {
     if (isFlashing) {
@@ -33,6 +34,15 @@ const CartItem: FC<CartItemProps> = ({
       return () => clearTimeout(timer)
     }
   }, [isFlashing])
+
+  useEffect(() => {
+    if (isRemoving) {
+      const timer = setTimeout(() => {
+        onRemove(id)
+      }, 300) // Match animation duration
+      return () => clearTimeout(timer)
+    }
+  }, [isRemoving, id, onRemove])
 
   const handleDecrease = () => {
     if (quantity > 1) {
@@ -46,8 +56,12 @@ const CartItem: FC<CartItemProps> = ({
     setIsFlashing(true)
   }
 
+  const handleRemove = () => {
+    setIsRemoving(true)
+  }
+
   return (
-    <div className={styles.item}>
+    <div className={classNames(styles.item, isRemoving && styles.removing)}>
       <div className={styles.itemInfo}>
         <span className={styles.itemName}>{name}</span>
         <div className={styles.quantityRow}>
@@ -74,7 +88,7 @@ const CartItem: FC<CartItemProps> = ({
         >
           {price * quantity} ₽
         </span>
-        <button className={styles.removeButton} onClick={() => onRemove(id)}>
+        <button className={styles.removeButton} onClick={handleRemove}>
           <Icon type="trash" size={16} />
         </button>
       </div>
