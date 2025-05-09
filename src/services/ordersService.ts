@@ -23,11 +23,20 @@ export const createOrder = async (
   }
 }
 
-export const getOrders = async (): Promise<IResponseWrapper<IOrder[]>> => {
+export const getOrders = async (
+  userId: number
+): Promise<IResponseWrapper<IOrder[]>> => {
   try {
     const response = await api.get('/api/orders', {
       params: {
         sort: ['createdAt:desc'],
+        populate: {
+          user: {
+            filters: {
+              id: userId,
+            },
+          },
+        },
       },
     })
 

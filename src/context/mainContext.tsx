@@ -53,7 +53,19 @@ const useOrderOperations = (
 ) => {
   const refreshOrders = async () => {
     try {
-      const response = await getOrders()
+      // Get the latest state to ensure we have the user ID
+      const currentState = await new Promise<StoreState>((resolve) => {
+        setState((prev) => {
+          resolve(prev)
+          return prev
+        })
+      })
+
+      if (!currentState.user?.id) {
+        return
+      }
+
+      const response = await getOrders(currentState.user.id)
       if (!response.success) {
         throw new Error('Failed to load orders')
       }
@@ -352,11 +364,12 @@ const useStoreInitialization = () => {
         error: null,
       }))
 
-      await Promise.all([
-        refreshCategories(),
-        refreshProducts(),
-        refreshOrders(),
-      ])
+      // First load categories and products
+      await Promise.all([refreshCategories(), refreshProducts()])
+
+      // Then load orders after we have user data
+      await refreshOrders()
+
       setState((prev) => ({ ...prev, isInitialized: true }))
     } catch (error) {
       setState((prev) => ({
