@@ -11,9 +11,10 @@ import { MOCK_INIT_DATA } from '@constants/temp'
 import { useTelegram } from '@hooks/useTelegram'
 import { showToast } from '@lib/toasts/toast'
 import { CartItem } from '@models/cart.model'
-import { ICart, ICategory, IProduct, IUser } from '@models/index'
+import { ICart, ICategory, IOrder, IProduct, IUser } from '@models/index'
 import { updateCart } from '@services/cartService'
 import { getCategories } from '@services/categoriesService'
+import { createOrder, getOrders } from '@services/ordersService'
 import { getAllProducts } from '@services/productsService'
 import { authenticateWithTelegram } from '@services/userService'
 
@@ -24,6 +25,7 @@ type StoreState = {
   categories: ICategory[]
   products: IProduct[]
   user: IUser | null
+  orders: IOrder[]
   error: string | null
 }
 
@@ -32,6 +34,7 @@ type StoreContextType = StoreState & {
   setUser: (user: IUser | null) => void
   refreshProducts: () => Promise<void>
   refreshCategories: () => Promise<void>
+  refreshOrders: () => Promise<void>
   addToCart: (product: IProduct) => Promise<void>
   removeFromCart: (productId: number) => Promise<void>
   updateCartItemQuantity: (
@@ -39,9 +42,67 @@ type StoreContextType = StoreState & {
     newQuantity: number
   ) => Promise<void>
   clearCart: () => Promise<void>
+  createOrder: () => Promise<void>
 }
 
 // Custom hooks
+const useOrderOperations = (
+  state: StoreState,
+  setState: React.Dispatch<React.SetStateAction<StoreState>>,
+  setCart: (cart: ICart | null) => void
+) => {
+  const refreshOrders = async () => {
+    try {
+      const response = await getOrders()
+      if (!response.success) {
+        throw new Error('Failed to load orders')
+      }
+      setState((prev) => ({
+        ...prev,
+        orders: response.data.data,
+        error: null,
+      }))
+    } catch (error) {
+      setState((prev) => ({ ...prev, error: 'Failed to refresh orders' }))
+      showToast('Failed to refresh orders', 'error')
+      console.error('Error refreshing orders:', error)
+    }
+  }
+
+  const createNewOrder = async () => {
+    if (!state.cart?.id) {
+      showToast('Cart is not initialized', 'error')
+      return
+    }
+
+    try {
+      const response = await createOrder(state.cart.id)
+      if (!response.success) {
+        throw new Error('Failed to create order')
+      }
+
+      // Clear cart locally since backend already clears it
+      if (state.cart) {
+        setCart({
+          ...state.cart,
+          items: [],
+        })
+      }
+
+      await refreshOrders()
+      showToast('Order created successfully', 'success')
+    } catch (error) {
+      console.error('Error creating order:', error)
+      showToast('Failed to create order', 'error')
+    }
+  }
+
+  return {
+    refreshOrders,
+    createOrder: createNewOrder,
+  }
+}
+
 const useCartOperations = (
   state: StoreState,
   setCart: (cart: ICart | null) => void
@@ -239,6 +300,7 @@ const useStoreInitialization = () => {
     categories: [],
     products: [],
     user: null,
+    orders: [],
     error: null,
   })
   const initRef = useRef(false)
@@ -252,6 +314,11 @@ const useStoreInitialization = () => {
   const { addToCart, removeFromCart, updateCartItemQuantity, clearCart } =
     useCartOperations(state, setCart)
   const { refreshProducts, refreshCategories } = useDataRefresh(setState)
+  const { refreshOrders, createOrder } = useOrderOperations(
+    state,
+    setState,
+    setCart
+  )
 
   const initialize = async () => {
     if (initRef.current) return
@@ -280,7 +347,11 @@ const useStoreInitialization = () => {
         error: null,
       }))
 
-      await Promise.all([refreshCategories(), refreshProducts()])
+      await Promise.all([
+        refreshCategories(),
+        refreshProducts(),
+        refreshOrders(),
+      ])
       setState((prev) => ({ ...prev, isInitialized: true }))
     } catch (error) {
       setState((prev) => ({
@@ -303,10 +374,12 @@ const useStoreInitialization = () => {
     setUser,
     refreshProducts,
     refreshCategories,
+    refreshOrders,
     addToCart,
     removeFromCart,
     updateCartItemQuantity,
     clearCart,
+    createOrder,
   }
 }
 
