@@ -23,7 +23,9 @@ import InfoIcon from './ui/info.svg?react'
 import LinkIcon from './ui/link.svg?react'
 import LogoutIcon from './ui/logout.svg?react'
 import MessageIcon from './ui/message.svg?react'
+import MinusIcon from './ui/minus.svg?react'
 import MoonIcon from './ui/moon.svg?react'
+import PlusIcon from './ui/plus.svg?react'
 import QrIcon from './ui/qr.svg?react'
 import QuestionIcon from './ui/question.svg?react'
 import SafeIcon from './ui/safe.svg?react'
@@ -63,7 +65,9 @@ import infoIcon from './ui/info.svg'
 import linkIcon from './ui/link.svg'
 import logoutIcon from './ui/logout.svg'
 import messageIcon from './ui/message.svg'
+import minusIcon from './ui/minus.svg'
 import moonIcon from './ui/moon.svg'
+import plusIcon from './ui/plus.svg'
 import qrIcon from './ui/qr.svg'
 import questionIcon from './ui/question.svg'
 import safeIcon from './ui/safe.svg'
@@ -105,8 +109,10 @@ export type IconTypes =
   | 'link'
   | 'logout'
   | 'message'
+  | 'minus'
   | 'moon'
   | 'notFound'
+  | 'plus'
   | 'qr'
   | 'question'
   | 'safe'
@@ -177,9 +183,11 @@ const Icon = ({
   else if (type === 'link') result = { img: linkIcon, svg: LinkIcon }
   else if (type === 'logout') result = { img: logoutIcon, svg: LogoutIcon }
   else if (type === 'message') result = { img: messageIcon, svg: MessageIcon }
+  else if (type === 'minus') result = { img: minusIcon, svg: MinusIcon }
   else if (type === 'moon') result = { img: moonIcon, svg: MoonIcon }
   else if (type === 'notFound')
     result = { img: notFoundIcon, svg: NotFoundIcon }
+  else if (type === 'plus') result = { img: plusIcon, svg: PlusIcon }
   else if (type === 'qr') result = { img: qrIcon, svg: QrIcon }
   else if (type === 'question')
     result = { img: questionIcon, svg: QuestionIcon }

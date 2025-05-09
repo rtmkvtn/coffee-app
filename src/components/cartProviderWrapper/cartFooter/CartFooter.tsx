@@ -9,7 +9,7 @@ import styles from './CartFooter.module.scss'
 import CartItem from './cartItem/CartItem'
 
 const CartFooter = () => {
-  const { cart, removeFromCart } = useStore()
+  const { cart, removeFromCart, updateCartItemQuantity } = useStore()
   const hasItems = cart?.items && cart.items.length > 0
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -19,6 +19,10 @@ const CartFooter = () => {
 
   const handleRemoveItem = (itemId: number) => {
     removeFromCart(itemId)
+  }
+
+  const handleQuantityChange = (itemId: number, newQuantity: number) => {
+    updateCartItemQuantity(itemId, newQuantity)
   }
 
   const totalPrice = cart?.items.reduce(
@@ -67,6 +71,7 @@ const CartFooter = () => {
               quantity={item.quantity}
               price={item.price}
               onRemove={handleRemoveItem}
+              onQuantityChange={handleQuantityChange}
             />
           ))}
         </div>

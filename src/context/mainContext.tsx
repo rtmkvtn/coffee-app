@@ -33,6 +33,10 @@ type StoreContextType = StoreState & {
   refreshCategories: () => Promise<void>
   addToCart: (product: IProduct) => Promise<void>
   removeFromCart: (productId: number) => Promise<void>
+  updateCartItemQuantity: (
+    productId: number,
+    newQuantity: number
+  ) => Promise<void>
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined)
@@ -116,25 +120,7 @@ const useStoreInitialization = () => {
 
     try {
       const currentItems = (state.cart.items || []) as CartItem[]
-      const existingItemIndex = currentItems.findIndex(
-        (item) => item.id === productId
-      )
-
-      if (existingItemIndex === -1) {
-        showToast('Item not found in cart', 'error')
-        return
-      }
-
-      let newItems: CartItem[]
-      if (currentItems[existingItemIndex].quantity > 1) {
-        newItems = [...currentItems]
-        newItems[existingItemIndex] = {
-          ...newItems[existingItemIndex],
-          quantity: newItems[existingItemIndex].quantity - 1,
-        }
-      } else {
-        newItems = currentItems.filter((item) => item.id !== productId)
-      }
+      const newItems = currentItems.filter((item) => item.id !== productId)
 
       const response = await updateCart(state.cart.documentId, newItems)
       if (!response.success) {
@@ -145,6 +131,44 @@ const useStoreInitialization = () => {
     } catch (error) {
       showToast('Failed to remove item from cart', 'error')
       console.error('Error removing from cart:', error)
+    }
+  }
+
+  const updateCartItemQuantity = async (
+    productId: number,
+    newQuantity: number
+  ) => {
+    if (!state.cart) {
+      showToast('Cart is not initialized', 'error')
+      return
+    }
+
+    try {
+      const currentItems = (state.cart.items || []) as CartItem[]
+      const existingItemIndex = currentItems.findIndex(
+        (item) => item.id === productId
+      )
+
+      if (existingItemIndex === -1) {
+        showToast('Item not found in cart', 'error')
+        return
+      }
+
+      const newItems = [...currentItems]
+      newItems[existingItemIndex] = {
+        ...newItems[existingItemIndex],
+        quantity: newQuantity,
+      }
+
+      const response = await updateCart(state.cart.documentId, newItems)
+      if (!response.success) {
+        throw new Error('Failed to update cart')
+      }
+
+      setCart(response.data)
+    } catch (error) {
+      showToast('Failed to update item quantity', 'error')
+      console.error('Error updating item quantity:', error)
     }
   }
 
@@ -236,6 +260,7 @@ const useStoreInitialization = () => {
     refreshCategories,
     addToCart,
     removeFromCart,
+    updateCartItemQuantity,
   }
 }
 

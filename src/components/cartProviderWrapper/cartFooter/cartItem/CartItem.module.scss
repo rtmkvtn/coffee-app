@@ -19,9 +19,55 @@
       font-weight: 500;
     }
 
-    .itemQuantity {
-      color: constants.$secondary-bg-color;
-      font-size: 14px;
+    .quantityRow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .itemQuantity {
+        color: constants.$secondary-bg-color;
+        font-size: 14px;
+
+        span {
+          color: constants.$main-bg-color;
+          font-weight: 600;
+        }
+      }
+
+      .quantityControls {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        .quantityButton {
+          background: none;
+          border: none;
+          padding: 4px;
+          cursor: pointer;
+          color: constants.$main-bg-color;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease-in-out;
+          -webkit-tap-highlight-color: transparent;
+
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+
+          @media (hover: hover) {
+            &:hover:not(:disabled) {
+              background-color: rgba(0, 0, 0, 0.05);
+            }
+          }
+
+          &:active:not(:disabled) {
+            background-color: rgba(0, 0, 0, 0.05);
+          }
+        }
+      }
     }
   }
 
@@ -46,7 +92,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease-in-out;
+
       -webkit-tap-highlight-color: transparent;
 
       @media (hover: hover) {
