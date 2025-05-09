@@ -1,5 +1,23 @@
 @use '@assets/styles/constants';
 
+@keyframes flash {
+  0% {
+    color: constants.$secondary-bg-color;
+  }
+  25% {
+    color: rgba(constants.$color-green, 0.5);
+  }
+  50% {
+    color: constants.$color-green;
+  }
+  75% {
+    color: rgba(constants.$color-green, 0.5);
+  }
+  100% {
+    color: constants.$secondary-bg-color;
+  }
+}
+
 .item {
   display: flex;
   justify-content: space-between;
@@ -80,6 +98,11 @@
       color: constants.$secondary-bg-color;
       font-size: 16px;
       font-weight: 600;
+      transition: color 0.3s ease-in-out;
+
+      &.flash {
+        animation: flash 0.5s ease-out;
+      }
     }
 
     .removeButton {
@@ -92,7 +115,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-
+      transition: all 0.2s ease-in-out;
       -webkit-tap-highlight-color: transparent;
 
       @media (hover: hover) {

@@ -1,4 +1,6 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
+
+import classNames from 'classnames'
 
 import Icon from '@assets/images/Icon'
 
@@ -21,14 +23,27 @@ const CartItem: FC<CartItemProps> = ({
   onRemove,
   onQuantityChange,
 }) => {
+  const [isFlashing, setIsFlashing] = useState(false)
+
+  useEffect(() => {
+    if (isFlashing) {
+      const timer = setTimeout(() => {
+        setIsFlashing(false)
+      }, 500)
+      return () => clearTimeout(timer)
+    }
+  }, [isFlashing])
+
   const handleDecrease = () => {
     if (quantity > 1) {
       onQuantityChange(id, quantity - 1)
+      setIsFlashing(true)
     }
   }
 
   const handleIncrease = () => {
     onQuantityChange(id, quantity + 1)
+    setIsFlashing(true)
   }
 
   return (
@@ -54,7 +69,11 @@ const CartItem: FC<CartItemProps> = ({
         </div>
       </div>
       <div className={styles.itemActions}>
-        <span className={styles.itemPrice}>{price * quantity} ₽</span>
+        <span
+          className={classNames(styles.itemPrice, isFlashing && styles.flash)}
+        >
+          {price * quantity} ₽
+        </span>
         <button className={styles.removeButton} onClick={() => onRemove(id)}>
           <Icon type="trash" size={16} />
         </button>
