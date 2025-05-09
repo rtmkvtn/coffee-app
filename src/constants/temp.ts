@@ -22,3 +22,6 @@ export const MOCK_INIT_DATA = {
   auth_date: 1746595518,
   hash: 'b7c24b1b6f1c3f3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e3f3e',
 }
+
+export const UKassaPK = 'test_dTLrrJO1kbwf7QNjj-b40Hg1gAe_vg3sdJRQZistM6g'
+export const UKassaShopId = '1085163'

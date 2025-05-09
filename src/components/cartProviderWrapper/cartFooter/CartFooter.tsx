@@ -31,6 +31,29 @@ const CartFooter = () => {
     0
   )
 
+  const totalQuantity =
+    cart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0
+
+  // Helper function for Russian plural forms
+  const getRussianPlural = (count: number) => {
+    const lastDigit = count % 10
+    const lastTwoDigits = count % 100
+
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+      return 'товаров'
+    }
+
+    if (lastDigit === 1) {
+      return 'товар'
+    }
+
+    if (lastDigit >= 2 && lastDigit <= 4) {
+      return 'товара'
+    }
+
+    return 'товаров'
+  }
+
   // Group items by subcategory
   const groupedItems = cart?.items.reduce(
     (groups, item) => {
@@ -70,7 +93,9 @@ const CartFooter = () => {
     >
       <div className={styles.content}>
         <div className={styles.cartInfo}>
-          <span className={styles.itemsCount}>{cart?.items.length} items</span>
+          <span className={styles.itemsCount}>
+            {totalQuantity} {getRussianPlural(totalQuantity)}
+          </span>
           <span className={styles.totalPrice}>{totalPrice} ₽</span>
         </div>
         <div className={styles.icons} onClick={handleIconsClick}>
