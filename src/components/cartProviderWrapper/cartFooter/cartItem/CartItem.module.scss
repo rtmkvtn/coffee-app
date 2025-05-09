@@ -52,7 +52,7 @@
     .itemName {
       color: constants.$main-bg-color;
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .quantityRow {
@@ -63,6 +63,7 @@
       .itemQuantity {
         color: constants.$secondary-bg-color;
         font-size: 14px;
+        font-weight: 500;
 
         span {
           color: constants.$main-bg-color;
