@@ -13,7 +13,9 @@ type Props = {
 }
 
 const MenuItem = ({ product }: Props) => {
-  const { cart, addToCart, removeFromCart } = useStore()
+  const { cart, addToCart, updateCartItemQuantity, removeFromCart } = useStore()
+  const quantityInCart =
+    cart?.items.find((x) => x.id === product.id)?.quantity ?? undefined
 
   const [isPending, startTransition] = useTransition()
 
@@ -25,12 +27,13 @@ const MenuItem = ({ product }: Props) => {
 
   const handleRemoveFromCart = async (): Promise<void> => {
     startTransition(async () => {
-      await removeFromCart(product.id)
+      if (quantityInCart && quantityInCart === 1) {
+        await removeFromCart(product.id)
+      } else {
+        await updateCartItemQuantity(product.id, quantityInCart! - 1)
+      }
     })
   }
-
-  const quantityInCart =
-    cart?.items.find((x) => x.id === product.id)?.quantity ?? undefined
 
   return (
     <div className={styles.product}>

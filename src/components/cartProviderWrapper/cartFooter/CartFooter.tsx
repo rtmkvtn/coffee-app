@@ -1,6 +1,9 @@
 import { useState } from 'react'
 
+import Button from '@components/button/Button'
+import { getGoodsPlural } from '@components/cartProviderWrapper/cartFooter/cartFooter.helpers'
 import { useStore } from '@context/mainContext'
+import { formatPrice } from '@lib/helpers'
 import classNames from 'classnames'
 
 import Icon from '@assets/images/Icon'
@@ -26,33 +29,15 @@ const CartFooter = () => {
     updateCartItemQuantity(itemId, newQuantity)
   }
 
-  const totalPrice = cart?.items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  )
+  const handleOrder = () => {
+    // TODO: Implement order functionality
+  }
+
+  const totalPrice =
+    cart?.items.reduce((sum, item) => sum + item.price * item.quantity, 0) || 0
 
   const totalQuantity =
     cart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0
-
-  // Helper function for Russian plural forms
-  const getRussianPlural = (count: number) => {
-    const lastDigit = count % 10
-    const lastTwoDigits = count % 100
-
-    if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-      return 'товаров'
-    }
-
-    if (lastDigit === 1) {
-      return 'товар'
-    }
-
-    if (lastDigit >= 2 && lastDigit <= 4) {
-      return 'товара'
-    }
-
-    return 'товаров'
-  }
 
   // Group items by subcategory
   const groupedItems = cart?.items.reduce(
@@ -94,9 +79,9 @@ const CartFooter = () => {
       <div className={styles.content}>
         <div className={styles.cartInfo}>
           <span className={styles.itemsCount}>
-            {totalQuantity} {getRussianPlural(totalQuantity)}
+            {totalQuantity} {getGoodsPlural(totalQuantity)}
           </span>
-          <span className={styles.totalPrice}>{totalPrice} ₽</span>
+          <span className={styles.totalPrice}>{formatPrice(totalPrice)}</span>
         </div>
         <div className={styles.icons} onClick={handleIconsClick}>
           <Icon
@@ -135,6 +120,17 @@ const CartFooter = () => {
                 ))}
               </div>
             ))}
+        </div>
+      )}
+
+      {hasItems && isExpanded && (
+        <div className={styles.orderFooter}>
+          <Button
+            text="Заказать"
+            mode="primary"
+            onClick={handleOrder}
+            className={styles.orderButton}
+          />
         </div>
       )}
     </div>

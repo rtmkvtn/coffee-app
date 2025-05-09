@@ -80,6 +80,19 @@
     }
   }
 
+  .orderFooter {
+    padding: 16px;
+    background-color: constants.$text-primary-color;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+
+    .orderButton {
+      width: 100%;
+    }
+  }
+
   &.visible {
     bottom: calc(-100vh + 84px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
