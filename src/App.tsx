@@ -2,12 +2,18 @@ import { Route } from 'react-router'
 import { Routes } from 'react-router-dom'
 
 import GlobalLoader from '@components/loaders/globalLoader/GlobalLoader'
-import { HOME_PATH, MENU_PATH, ORDER_PATH } from '@constants/routes'
+import {
+  HOME_PATH,
+  MENU_PATH,
+  ORDER_PATH,
+  ORDERS_PATH,
+} from '@constants/routes'
 import { useStore } from '@context/mainContext'
 import Layout from '@lib/layout/Layout'
 import HomePage from '@views/homePage/HomePage'
 import MenuPage from '@views/menuPage/MenuPage'
 import OrderPage from '@views/orderPage'
+import OrdersPage from '@views/ordersPage/OrdersPage'
 
 import './App.scss'
 
@@ -23,6 +29,14 @@ function App() {
             element={
               <Layout withCartProvider withNavHeader headerText="Меню">
                 <MenuPage />
+              </Layout>
+            }
+          />
+          <Route
+            path={ORDERS_PATH}
+            element={
+              <Layout withNavHeader headerText="Заказы">
+                <OrdersPage />
               </Layout>
             }
           />
