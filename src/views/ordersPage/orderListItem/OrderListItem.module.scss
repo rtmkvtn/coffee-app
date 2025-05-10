@@ -1,0 +1,64 @@
+@use '@assets/styles/constants';
+
+.wrapper {
+  background: constants.$main-bg-color;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date {
+  color: constants.$text-inactive-color;
+  font-size: 14px;
+}
+
+.status {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+
+  &.waiting {
+    background: rgba(constants.$color-orange, 0.1);
+    color: constants.$color-orange;
+  }
+
+  &.processing {
+    background: rgba(constants.$secondary-bg-color, 0.1);
+    color: constants.$secondary-bg-color;
+  }
+
+  &.paid {
+    background: rgba(constants.$color-green, 0.1);
+    color: constants.$color-green;
+  }
+
+  &.completed {
+    background: rgba(constants.$color-green, 0.1);
+    color: constants.$color-green;
+  }
+
+  &.canceled {
+    background: rgba(constants.$color-red, 0.1);
+    color: constants.$color-red;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.amount {
+  font-size: 18px;
+  font-weight: 600;
+  color: constants.$text-primary-color;
+}
