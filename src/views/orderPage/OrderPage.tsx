@@ -109,34 +109,38 @@ const OrderPage = () => {
   const canCancel = order.state === 'waitingForPayment'
   const canPay = order.state === 'waitingForPayment'
 
+  const withAction = canCancel || canPay
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.title}>Заказ #{order.id}</h1>
       <div className={styles.ordersList}>
         <OrderItem order={order} />
       </div>
-      <div className={styles.actions}>
-        {canCancel && (
-          <Button
-            text="Отменить заказ"
-            mode="secondary"
-            onClick={handleCancel}
-            loading={isPending}
-            disabled={isPending}
-            className={styles.actionButton}
-          />
-        )}
-        {canPay && (
-          <Button
-            text="Оплатить"
-            mode="primary"
-            onClick={handlePay}
-            loading={isPending}
-            disabled={isPending}
-            className={styles.actionButton}
-          />
-        )}
-      </div>
+      {withAction && (
+        <div className={styles.actions}>
+          {canCancel && (
+            <Button
+              text="Отменить заказ"
+              mode="secondary"
+              onClick={handleCancel}
+              loading={isPending}
+              disabled={isPending}
+              className={styles.actionButton}
+            />
+          )}
+          {canPay && (
+            <Button
+              text="Оплатить"
+              mode="primary"
+              onClick={handlePay}
+              loading={isPending}
+              disabled={isPending}
+              className={styles.actionButton}
+            />
+          )}
+        </div>
+      )}
     </div>
   )
 }

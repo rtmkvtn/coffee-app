@@ -35,7 +35,7 @@ function App() {
           <Route
             path={ORDERS_PATH}
             element={
-              <Layout withNavHeader headerText="Заказы">
+              <Layout withNavHeader headerText="Мои заказы">
                 <OrdersPage />
               </Layout>
             }
