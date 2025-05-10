@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import styles from './Button.module.scss'
 
 type IButtonMode = 'primary' | 'secondary'
+type IIndicatorColor = 'red' | 'green' | 'yellow'
 
 type IProps = {
   text: string
@@ -16,6 +17,8 @@ type IProps = {
   onClick?: () => void
   needToIsolate?: boolean
   loading?: boolean
+  withIndicator?: boolean
+  indicatorColor?: IIndicatorColor
 } & Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
   'disabled' | 'className' | 'size'
@@ -30,6 +33,8 @@ const Button: FC<IProps> = ({
   onClick,
   loading,
   needToIsolate,
+  withIndicator,
+  indicatorColor,
   ...props
 }) => {
   const handleOnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -49,6 +54,7 @@ const Button: FC<IProps> = ({
         styles[mode],
         icon ? styles.withIcon : '',
         loading && styles.loading,
+        withIndicator && styles.withIndicator,
         className && className
       )}
       disabled={disabled}
@@ -58,6 +64,11 @@ const Button: FC<IProps> = ({
       {loading && <BubbleLoader className={styles.loader} />}
       {text}
       {icon && icon}
+      {withIndicator && indicatorColor && (
+        <span
+          className={classNames(styles.indicator, styles[indicatorColor])}
+        />
+      )}
     </button>
   )
 }

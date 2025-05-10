@@ -1,6 +1,18 @@
 @use 'sass:color';
 @use '@assets/styles/constants';
 
+@keyframes blink {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
 .btn {
   width: fit-content;
   max-width: 100%;
@@ -15,7 +27,7 @@
   line-height: 1;
   cursor: pointer;
   box-sizing: border-box;
-
+  position: relative;
 
   border-radius: 12px;
   padding: 0 16px;
@@ -25,7 +37,7 @@
 
   &:disabled {
     cursor: default;
-    opacity: .4;
+    opacity: 0.4;
   }
 
   &.loading {
@@ -39,6 +51,32 @@
       transform: translate(-50%, -150%);
     }
   }
+
+  &.withIndicator {
+    padding-right: 24px;
+  }
+}
+
+.indicator {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  animation: blink 2s infinite;
+
+  &.red {
+    background-color: constants.$color-red;
+  }
+
+  &.green {
+    background-color: constants.$color-green;
+  }
+
+  &.yellow {
+    background-color: constants.$color-orange;
+  }
 }
 
 //Colors
@@ -49,13 +87,18 @@
 
   @media (hover: hover) {
     button:hover {
-      background-color: color.adjust(constants.$secondary-bg-color, $lightness: -10%);
+      background-color: color.adjust(
+        constants.$secondary-bg-color,
+        $lightness: -10%
+      );
     }
   }
 
   &:active {
-    background-color: color.adjust(constants.$secondary-bg-color, $lightness: -10%);
-
+    background-color: color.adjust(
+      constants.$secondary-bg-color,
+      $lightness: -10%
+    );
   }
 
   .loader {
@@ -80,7 +123,6 @@
   .loader {
     color: constants.$text-primary-color;
   }
-
 }
 
 // hollow
@@ -96,6 +138,5 @@
     height: 20px;
     width: 20px;
     min-width: 20px;
-
   }
 }
