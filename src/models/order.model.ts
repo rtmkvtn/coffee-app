@@ -10,8 +10,8 @@ export type OrderStatus =
 export type IOrder = {
   id: string
   items: CartItem[]
-  totalPrice: number
-  status: OrderStatus
+  amount: number
+  state: OrderStatus
   createdAt: Date
   updatedAt: Date
 }

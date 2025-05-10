@@ -1,0 +1,95 @@
+@use '@assets/styles/constants';
+
+.wrapper {
+  background: constants.$text-primary-color;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, .4);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.orderNumber {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.status {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: constants.$text-primary-color;
+
+  &_waitingForPayment {
+    background: constants.$color-orange;
+  }
+
+  &_paymentProcessing {
+    background: constants.$color-orange;
+  }
+
+  &_paid {
+    background: constants.$color-green;
+  }
+
+  &_completed {
+    background: constants.$main-bg-color;
+  }
+
+  &_canceled {
+    background: constants.$color-red;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.itemName {
+  color: constants.$main-bg-color;
+}
+
+.itemPrice {
+  font-weight: 500;
+  color: constants.$main-bg-color;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px dashed constants.$main-bg-color;
+}
+
+.total {
+  font-weight: 500;
+  color: constants.$main-bg-color;
+}
+
+.totalPrice {
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-primary);
+}
