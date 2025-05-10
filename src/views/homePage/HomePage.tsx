@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@components/button/Button'
@@ -11,7 +13,11 @@ import styles from './HomePage.module.scss'
 
 const HomePage = () => {
   const navigate = useNavigate()
-  const { user } = useStore()
+  const { user, orders } = useStore()
+
+  const hasWaitingPayment = orders.some(
+    (order) => order.state === 'waitingForPayment'
+  )
 
   return (
     <div className={styles.wrapper}>
@@ -28,6 +34,8 @@ const HomePage = () => {
         mode="secondary"
         onClick={() => navigate(ORDERS_PATH)}
         className={styles.button}
+        withIndicator={hasWaitingPayment}
+        indicatorColor="yellow"
       />
     </div>
   )
