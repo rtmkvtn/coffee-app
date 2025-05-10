@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 import Button from '@components/button/Button'
-import { MENU_PATH } from '@constants/routes'
+import { MENU_PATH, ORDERS_PATH } from '@constants/routes'
 import { useStore } from '@context/mainContext'
 import { getGreeting } from '@views/homePage/homePage.helpers'
 
@@ -21,6 +21,13 @@ const HomePage = () => {
         mode="primary"
         icon={<Icon type="arrowRight" />}
         onClick={() => navigate(MENU_PATH)}
+        className={styles.button}
+      />
+      <Button
+        text="Мои заказы"
+        mode="secondary"
+        onClick={() => navigate(ORDERS_PATH)}
+        className={styles.button}
       />
     </div>
   )
