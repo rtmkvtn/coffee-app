@@ -36,7 +36,7 @@ const OrderListItem = ({ order, className }: OrderListItemProps) => {
         </div>
       </div>
       <div className={styles.footer}>
-        <div className={styles.date}>{formatDate(order.createdAt)}</div>
+        <div className={styles.date}>{formatDate(order.createdAt, true)}</div>
         <div className={styles.amount}>{formatPrice(order.amount)}</div>
       </div>
     </div>
