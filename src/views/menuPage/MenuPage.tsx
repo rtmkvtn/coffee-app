@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { useNavigate } from 'react-router-dom'
+
 import TabsNav from '@components/tabsNav/TabsNav'
+import { ORDER_PATH } from '@constants/routes'
 import { useStore } from '@context/mainContext'
 import { IProduct } from '@models/index'
 import classNames from 'classnames'
@@ -13,7 +16,8 @@ type IProps = {
 }
 
 const MenuPage = ({ className }: IProps) => {
-  const { categories, products } = useStore()
+  const { categories, products, orders } = useStore()
+  const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState<number>(
     categories[0]?.id
   )
@@ -26,6 +30,17 @@ const MenuPage = ({ className }: IProps) => {
   const [activeSubcategory, setActiveSubcategory] = useState<number | null>(
     null
   )
+
+  useEffect(() => {
+    const pendingOrder = orders.find(
+      (order) => order.state === 'waitingForPayment'
+    )
+    if (pendingOrder) {
+      navigate(ORDER_PATH.replace(':orderId', pendingOrder.documentId), {
+        replace: true,
+      })
+    }
+  }, [orders, navigate])
 
   useEffect(() => {
     const targetCategory = categories.find((x) => x.id === activeCategory)
