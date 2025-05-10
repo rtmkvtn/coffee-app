@@ -25,7 +25,7 @@ const OrderItem = ({ order }: Props) => {
         return status
     }
   }
-  console.log(order)
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
