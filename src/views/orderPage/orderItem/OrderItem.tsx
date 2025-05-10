@@ -1,4 +1,4 @@
-import { formatPrice } from '@lib/helpers'
+import { formatPrice, getOrderStatusText } from '@lib/helpers'
 import { IOrder } from '@models/index'
 import classNames from 'classnames'
 
@@ -9,23 +9,6 @@ type Props = {
 }
 
 const OrderItem = ({ order }: Props) => {
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'waitingForPayment':
-        return 'Ожидает оплаты'
-      case 'paymentProcessing':
-        return 'Обработка оплаты'
-      case 'paid':
-        return 'Оплачен'
-      case 'completed':
-        return 'Выполнен'
-      case 'canceled':
-        return 'Отменен'
-      default:
-        return status
-    }
-  }
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
@@ -33,7 +16,7 @@ const OrderItem = ({ order }: Props) => {
         <span
           className={classNames(styles.status, styles[`status_${order.state}`])}
         >
-          {getStatusText(order.state)}
+          {getOrderStatusText(order.state)}
         </span>
       </div>
       <div className={styles.content}>

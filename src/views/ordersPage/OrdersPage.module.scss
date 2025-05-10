@@ -1,19 +1,11 @@
+@use '@assets/styles/constants';
+
 .wrapper {
-  padding: 16px;
   max-width: 600px;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 16px;
-  color: var(--text-primary);
-  width: 100%;
-  text-align: center;
 }
 
 .ordersList {
@@ -34,7 +26,8 @@
 
 .emptyState {
   text-align: center;
-  color: var(--text-secondary);
+  color: constants.$text-primary-color;
   padding: 32px;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 500;
 }

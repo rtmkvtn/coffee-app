@@ -23,7 +23,6 @@ const OrdersPage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.title}>Мои заказы</h1>
       <div className={styles.ordersList}>
         {orders.map((order) => (
           <div
