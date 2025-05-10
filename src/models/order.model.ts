@@ -9,6 +9,7 @@ export type OrderStatus =
 
 export type IOrder = {
   id: string
+  documentId: string
   items: CartItem[]
   amount: number
   state: OrderStatus
