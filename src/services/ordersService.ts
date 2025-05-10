@@ -77,7 +77,7 @@ export const updateOrderStatus = async (
   try {
     const response = await api.put(`/api/orders/${orderId}`, {
       data: {
-        status,
+        state: status,
       },
     })
 
@@ -99,7 +99,7 @@ export const cancelOrder = async (
   try {
     const response = await api.put(`/api/orders/${orderId}`, {
       data: {
-        status: 'canceled' as OrderStatus,
+        state: 'canceled' as OrderStatus,
       },
     })
 

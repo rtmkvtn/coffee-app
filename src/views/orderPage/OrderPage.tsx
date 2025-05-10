@@ -1,8 +1,10 @@
 import { useEffect, useState, useTransition } from 'react'
 
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import Button from '@components/button/Button'
+import { HOME_PATH } from '@constants/routes'
+import { useModal } from '@context/modalContext'
 import { showToast } from '@lib/toasts/toast'
 import { IOrder } from '@models/index'
 import {
@@ -16,9 +18,11 @@ import styles from './OrderPage.module.scss'
 
 const OrderPage = () => {
   const { orderId } = useParams()
+  const navigate = useNavigate()
   const [order, setOrder] = useState<IOrder | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isPending, startTransition] = useTransition()
+  const { showModal } = useModal()
 
   const fetchOrder = async () => {
     if (!orderId) {
@@ -45,21 +49,31 @@ const OrderPage = () => {
     fetchOrder()
   }, [orderId])
 
-  const handleCancel = async () => {
+  const handleCancel = () => {
     if (!orderId) return
 
-    startTransition(async () => {
-      try {
-        const response = await cancelOrder(orderId)
-        if (!response.success) {
-          throw new Error('Failed to cancel order')
-        }
-        setOrder(response.data)
-        showToast('Order canceled successfully', 'success')
-      } catch (error) {
-        console.error('Error canceling order:', error)
-        showToast('Failed to cancel order', 'error')
-      }
+    showModal({
+      type: 'confirm',
+      title: 'Отменить заказ',
+      content: 'Вы уверены, что хотите отменить заказ?',
+      confirmText: 'Отменить',
+      cancelText: 'Нет',
+      onConfirm: () => {
+        startTransition(async () => {
+          try {
+            const response = await cancelOrder(orderId)
+            if (!response.success) {
+              throw new Error('Failed to cancel order')
+            }
+            setOrder(response.data)
+            showToast('Заказ отменен', 'success')
+            navigate(HOME_PATH)
+          } catch (error) {
+            console.error('Error canceling order:', error)
+            showToast('Не удалось отменить заказ', 'error')
+          }
+        })
+      },
     })
   }
 
