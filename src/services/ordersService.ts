@@ -13,7 +13,7 @@ export const createOrder = async (
 
     return {
       success: true,
-      data: response.data.data,
+      data: response.data,
     }
   } catch (e: any) {
     return {

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import Button from '@components/button/Button'
 import { HOME_PATH } from '@constants/routes'
+import { useStore } from '@context/mainContext'
 import { useModal } from '@context/modalContext'
 import { showToast } from '@lib/toasts/toast'
 import { IOrder } from '@models/index'
@@ -19,10 +20,11 @@ import styles from './OrderPage.module.scss'
 const OrderPage = () => {
   const { orderId } = useParams()
   const navigate = useNavigate()
-  const [order, setOrder] = useState<IOrder | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [isPending, startTransition] = useTransition()
   const { showModal } = useModal()
+  const { refreshOrders } = useStore()
+  const [order, setOrder] = useState<IOrder | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const fetchOrder = async () => {
     if (!orderId) {
@@ -66,6 +68,7 @@ const OrderPage = () => {
               throw new Error('Failed to cancel order')
             }
             setOrder(response.data)
+            await refreshOrders()
             showToast('Заказ отменен', 'success')
             navigate(HOME_PATH)
           } catch (error) {
