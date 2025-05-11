@@ -1,7 +1,9 @@
-@use "@assets/styles/constants";
+@use '@assets/styles/constants';
 
 /* 1. Use a more-intuitive box-sizing model */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -11,7 +13,8 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -38,14 +41,13 @@ html, body {
     top: 0;
     left: 0;
     display: block;
-    content: "";
+    content: '';
     width: 100%;
     height: 100%;
     background-color: #000;
-    opacity: .85;
+    opacity: 0.85;
     z-index: -1;
   }
-
 }
 
 button {
@@ -55,13 +57,20 @@ button {
 }
 
 /* 5. Improve media defaults */
-img, picture, video, canvas, svg {
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
 
 /* 6. Inherit fonts for form controls */
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   all: unset;
   font: inherit;
 }
@@ -73,12 +82,18 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
 /* 7. Avoid text overflows */
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
 
@@ -86,19 +101,35 @@ p, h1, h2, h3, h4, h5, h6 {
 p {
   text-wrap: pretty;
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   text-wrap: balance;
 }
 
 /*
   9. Create a root stacking context
 */
-#root, #__next {
+#root,
+#__next {
   isolation: isolate;
 }
 
-
-p, h1, h2, h3, h4, h5, h6, p, blockquote, pre, li, label {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+li,
+label {
   color: constants.$text-primary-color;
 }
 
@@ -116,4 +147,31 @@ a {
 .main-container {
   height: 100%;
   flex-grow: 1;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: constants.$main-bg-color;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: constants.$secondary-bg-color;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: lighten(constants.$secondary-bg-color, 10%);
+  }
+}
+
+/* Firefox scrollbar styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: constants.$secondary-bg-color constants.$main-bg-color;
 }
