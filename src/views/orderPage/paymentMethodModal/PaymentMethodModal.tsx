@@ -12,7 +12,7 @@ interface PaymentMethodModalProps {
 
 const PaymentMethodModal: FC<PaymentMethodModalProps> = ({
   onCashPayment,
-  onCardPayment,
+  // onCardPayment,
 }) => {
   const { hideModal } = useModal()
 
@@ -21,10 +21,10 @@ const PaymentMethodModal: FC<PaymentMethodModalProps> = ({
     hideModal()
   }
 
-  const handleCardPayment = () => {
-    onCardPayment()
-    hideModal()
-  }
+  // const handleCardPayment = () => {
+  //   onCardPayment()
+  //   hideModal()
+  // }
 
   return (
     <div className={styles.wrapper}>
