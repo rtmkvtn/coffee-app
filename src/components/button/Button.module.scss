@@ -125,6 +125,26 @@
   }
 }
 
+.success {
+  background-color: constants.$color-green;
+  color: constants.$text-primary-color;
+  border-color: constants.$color-green;
+
+  @media (hover: hover) {
+    button:hover {
+      background-color: color.adjust(constants.$color-green, $lightness: -10%);
+    }
+  }
+
+  &:active {
+    background-color: color.adjust(constants.$color-green, $lightness: -10%);
+  }
+
+  .loader {
+    color: constants.$text-primary-color;
+  }
+}
+
 // hollow
 .hollow {
   background-color: transparent;

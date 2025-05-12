@@ -131,7 +131,7 @@ const OrderPage = () => {
           {canPay && (
             <Button
               text="Оплатить"
-              mode="primary"
+              mode="success"
               onClick={handlePay}
               loading={isPending}
               disabled={isPending}

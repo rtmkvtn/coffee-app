@@ -32,7 +32,7 @@ const PaymentMethodModal: FC<PaymentMethodModalProps> = ({
       <div className={styles.buttons}>
         <Button
           text="Оплата на кассе"
-          mode="secondary"
+          mode="success"
           onClick={handleCashPayment}
           className={styles.button}
         />
