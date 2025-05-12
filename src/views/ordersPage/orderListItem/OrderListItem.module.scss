@@ -38,6 +38,15 @@
   font-weight: 500;
   padding: 4px 8px;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+  }
 
   &.waiting {
     background: rgba(constants.$color-orange, 0.1);
