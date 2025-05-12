@@ -72,12 +72,14 @@ export const getOrderById = async (
 
 export const updateOrderStatus = async (
   orderId: string,
-  status: OrderStatus
+  status: OrderStatus,
+  paymentMethod?: 'cash'
 ): Promise<ISingleTypeResponseWrapper<IOrder>> => {
   try {
     const response = await api.put(`/api/orders/${orderId}`, {
       data: {
         state: status,
+        ...(paymentMethod && { paymentMethod }),
       },
     })
 

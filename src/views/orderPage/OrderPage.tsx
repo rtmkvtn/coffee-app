@@ -8,7 +8,11 @@ import { useStore } from '@context/mainContext'
 import { useModal } from '@context/modalContext'
 import { showToast } from '@lib/toasts/toast'
 import { IOrder } from '@models/index'
-import { cancelOrder, getOrderById } from '@services/ordersService'
+import {
+  cancelOrder,
+  getOrderById,
+  updateOrderStatus,
+} from '@services/ordersService'
 
 import OrderItem from './orderItem/OrderItem'
 import styles from './OrderPage.module.scss'
@@ -85,8 +89,24 @@ const OrderPage = () => {
       content: (
         <PaymentMethodModal
           onCashPayment={() => {
-            // TODO: Handle cash payment
-            console.log('Cash payment')
+            startTransition(async () => {
+              try {
+                const response = await updateOrderStatus(
+                  orderId,
+                  'preparing',
+                  'cash'
+                )
+                if (!response.success) {
+                  throw new Error('Failed to update order status')
+                }
+                setOrder(response.data)
+                await refreshOrders()
+                showToast('Заказ принят в обработку', 'success')
+              } catch (error) {
+                console.error('Error updating order status:', error)
+                showToast('Не удалось обновить статус заказа', 'error')
+              }
+            })
           }}
           onCardPayment={() => {
             // TODO: Handle card payment

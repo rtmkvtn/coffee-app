@@ -36,12 +36,12 @@ const PaymentMethodModal: FC<PaymentMethodModalProps> = ({
           onClick={handleCashPayment}
           className={styles.button}
         />
-        <Button
+        {/* <Button
           text="Картой"
           mode="primary"
           onClick={handleCardPayment}
           className={styles.button}
-        />
+        /> */}
       </div>
     </div>
   )
