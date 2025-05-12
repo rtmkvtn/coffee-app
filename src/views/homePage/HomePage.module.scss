@@ -1,10 +1,9 @@
 @use '@assets/styles/constants';
 
 .wrapper {
-  padding: 16px;
+  padding: 100px 16px 16px;
   max-width: 600px;
   margin: 0 auto;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,6 +17,7 @@
   color: constants.$text-primary-color;
   margin-bottom: 24px;
   text-align: center;
+  white-space: pre-wrap;
 }
 
 .button {
