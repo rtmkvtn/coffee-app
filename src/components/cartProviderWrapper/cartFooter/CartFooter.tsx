@@ -1,4 +1,4 @@
-import { useState, useTransition } from 'react'
+import { useEffect, useRef, useState, useTransition } from 'react'
 
 import Button from '@components/button/Button'
 import { getGoodsPlural } from '@components/cartProviderWrapper/cartFooter/cartFooter.helpers'
@@ -22,6 +22,25 @@ const CartFooter = () => {
   const hasItems = cart?.items && cart.items.length > 0
   const [isExpanded, setIsExpanded] = useState(false)
   const [isPending, startTransition] = useTransition()
+  const [hasScroll, setHasScroll] = useState(false)
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(true)
+  const [isScrolledToTop, setIsScrolledToTop] = useState(true)
+  const itemsListRef = useRef<HTMLDivElement>(null)
+
+  const checkScrollHeight = () => {
+    if (itemsListRef.current) {
+      const { scrollHeight, clientHeight } = itemsListRef.current
+      setHasScroll(scrollHeight > clientHeight)
+    }
+  }
+
+  useEffect(() => {
+    if (isExpanded) {
+      // Check after a small delay to ensure content is rendered
+      const timer = setTimeout(checkScrollHeight, 0)
+      return () => clearTimeout(timer)
+    }
+  }, [isExpanded, cart?.items])
 
   const handleIconsClick = () => {
     setIsExpanded(!isExpanded)
@@ -40,6 +59,15 @@ const CartFooter = () => {
       await createOrder()
       setIsExpanded(false)
     })
+  }
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
+    const isAtBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 1
+    const isAtTop = scrollTop < 1
+    setIsScrolledToBottom(isAtBottom)
+    setIsScrolledToTop(isAtTop)
+    setHasScroll(scrollHeight > clientHeight)
   }
 
   const totalPrice =
@@ -86,7 +114,12 @@ const CartFooter = () => {
       )}
     >
       <div className={styles.widthWrapper}>
-        <div className={styles.content}>
+        <div
+          className={classNames(
+            styles.header,
+            hasScroll && !isScrolledToTop && styles.withShadow
+          )}
+        >
           <div className={styles.cartInfo}>
             <span className={styles.itemsCount}>
               {totalQuantity} {getGoodsPlural(totalQuantity)}
@@ -112,7 +145,11 @@ const CartFooter = () => {
         </div>
 
         {isExpanded && (
-          <div className={styles.itemsList}>
+          <div
+            ref={itemsListRef}
+            className={styles.itemsList}
+            onScroll={handleScroll}
+          >
             {groupedItems &&
               Object.entries(groupedItems).map(([subcategoryId, group]) => (
                 <div key={subcategoryId} className={styles.subcategoryGroup}>
@@ -134,7 +171,12 @@ const CartFooter = () => {
         )}
 
         {hasItems && isExpanded && (
-          <div className={styles.orderFooter}>
+          <div
+            className={classNames(
+              styles.orderFooter,
+              hasScroll && !isScrolledToBottom && styles.withShadow
+            )}
+          >
             <Button
               text="Заказать"
               mode="primary"
