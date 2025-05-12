@@ -85,65 +85,67 @@ const CartFooter = () => {
         isExpanded && styles.expanded
       )}
     >
-      <div className={styles.content}>
-        <div className={styles.cartInfo}>
-          <span className={styles.itemsCount}>
-            {totalQuantity} {getGoodsPlural(totalQuantity)}
-          </span>
-          <span className={styles.totalPrice}>{formatPrice(totalPrice)}</span>
+      <div className={styles.widthWrapper}>
+        <div className={styles.content}>
+          <div className={styles.cartInfo}>
+            <span className={styles.itemsCount}>
+              {totalQuantity} {getGoodsPlural(totalQuantity)}
+            </span>
+            <span className={styles.totalPrice}>{formatPrice(totalPrice)}</span>
+          </div>
+          <div className={styles.icons} onClick={handleIconsClick}>
+            <Icon
+              type={'arrowRight'}
+              size={16}
+              className={classNames(
+                styles.icon,
+                styles.arrow,
+                isExpanded && styles.rotated
+              )}
+            />
+            <Icon
+              type="cart"
+              size={24}
+              className={classNames(styles.icon, styles.cart)}
+            />
+          </div>
         </div>
-        <div className={styles.icons} onClick={handleIconsClick}>
-          <Icon
-            type={'arrowRight'}
-            size={16}
-            className={classNames(
-              styles.icon,
-              styles.arrow,
-              isExpanded && styles.rotated
-            )}
-          />
-          <Icon
-            type="cart"
-            size={24}
-            className={classNames(styles.icon, styles.cart)}
-          />
-        </div>
+
+        {isExpanded && (
+          <div className={styles.itemsList}>
+            {groupedItems &&
+              Object.entries(groupedItems).map(([subcategoryId, group]) => (
+                <div key={subcategoryId} className={styles.subcategoryGroup}>
+                  <h3 className={styles.subcategoryName}>{group.name}</h3>
+                  {group.items.map((item) => (
+                    <CartItem
+                      key={item.id}
+                      id={item.id}
+                      name={item.name}
+                      quantity={item.quantity}
+                      price={item.price}
+                      onRemove={handleRemoveItem}
+                      onQuantityChange={handleQuantityChange}
+                    />
+                  ))}
+                </div>
+              ))}
+          </div>
+        )}
+
+        {hasItems && isExpanded && (
+          <div className={styles.orderFooter}>
+            <Button
+              text="Заказать"
+              mode="primary"
+              onClick={handleOrder}
+              className={styles.orderButton}
+              loading={isPending}
+              disabled={isPending}
+            />
+          </div>
+        )}
       </div>
-
-      {isExpanded && (
-        <div className={styles.itemsList}>
-          {groupedItems &&
-            Object.entries(groupedItems).map(([subcategoryId, group]) => (
-              <div key={subcategoryId} className={styles.subcategoryGroup}>
-                <h3 className={styles.subcategoryName}>{group.name}</h3>
-                {group.items.map((item) => (
-                  <CartItem
-                    key={item.id}
-                    id={item.id}
-                    name={item.name}
-                    quantity={item.quantity}
-                    price={item.price}
-                    onRemove={handleRemoveItem}
-                    onQuantityChange={handleQuantityChange}
-                  />
-                ))}
-              </div>
-            ))}
-        </div>
-      )}
-
-      {hasItems && isExpanded && (
-        <div className={styles.orderFooter}>
-          <Button
-            text="Заказать"
-            mode="primary"
-            onClick={handleOrder}
-            className={styles.orderButton}
-            loading={isPending}
-            disabled={isPending}
-          />
-        </div>
-      )}
     </div>
   )
 }
