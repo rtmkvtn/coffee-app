@@ -2,13 +2,18 @@
 
 .wrapper {
   width: 100%;
+  background-color: constants.$text-primary-color;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   padding: 6px 24px;
-  background-color: constants.$text-primary-color;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 .text {

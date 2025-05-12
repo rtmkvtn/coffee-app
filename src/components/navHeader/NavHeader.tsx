@@ -22,15 +22,17 @@ const NavHeader = forwardRef<HTMLDivElement, IProps>(
         ref={ref}
         className={classNames(styles.wrapper, className && className)}
       >
-        <div
-          className={styles.back}
-          onClick={() => {
-            navigate(-1)
-          }}
-        >
-          <Icon type={'arrowRight'} size={24} />
+        <div className={styles.content}>
+          <div
+            className={styles.back}
+            onClick={() => {
+              navigate(-1)
+            }}
+          >
+            <Icon type={'arrowRight'} size={24} />
+          </div>
+          {text && <p className={styles.text}>{text}</p>}
         </div>
-        {text && <p className={styles.text}>{text}</p>}
       </div>
     )
   }
