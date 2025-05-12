@@ -1,6 +1,6 @@
-import { formatPrice, getOrderStatusText } from '@lib/helpers'
+import OrderStatus from '@components/orderStatus/OrderStatus'
+import { formatPrice } from '@lib/helpers'
 import { IOrder } from '@models/index'
-import classNames from 'classnames'
 
 import styles from './OrderItem.module.scss'
 
@@ -13,11 +13,7 @@ const OrderItem = ({ order }: Props) => {
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <span className={styles.orderNumber}>Заказ #{order.id}</span>
-        <span
-          className={classNames(styles.status, styles[`status_${order.state}`])}
-        >
-          {getOrderStatusText(order.state)}
-        </span>
+        <OrderStatus status={order.state} />
       </div>
       <div className={styles.content}>
         <div className={styles.items}>

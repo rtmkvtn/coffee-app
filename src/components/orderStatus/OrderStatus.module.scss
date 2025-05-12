@@ -1,0 +1,47 @@
+@use '@assets/styles/constants';
+
+.status {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+  }
+
+  &.waiting {
+    background: rgba(constants.$color-orange, 0.1);
+    color: constants.$color-orange;
+  }
+
+  &.processing {
+    background: rgba(constants.$secondary-bg-color, 0.1);
+    color: constants.$secondary-bg-color;
+  }
+
+  &.paid {
+    background: rgba(constants.$color-green, 0.1);
+    color: constants.$color-green;
+  }
+
+  &.preparing {
+    background: rgba(constants.$color-orange, 0.1);
+    color: constants.$color-orange;
+  }
+
+  &.completed {
+    background: rgba(constants.$color-green, 0.1);
+    color: constants.$color-green;
+  }
+
+  &.canceled {
+    background: rgba(constants.$color-red, 0.3);
+    color: constants.$color-red;
+  }
+}
