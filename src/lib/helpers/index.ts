@@ -79,6 +79,8 @@ export const getOrderStatusText = (status: string) => {
       return 'Обработка оплаты'
     case 'paid':
       return 'Оплачен'
+    case 'preparing':
+      return 'Готовится'
     case 'completed':
       return 'Выполнен'
     case 'canceled':

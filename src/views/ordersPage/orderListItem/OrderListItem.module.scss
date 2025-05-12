@@ -37,7 +37,7 @@
   font-size: 14px;
   font-weight: 500;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 8px;
 
   &.waiting {
     background: rgba(constants.$color-orange, 0.1);
@@ -55,13 +55,18 @@
     color: constants.$color-green;
   }
 
+  &.preparing {
+    background: rgba(constants.$color-orange, 0.1);
+    color: constants.$color-orange;
+  }
+
   &.completed {
     background: rgba(constants.$color-green, 0.1);
     color: constants.$color-green;
   }
 
   &.canceled {
-    background: rgba(constants.$color-red, 0.1);
+    background: rgba(constants.$color-red, 0.3);
     color: constants.$color-red;
   }
 }

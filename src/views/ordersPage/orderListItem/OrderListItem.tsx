@@ -18,6 +18,8 @@ const OrderListItem = ({ order, className }: OrderListItemProps) => {
         return styles.processing
       case 'paid':
         return styles.paid
+      case 'preparing':
+        return styles.preparing
       case 'completed':
         return styles.completed
       case 'canceled':

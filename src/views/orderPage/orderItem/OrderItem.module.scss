@@ -4,7 +4,7 @@
   background: constants.$text-primary-color;
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 2px 8px rgba(255, 255, 255, .4);
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
 }
 
 .header {
@@ -36,6 +36,10 @@
 
   &_paid {
     background: constants.$color-green;
+  }
+
+  &_preparing {
+    background: constants.$color-orange;
   }
 
   &_completed {
