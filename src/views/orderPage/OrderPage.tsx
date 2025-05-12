@@ -8,14 +8,11 @@ import { useStore } from '@context/mainContext'
 import { useModal } from '@context/modalContext'
 import { showToast } from '@lib/toasts/toast'
 import { IOrder } from '@models/index'
-import {
-  cancelOrder,
-  getOrderById,
-  updateOrderStatus,
-} from '@services/ordersService'
+import { cancelOrder, getOrderById } from '@services/ordersService'
 
 import OrderItem from './orderItem/OrderItem'
 import styles from './OrderPage.module.scss'
+import PaymentMethodModal from './paymentMethodModal/PaymentMethodModal'
 
 const OrderPage = () => {
   const { orderId } = useParams()
@@ -83,18 +80,20 @@ const OrderPage = () => {
   const handlePay = async () => {
     if (!orderId) return
 
-    startTransition(async () => {
-      try {
-        const response = await updateOrderStatus(orderId, 'paymentProcessing')
-        if (!response.success) {
-          throw new Error('Failed to process payment')
-        }
-        setOrder(response.data)
-        showToast('Payment processing started', 'success')
-      } catch (error) {
-        console.error('Error processing payment:', error)
-        showToast('Failed to process payment', 'error')
-      }
+    showModal({
+      type: 'custom',
+      content: (
+        <PaymentMethodModal
+          onCashPayment={() => {
+            // TODO: Handle cash payment
+            console.log('Cash payment')
+          }}
+          onCardPayment={() => {
+            // TODO: Handle card payment
+            console.log('Card payment')
+          }}
+        />
+      ),
     })
   }
 

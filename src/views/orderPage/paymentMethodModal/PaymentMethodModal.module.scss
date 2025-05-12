@@ -1,0 +1,25 @@
+@use '@assets/styles/constants';
+
+.wrapper {
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: constants.$main-bg-color;
+  margin: 0 0 24px;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button {
+  width: 100%;
+}

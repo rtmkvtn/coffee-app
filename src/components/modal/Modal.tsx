@@ -64,22 +64,24 @@ const Modal = () => {
 
         <div className={styles.content}>{modal.content}</div>
 
-        <div className={styles.footer}>
-          {modal.type === 'confirm' && (
+        {modal.type !== 'custom' && (
+          <div className={styles.footer}>
+            {modal.type === 'confirm' && (
+              <Button
+                text={modal.cancelText || 'Отмена'}
+                mode="secondary"
+                onClick={handleCancel}
+                className={styles.button}
+              />
+            )}
             <Button
-              text={modal.cancelText || 'Отмена'}
-              mode="secondary"
-              onClick={handleCancel}
+              text={modal.confirmText || 'OK'}
+              mode="primary"
+              onClick={handleConfirm}
               className={styles.button}
             />
-          )}
-          <Button
-            text={modal.confirmText || 'OK'}
-            mode="primary"
-            onClick={handleConfirm}
-            className={styles.button}
-          />
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )
