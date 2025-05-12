@@ -166,7 +166,6 @@ const OrderPage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.title}>Заказ #{order.id}</h1>
       <div className={styles.ordersList}>
         <OrderItem order={order} />
       </div>
