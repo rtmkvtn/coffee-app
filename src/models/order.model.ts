@@ -1,9 +1,12 @@
 import { CartItem } from '.'
 
+export type IPaymentMethod = 'cash'
+
 export type OrderStatus =
   | 'waitingForPayment'
   | 'paymentProcessing'
   | 'paid'
+  | 'preparing'
   | 'completed'
   | 'canceled'
 
@@ -15,4 +18,5 @@ export type IOrder = {
   state: OrderStatus
   createdAt: Date
   updatedAt: Date
+  paymentMethod?: IPaymentMethod
 }
