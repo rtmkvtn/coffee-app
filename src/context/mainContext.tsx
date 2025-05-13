@@ -322,6 +322,7 @@ const useStoreInitialization = () => {
   })
   const initRef = useRef(false)
   const { initData } = useTelegram()
+  console.log('INIT DATA', initData)
 
   const setCart = (cart: ICart | null) =>
     setState((prev) => ({ ...prev, cart }))
