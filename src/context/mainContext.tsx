@@ -339,6 +339,7 @@ const useStoreInitialization = () => {
   )
 
   const initialize = async () => {
+    console.log('INIT...')
     if (initRef.current) return
     initRef.current = true
 

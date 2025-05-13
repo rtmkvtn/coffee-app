@@ -8,7 +8,7 @@ export function useTelegram() {
   const [initData, setInitData] = useState<string | null>(null)
   const [isReady, setIsReady] = useState(false)
   const tg = window.Telegram?.WebApp
-
+  console.log('IS READY IN TG HOOK', isReady)
   useEffect(() => {
     const initialize = async () => {
       if (tg) {
