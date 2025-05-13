@@ -340,9 +340,6 @@ const useStoreInitialization = () => {
 
   const initialize = async () => {
     console.log('INIT...')
-    if (initRef.current) return
-    initRef.current = true
-
     try {
       // Wait for Telegram to be ready
       if (!isReady) {
@@ -361,6 +358,9 @@ const useStoreInitialization = () => {
       if (!data) {
         throw new Error('No initialization data available')
       }
+
+      if (initRef.current) return
+      initRef.current = true
 
       const authResponse = await authenticateWithTelegram(data)
       if (!authResponse.success) {
