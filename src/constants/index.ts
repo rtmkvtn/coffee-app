@@ -4,4 +4,4 @@ export * from './temp'
 export const BASE_URL =
   import.meta.env.MODE === 'development'
     ? 'http://localhost:1337'
-    : window.location.origin
+    : 'https://cms.democoffeeandseaguls.ru'
