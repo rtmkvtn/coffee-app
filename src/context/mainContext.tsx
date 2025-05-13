@@ -298,7 +298,7 @@ const useDataRefresh = (
 }
 
 const getMockInitData = () => {
-  if (process.env.NODE_ENV !== 'development') {
+  if (import.meta.env.MODE !== 'development') {
     throw new Error('Mock data is only available in development environment')
   }
 
@@ -347,15 +347,16 @@ const useStoreInitialization = () => {
         return
       }
 
-      if (!initData) {
+      if (!initData && import.meta.env.MODE !== 'development') {
         throw new Error('No initialization data available')
       }
 
       const data =
         initData ||
-        (process.env.NODE_ENV === 'development' ? getMockInitData() : null)
+        (import.meta.env.MODE === 'development' ? getMockInitData() : null)
 
       if (!data) {
+        console.log('HERE')
         throw new Error('No initialization data available')
       }
 
