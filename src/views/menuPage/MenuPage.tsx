@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import TabsNav from '@components/tabsNav/TabsNav'
 import { ORDER_PATH } from '@constants/routes'
 import { useStore } from '@context/mainContext'
+import { useInfiniteScroll } from '@hooks/useInfiniteScroll'
 import { IProduct } from '@models/index'
 import classNames from 'classnames'
 
@@ -31,6 +32,16 @@ const MenuPage = ({ className }: IProps) => {
     null
   )
 
+  // Memoize category tabs
+  const categoryTabs = useMemo(
+    () =>
+      categories.map((category) => ({
+        id: category.id.toString(),
+        label: category.name,
+      })),
+    [categories]
+  )
+
   useEffect(() => {
     const pendingOrder = orders.find(
       (order) => order.state === 'waitingForPayment'
@@ -53,32 +64,43 @@ const MenuPage = ({ className }: IProps) => {
         }))
       )
     }
-  }, [activeCategory])
+  }, [activeCategory, categories])
 
+  // Optimize products filtering
   const productsList: IProduct[] = useMemo(() => {
-    let result = products
+    if (!activeCategory) return products
 
-    if (activeCategory) {
-      result = result.filter(
-        (product) => product.category.id === activeCategory
-      )
-    }
-    if (activeSubcategory) {
-      result = result.filter(
-        (product) => product.subcategory.id === activeSubcategory
-      )
-    }
-    return result
-  }, [activeCategory, activeSubcategory])
+    const categoryProducts = products.filter(
+      (product) => product.category.id === activeCategory
+    )
+
+    if (!activeSubcategory) return categoryProducts
+
+    return categoryProducts.filter(
+      (product) => product.subcategory.id === activeSubcategory
+    )
+  }, [activeCategory, activeSubcategory, products])
+
+  // Use infinite scroll hook
+  const { visibleItems, hasMore, loadingRef } = useInfiniteScroll(
+    productsList,
+    4
+  )
+
+  // Memoize product items
+  const productItems = useMemo(
+    () =>
+      visibleItems.map((product) => (
+        <MenuItem key={`menu-product-${product.id}`} product={product} />
+      )),
+    [visibleItems]
+  )
 
   return (
     <div className={classNames(styles.wrapper, className && className)}>
       <TabsNav
         activeTab={activeCategory.toString()}
-        tabs={categories.map((category) => ({
-          id: category.id.toString(),
-          label: category.name,
-        }))}
+        tabs={categoryTabs}
         onChange={(tabId) => setActiveCategory(Number(tabId))}
       />
       {subcategories.length > 0 && (
@@ -93,9 +115,8 @@ const MenuPage = ({ className }: IProps) => {
         />
       )}
       <div className={styles.products}>
-        {productsList.map((product) => (
-          <MenuItem key={`menu-product-${product.id}`} product={product} />
-        ))}
+        {productItems}
+        {hasMore && <div ref={loadingRef} style={{ height: '20px' }} />}
       </div>
     </div>
   )

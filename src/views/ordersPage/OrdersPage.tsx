@@ -15,7 +15,7 @@ const OrdersPage = () => {
 
   useEffect(() => {
     refreshOrders()
-  }, [refreshOrders])
+  }, [])
 
   const handleOrderClick = (order: IOrder) => {
     navigate(ORDER_PATH.replace(':orderId', order.documentId))
