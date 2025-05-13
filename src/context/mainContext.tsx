@@ -395,7 +395,7 @@ const useStoreInitialization = () => {
   useEffect(() => {
     initialize()
   }, [isReady])
-
+  console.log('CURRENT STATE', state)
   return {
     ...state,
     setCart,
