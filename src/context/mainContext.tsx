@@ -321,7 +321,7 @@ const useStoreInitialization = () => {
     error: null,
   })
   const initRef = useRef(false)
-  const { initData } = useTelegram()
+  const { initData, isReady } = useTelegram()
   console.log('INIT DATA', initData)
 
   const setCart = (cart: ICart | null) =>
@@ -343,6 +343,16 @@ const useStoreInitialization = () => {
     initRef.current = true
 
     try {
+      // Wait for Telegram to be ready
+      if (!isReady) {
+        console.log('Waiting for Telegram initialization...')
+        return
+      }
+
+      if (!initData) {
+        throw new Error('No initialization data available')
+      }
+
       const data =
         initData ||
         (process.env.NODE_ENV === 'development' ? getMockInitData() : null)
@@ -373,19 +383,17 @@ const useStoreInitialization = () => {
 
       setState((prev) => ({ ...prev, isInitialized: true }))
     } catch (error) {
+      console.error('Initialization error:', error)
       setState((prev) => ({
         ...prev,
-        error: 'Failed to initialize application',
-        isInitialized: true,
+        error: error instanceof Error ? error.message : 'Unknown error',
       }))
-      showToast('Failed to initialize application', 'error')
-      console.error('Initialization error:', error)
     }
   }
 
   useEffect(() => {
     initialize()
-  }, [])
+  }, [isReady])
 
   return {
     ...state,
