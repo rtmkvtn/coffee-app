@@ -41,6 +41,9 @@ const TabsNav = <T extends ITabProps[]>({
       return
     }
 
+    // Reset scroll position when tabs change
+    wrapperRef.current.scrollLeft = 0
+
     const currentActiveEl = wrapperRef.current.querySelector(
       `.${styles.tabActive}`
     )
@@ -51,7 +54,7 @@ const TabsNav = <T extends ITabProps[]>({
         block: 'nearest',
       })
     }
-  }, [activeTab, wrapperRef])
+  }, [activeTab, tabs, wrapperRef])
 
   return (
     <div

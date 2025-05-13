@@ -83,6 +83,7 @@ const MenuPage = ({ className }: IProps) => {
       />
       {subcategories.length > 0 && (
         <TabsNav
+          key={activeCategory}
           activeTab={
             activeSubcategory ? activeSubcategory.toString() : undefined
           }
