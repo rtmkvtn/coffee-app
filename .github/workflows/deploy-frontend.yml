@@ -1,0 +1,39 @@
+name: Deploy Frontend to Production
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Vite App
+        run: npm run build
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.FRONTEND_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H your.server.ip >> ~/.ssh/known_hosts
+
+      - name: Deploy via SCP
+        run: |
+          scp -i ~/.ssh/id_ed25519 -r dist/* root@${{ secrets.SERVER_URL }}:/srv/coffee-app/dist/
+
+      - name: Reload NGINX (optional)
+        run: |
+          ssh -i ~/.ssh/id_ed25519 root@${{ secrets.SERVER_URL }} "sudo nginx -t && sudo systemctl reload nginx"

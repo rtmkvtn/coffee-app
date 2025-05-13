@@ -11,24 +11,11 @@ export const getCategories = async (): Promise<
       params: {
         locale: 'ru',
         sort: ['order:asc'],
-        fields: ['id', 'name', 'description'],
+        fields: ['id', 'name'],
         populate: {
           subcategories: {
             sort: ['order:asc'],
-            fields: ['id', 'name', 'description'],
-            populate: {
-              products: {
-                sort: ['order:asc'],
-                fields: [
-                  'id',
-                  'name',
-                  'description',
-                  'on_hold',
-                  'price',
-                  'ingredients',
-                ],
-              },
-            },
+            fields: ['id', 'name'],
           },
         },
       },
