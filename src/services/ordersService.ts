@@ -30,11 +30,9 @@ export const getOrders = async (
     const response = await api.get('/api/orders', {
       params: {
         sort: ['createdAt:desc'],
-        populate: {
+        filters: {
           user: {
-            filters: {
-              id: userId,
-            },
+            id: userId,
           },
         },
       },
