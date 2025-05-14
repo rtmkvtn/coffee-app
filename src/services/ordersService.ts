@@ -29,12 +29,8 @@ export const getOrders = async (
   try {
     const response = await api.get('/api/orders', {
       params: {
-        sort: ['createdAt:desc'],
-        filters: {
-          user: {
-            id: userId,
-          },
-        },
+        sort: 'createdAt:desc',
+        'filters[user][id][$eq]': userId,
       },
     })
 
