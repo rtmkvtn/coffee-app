@@ -12,11 +12,13 @@ $height: var(--app-height);
   z-index: 1000;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 
   .widthWrapper {
     width: 100%;
     max-width: 680px;
-    height: 100%;
+    flex-grow: 1;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
