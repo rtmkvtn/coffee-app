@@ -25,6 +25,7 @@ function App() {
     '--app-height',
     `${window.innerHeight}px`
   )
+  console.log(window.innerHeight)
   return (
     <div className="main-container">
       {isInitialized ? (
