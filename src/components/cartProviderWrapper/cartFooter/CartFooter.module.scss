@@ -1,11 +1,13 @@
 @use '@assets/styles/constants';
 
+$height: var(--app-height);
+
 .wrapper {
   position: fixed;
-  bottom: -100vh;
+  bottom: calc(-1 * $height);
   left: 0;
   right: 0;
-  height: 100vh;
+  height: $height;
   background-color: constants.$text-primary-color;
   z-index: 1000;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -115,7 +117,7 @@
   }
 
   &.visible {
-    bottom: calc(-100vh + 84px);
+    bottom: calc(-1 * $height + 84px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 

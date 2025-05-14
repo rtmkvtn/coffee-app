@@ -21,7 +21,10 @@ import './App.scss'
 
 function App() {
   const { isInitialized, refreshOrders } = useStore()
-
+  document.documentElement.style.setProperty(
+    '--app-height',
+    `${window.innerHeight}px`
+  )
   return (
     <div className="main-container">
       {isInitialized ? (
