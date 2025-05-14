@@ -65,7 +65,8 @@ const useOrderOperations = (
         return
       }
 
-      const response = await getOrders(currentState.user.id)
+      const response = await getOrders()
+      console.log(response)
       if (!response.success) {
         throw new Error('Failed to load orders')
       }
@@ -322,7 +323,6 @@ const useStoreInitialization = () => {
   })
   const initRef = useRef(false)
   const { initData, isReady } = useTelegram()
-  console.log('INIT DATA', initData)
 
   const setCart = (cart: ICart | null) =>
     setState((prev) => ({ ...prev, cart }))
@@ -339,7 +339,6 @@ const useStoreInitialization = () => {
   )
 
   const initialize = async () => {
-    console.log('INIT...')
     try {
       // Wait for Telegram to be ready
       if (!isReady) {
@@ -356,7 +355,6 @@ const useStoreInitialization = () => {
         (import.meta.env.MODE === 'development' ? getMockInitData() : null)
 
       if (!data) {
-        console.log('HERE')
         throw new Error('No initialization data available')
       }
 
@@ -396,7 +394,7 @@ const useStoreInitialization = () => {
   useEffect(() => {
     initialize()
   }, [isReady])
-  console.log('CURRENT STATE', state)
+
   return {
     ...state,
     setCart,
