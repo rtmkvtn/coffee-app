@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router-dom'
 
 import Button from '@components/button/Button'
 import { MENU_PATH, ORDERS_PATH } from '@constants/routes'
-import { useStore } from '@context/mainContext'
+import { useOrders } from '@context/ordersContext'
+import { useUser } from '@context/userContext'
 import { getGreeting } from '@views/homePage/homePage.helpers'
 
 import Icon from '@assets/images/Icon'
@@ -11,7 +12,8 @@ import styles from './HomePage.module.scss'
 
 const HomePage = () => {
   const navigate = useNavigate()
-  const { user, orders } = useStore()
+  const { user } = useUser()
+  const { orders } = useOrders()
 
   const hasWaitingPayment = orders.some(
     (order) => order.state === 'waitingForPayment'

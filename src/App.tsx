@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 import { Route } from 'react-router'
 import { Routes } from 'react-router-dom'
@@ -10,8 +10,13 @@ import {
   ORDER_PATH,
   ORDERS_PATH,
 } from '@constants/routes'
-import { useStore } from '@context/mainContext'
+import { useCart } from '@context/cartContext'
+import { useMenu } from '@context/menuContext'
+import { useOrders } from '@context/ordersContext'
+import { useUser } from '@context/userContext'
+import { useTelegram } from '@hooks/useTelegram'
 import Layout from '@lib/layout/Layout'
+import { showToast } from '@lib/toasts/toast'
 import HomePage from '@views/homePage/HomePage'
 import MenuPage from '@views/menuPage/MenuPage'
 import OrderPage from '@views/orderPage'
@@ -20,12 +25,41 @@ import OrdersPage from '@views/ordersPage/OrdersPage'
 import './App.scss'
 
 function App() {
-  const { isInitialized, refreshOrders } = useStore()
-  document.documentElement.style.setProperty(
-    '--app-height',
-    `${window.innerHeight}px`
-  )
-  console.log(window.innerHeight)
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  const { initData, isReady: tgIsReady } = useTelegram()
+  const { authenticate } = useUser()
+  const { refreshCategories, refreshProducts } = useMenu()
+  const { refreshOrders } = useOrders()
+  const { initializeCart } = useCart()
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      '--app-height',
+      `${window.innerHeight}px`
+    )
+    const initScript = async () => {
+      if (initData) {
+        try {
+          await authenticate(initData)
+          await Promise.all([
+            refreshCategories(),
+            refreshProducts(),
+            initializeCart(),
+            refreshOrders(),
+          ])
+          setIsInitialized(true)
+        } catch (e) {
+          showToast('Не удалось инициализировать приложение', 'error')
+        }
+      }
+    }
+
+    if (!isInitialized) {
+      initScript()
+    }
+  }, [tgIsReady])
+
   return (
     <div className="main-container">
       {isInitialized ? (

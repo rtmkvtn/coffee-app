@@ -3,14 +3,14 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { ORDER_PATH } from '@constants/routes'
-import { useStore } from '@context/mainContext'
+import { useOrders } from '@context/ordersContext'
 import { IOrder } from '@models/index'
 
 import OrderListItem from './orderListItem/OrderListItem'
 import styles from './OrdersPage.module.scss'
 
 const OrdersPage = () => {
-  const { orders, refreshOrders } = useStore()
+  const { orders, refreshOrders } = useOrders()
   const navigate = useNavigate()
 
   useEffect(() => {

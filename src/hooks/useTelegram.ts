@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { DEFAULT_TG_USER } from '@constants/temp'
+import { DEFAULT_TG_USER, MOCK_INIT_DATA } from '@constants/temp'
 import { ITelegramUser } from '@models/tgUser.model'
 
 export function useTelegram() {
@@ -11,6 +11,19 @@ export function useTelegram() {
 
   useEffect(() => {
     const initialize = async () => {
+      if (import.meta.env.MODE === 'development') {
+        const params = new URLSearchParams()
+        params.set('query_id', MOCK_INIT_DATA.query_id)
+        params.set('user', JSON.stringify(MOCK_INIT_DATA.user))
+        params.set('auth_date', MOCK_INIT_DATA.auth_date.toString())
+        params.set('hash', MOCK_INIT_DATA.hash)
+
+        setUser(DEFAULT_TG_USER)
+        setInitData(params.toString())
+        setIsReady(true)
+        return
+      }
+
       if (tg) {
         try {
           await tg.ready() // ensure WebApp is initialized

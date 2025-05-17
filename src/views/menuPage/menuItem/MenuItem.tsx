@@ -1,7 +1,7 @@
 import { useTransition } from 'react'
 
 import ProductImage from '@components/productImage/ProductImage'
-import { useStore } from '@context/mainContext'
+import { useCart } from '@context/cartContext'
 import { formatPrice, getImgUrlFromStrapiMediaOrDefault } from '@lib/helpers'
 import { IProduct } from '@models/index'
 
@@ -13,7 +13,8 @@ type Props = {
 }
 
 const MenuItem = ({ product }: Props) => {
-  const { cart, addToCart, updateCartItemQuantity, removeFromCart } = useStore()
+  const { cart, addToCart, updateCartItemQuantity, removeFromCart } = useCart()
+
   const quantityInCart =
     cart?.items.find((x) => x.id === product.id)?.quantity ?? undefined
 

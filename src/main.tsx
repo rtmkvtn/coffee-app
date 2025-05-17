@@ -6,8 +6,11 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Modal from '@components/modal/Modal'
-import { MainContext } from '@context/index'
+import { CartProvider } from '@context/cartContext'
+import { MenuProvider } from '@context/menuContext'
 import { ModalProvider } from '@context/modalContext'
+import { OrdersProvider } from '@context/ordersContext'
+import { UserProvider } from '@context/userContext'
 import { toastConfig } from '@lib/toasts/toast'
 import '@lib/toasts/toast.scss'
 
@@ -18,13 +21,19 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter
       basename={import.meta.env.MODE === 'development' ? '/' : '/web-app'}
     >
-      <MainContext>
-        <ModalProvider>
-          <App />
-          <Modal />
-        </ModalProvider>
-      </MainContext>
-      <ToastContainer {...toastConfig} />
+      <UserProvider>
+        <MenuProvider>
+          <CartProvider>
+            <OrdersProvider>
+              <ModalProvider>
+                <App />
+                <Modal />
+              </ModalProvider>
+              <ToastContainer {...toastConfig} />
+            </OrdersProvider>
+          </CartProvider>
+        </MenuProvider>
+      </UserProvider>
     </BrowserRouter>
   </StrictMode>
 )

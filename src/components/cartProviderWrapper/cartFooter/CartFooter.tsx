@@ -2,7 +2,9 @@ import { useEffect, useRef, useState, useTransition } from 'react'
 
 import Button from '@components/button/Button'
 import { getGoodsPlural } from '@components/cartProviderWrapper/cartFooter/cartFooter.helpers'
-import { useStore } from '@context/mainContext'
+import { useCart } from '@context/cartContext'
+import { useMenu } from '@context/menuContext'
+import { useOrders } from '@context/ordersContext'
 import { formatPrice } from '@lib/helpers'
 import classNames from 'classnames'
 
@@ -12,13 +14,10 @@ import styles from './CartFooter.module.scss'
 import CartItem from './cartItem/CartItem'
 
 const CartFooter = () => {
-  const {
-    cart,
-    removeFromCart,
-    updateCartItemQuantity,
-    categories,
-    createOrder,
-  } = useStore()
+  const { cart, removeFromCart, updateCartItemQuantity } = useCart()
+  const { categories } = useMenu()
+  const { createOrder } = useOrders()
+
   const hasItems = cart?.items && cart.items.length > 0
   const [isExpanded, setIsExpanded] = useState(false)
   const [isPending, startTransition] = useTransition()

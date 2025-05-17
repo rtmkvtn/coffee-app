@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 
 import TabsNav from '@components/tabsNav/TabsNav'
 import { ORDER_PATH } from '@constants/routes'
-import { useStore } from '@context/mainContext'
+import { useMenu } from '@context/menuContext'
+import { useOrders } from '@context/ordersContext'
 import { useInfiniteScroll } from '@hooks/useInfiniteScroll'
 import { IProduct } from '@models/index'
 import classNames from 'classnames'
@@ -17,7 +18,8 @@ type IProps = {
 }
 
 const MenuPage = ({ className }: IProps) => {
-  const { categories, products, orders } = useStore()
+  const { categories, products } = useMenu()
+  const { orders } = useOrders()
   const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState<number>(
     categories[0]?.id

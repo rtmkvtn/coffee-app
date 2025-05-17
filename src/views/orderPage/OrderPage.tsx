@@ -4,8 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import Button from '@components/button/Button'
 import { HOME_PATH } from '@constants/routes'
-import { useStore } from '@context/mainContext'
 import { useModal } from '@context/modalContext'
+import { useOrders } from '@context/ordersContext'
 import { showToast } from '@lib/toasts/toast'
 import { IOrder } from '@models/index'
 import {
@@ -23,7 +23,7 @@ const OrderPage = () => {
   const navigate = useNavigate()
   const [isPending, startTransition] = useTransition()
   const { showModal } = useModal()
-  const { refreshOrders } = useStore()
+  const { refreshOrders } = useOrders()
   const [order, setOrder] = useState<IOrder | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [timeLeft, setTimeLeft] = useState<number>(0)
