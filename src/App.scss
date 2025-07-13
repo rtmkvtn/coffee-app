@@ -1,4 +1,5 @@
 @use '@assets/styles/constants';
+@use 'sass:color';
 
 /* 1. Use a more-intuitive box-sizing model */
 *,
@@ -167,7 +168,7 @@ a {
   transition: background 0.2s ease;
 
   &:hover {
-    background: lighten(constants.$secondary-bg-color, 10%);
+    background: color.adjust(constants.$secondary-bg-color, $lightness: 10%);
   }
 }
 
