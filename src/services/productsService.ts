@@ -1,4 +1,4 @@
-import { IProduct } from '@models/index'
+import { IProduct, IProductBackend } from '@models/index'
 
 import api from './api'
 import { IResponseWrapper } from './services.types'
@@ -7,52 +7,67 @@ export const getAllProducts = async (): Promise<
   IResponseWrapper<IProduct[]>
 > => {
   try {
-    let allProducts: IProduct[] = []
-    let currentPage = 1
-    let hasMorePages = true
-    let totalPages = 0
-    let totalItems = 0
+    const response = await api.get('/api/products/all')
 
-    while (hasMorePages) {
-      const response = await api.get('/api/products', {
-        params: {
-          sort: ['order:asc'],
-          'pagination[page]': currentPage,
-          'pagination[pageSize]': 100,
-          populate: {
-            category: {
-              fields: ['id'],
-            },
-            subcategory: {
-              fields: ['id'],
-            },
-            avatar: {
-              fields: ['url', 'name'],
-            },
-          },
-        },
-      })
-
-      const { data, meta } = response.data
-      allProducts = [...allProducts, ...data]
-      totalPages = meta.pagination.pageCount
-      totalItems = meta.pagination.total
-
-      // Check if we've reached the last page
-      hasMorePages = currentPage < totalPages
-      currentPage++
+    // Determine the correct products array
+    let productsArray: IProductBackend[] = []
+    if (
+      response.data &&
+      response.data.data &&
+      Array.isArray(response.data.data)
+    ) {
+      productsArray = response.data.data
+    } else if (response.data && Array.isArray(response.data)) {
+      productsArray = response.data
+    } else {
+      throw new Error('Invalid API response structure')
     }
+
+    const transformedData = productsArray.map((x) => {
+      // Ensure all required fields exist with defaults
+      return {
+        id: x.id || 0,
+        documentId: x.documentId || '',
+        name: x.name || 'Unknown Product',
+
+        description: x.description || '',
+        on_hold: Boolean(x.on_hold),
+        ingredients: x.ingredients || '',
+        order: x.order || 0,
+        additionalIngredients: Array.isArray(x.additionalIngredients)
+          ? x.additionalIngredients
+          : [],
+        portions: Array.isArray(x.prices)
+          ? x.prices.map((price) => ({
+              weight: price?.weight || '',
+              price: price?.price || 0,
+            }))
+          : [],
+        avatar: x.avatar || undefined,
+        category:
+          x.category && typeof x.category === 'object' && x.category.id
+            ? { id: x.category.id, documentId: x.category.documentId || '' }
+            : { id: 0, documentId: 'other' },
+        subcategory:
+          x.subcategory && typeof x.subcategory === 'object' && x.subcategory.id
+            ? {
+                id: x.subcategory.id,
+                documentId: x.subcategory.documentId || '',
+              }
+            : { id: 0, documentId: 'other' },
+      }
+    })
 
     return {
       success: true,
       data: {
-        data: allProducts,
+        data: transformedData,
         meta: {
           pagination: {
-            page: totalPages,
-            pageCount: totalPages,
-            pageSize: 100,
-            total: totalItems,
+            page: 1,
+            pageCount: 1,
+            pageSize: 1000,
+            total: productsArray.length,
           },
         },
       },
