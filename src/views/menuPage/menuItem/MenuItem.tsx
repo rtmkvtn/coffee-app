@@ -4,6 +4,7 @@ import ProductImage from '@components/productImage/ProductImage'
 import { useCart } from '@context/cartContext'
 import { formatPrice, getImgUrlFromStrapiMediaOrDefault } from '@lib/helpers'
 import { IProduct } from '@models/index'
+import { IProductPortion } from '@models/portion.model'
 
 import styles from './MenuItem.module.scss'
 import ProductCartButton from './productCartButton/ProductCartButton'
@@ -36,6 +37,19 @@ const MenuItem = ({ product }: Props) => {
     })
   }
 
+  const getLowestPrice = (prices: IProductPortion[]) => {
+    let result = prices[0].price
+
+    if (prices.length === 1) return result
+
+    for (let i = 1; i < prices.length; i++) {
+      if (prices[i].price < result) {
+        result = prices[i].price
+      }
+    }
+    return result
+  }
+
   return (
     <div className={styles.product}>
       <ProductImage
@@ -47,7 +61,9 @@ const MenuItem = ({ product }: Props) => {
         <p className={styles.name}>{product.name}</p>
       </div>
       <div className={styles.footer}>
-        <p className={styles.price}>{formatPrice(product.price)}</p>
+        <p className={styles.price}>
+          {formatPrice(getLowestPrice(product.portions))}
+        </p>
         <ProductCartButton
           loading={isPending}
           quantity={quantityInCart}

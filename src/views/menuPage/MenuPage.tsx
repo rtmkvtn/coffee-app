@@ -21,6 +21,7 @@ const MenuPage = ({ className }: IProps) => {
   const { categories, products } = useMenu()
   const { orders } = useOrders()
   const navigate = useNavigate()
+
   const [activeCategory, setActiveCategory] = useState<number>(
     categories[0]?.id
   )
@@ -71,7 +72,6 @@ const MenuPage = ({ className }: IProps) => {
   // Optimize products filtering
   const productsList: IProduct[] = useMemo(() => {
     if (!activeCategory) return products
-
     const categoryProducts = products.filter(
       (product) => product.category.id === activeCategory
     )
@@ -102,7 +102,7 @@ const MenuPage = ({ className }: IProps) => {
     <div className={classNames(styles.wrapper, className && className)}>
       <TabsNav
         activeTab={activeCategory.toString()}
-        tabs={categoryTabs}
+        tabs={[...categoryTabs, { id: 'other', label: 'Другое' }]}
         onChange={(tabId) => setActiveCategory(Number(tabId))}
       />
       {subcategories.length > 0 && (
