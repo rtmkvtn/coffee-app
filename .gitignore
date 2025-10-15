@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+public/locales/[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]/
 
 # Editor directories and files
 .vscode/*

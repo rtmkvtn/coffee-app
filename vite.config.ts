@@ -1,11 +1,43 @@
 import react from '@vitejs/plugin-react'
 
 import * as child from 'child_process'
+import fs from 'fs'
 import path from 'path'
 import { AliasOptions, defineConfig } from 'vite'
 import vitePluginSvgr from 'vite-plugin-svgr'
 
-const commitHash = child.execSync('git rev-parse --short HEAD').toString()
+const commitHash = child
+  .execSync('git rev-parse --short HEAD')
+  .toString()
+  .trim()
+
+const localesRoot = path.resolve(__dirname, './public/locales')
+const versionedLocalesDir = path.resolve(localesRoot, `./${commitHash}`)
+
+const ensureVersionedLocales = () => {
+  if (!fs.existsSync(localesRoot)) {
+    return
+  }
+
+  if (fs.existsSync(versionedLocalesDir)) {
+    fs.rmSync(versionedLocalesDir, { recursive: true, force: true })
+  }
+
+  fs.mkdirSync(versionedLocalesDir, { recursive: true })
+
+  const entries = fs.readdirSync(localesRoot, { withFileTypes: true })
+
+  entries
+    .filter((entry) => entry.isDirectory() && entry.name !== commitHash)
+    .forEach((entry) => {
+      const sourceDir = path.join(localesRoot, entry.name)
+      const targetDir = path.join(versionedLocalesDir, entry.name)
+      fs.mkdirSync(targetDir, { recursive: true })
+      fs.cpSync(sourceDir, targetDir, { recursive: true })
+    })
+}
+
+ensureVersionedLocales()
 
 // https://vite.dev/config/
 export default defineConfig({

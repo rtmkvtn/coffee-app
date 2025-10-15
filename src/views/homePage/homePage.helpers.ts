@@ -1,16 +1,13 @@
-import { IUser } from '@models/user.model'
+export type GreetingPeriod = 'morning' | 'day' | 'evening'
 
-export function getGreeting(user: IUser | null): string {
+export function getGreetingPeriod(): GreetingPeriod {
   const hour = new Date().getHours()
-  let greeting: string
-
   if (hour >= 8 && hour < 11) {
-    greeting = 'Доброе утро'
-  } else if (hour >= 11 && hour < 17) {
-    greeting = 'Добрый день'
-  } else {
-    greeting = 'Добрый вечер'
+    return 'morning'
+  }
+  if (hour >= 11 && hour < 17) {
+    return 'day'
   }
 
-  return user?.firstName ? `${greeting},\n${user.firstName}` : greeting
+  return 'evening'
 }

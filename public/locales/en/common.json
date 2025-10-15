@@ -1,0 +1,29 @@
+{
+  "navigation": {
+    "menu": "Menu",
+    "orders": "My Orders",
+    "order": "Order",
+    "home": "Home"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "We could not find the page you were looking for. Try returning to the home page.",
+    "cta": "Go home"
+  },
+  "home": {
+    "tagline": "Baikal is close, coffee is even closer!",
+    "makeOrder": "Place an order",
+    "myOrders": "My orders",
+    "greetings": {
+      "morning": "Good morning",
+      "day": "Good afternoon",
+      "evening": "Good evening",
+      "morningWithName": "Good morning,\n{{name}}",
+      "dayWithName": "Good afternoon,\n{{name}}",
+      "eveningWithName": "Good evening,\n{{name}}"
+    }
+  },
+  "errors": {
+    "init": "Failed to initialise the application"
+  }
+}

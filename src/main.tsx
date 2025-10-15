@@ -11,6 +11,7 @@ import { MenuProvider } from '@context/menuContext'
 import { ModalProvider } from '@context/modalContext'
 import { OrdersProvider } from '@context/ordersContext'
 import { UserProvider } from '@context/userContext'
+import '@lib/i18n'
 import { toastConfig } from '@lib/toasts/toast'
 import '@lib/toasts/toast.scss'
 

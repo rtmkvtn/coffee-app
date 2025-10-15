@@ -1,10 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@components/button/Button'
 import { MENU_PATH, ORDERS_PATH } from '@constants/routes'
 import { useOrders } from '@context/ordersContext'
 import { useUser } from '@context/userContext'
-import { getGreeting } from '@views/homePage/homePage.helpers'
+import { getGreetingPeriod } from '@views/homePage/homePage.helpers'
 
 import Icon from '@assets/images/Icon'
 
@@ -12,26 +13,34 @@ import styles from './HomePage.module.scss'
 
 const HomePage = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { user } = useUser()
   const { orders } = useOrders()
 
   const hasWaitingPayment = orders.some(
     (order) => order.state === 'waitingForPayment'
   )
+  const greetingPeriod = getGreetingPeriod()
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.greetingsText}>{getGreeting(user)}</h1>
-      <p className={styles.subtitleText}>Байкал близко, кофе – еще ближе!</p>
+      <h1 className={styles.greetingsText}>
+        {user?.firstName
+          ? t(`home.greetings.${greetingPeriod}WithName`, {
+              name: user.firstName,
+            })
+          : t(`home.greetings.${greetingPeriod}`)}
+      </h1>
+      <p className={styles.subtitleText}>{t('home.tagline')}</p>
       <Button
-        text="Сделать заказ"
+        text={t('home.makeOrder')}
         mode="primary"
         icon={<Icon type="arrowRight" />}
         onClick={() => navigate(MENU_PATH)}
         className={styles.button}
       />
       <Button
-        text="Мои заказы"
+        text={t('home.myOrders')}
         mode="secondary"
         onClick={() => navigate(ORDERS_PATH)}
         className={styles.button}

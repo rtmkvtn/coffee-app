@@ -1,4 +1,5 @@
 import { Suspense, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { Route } from 'react-router'
 import { Routes } from 'react-router-dom'
@@ -28,6 +29,8 @@ import './App.scss'
 
 function App() {
   const [isInitialized, setIsInitialized] = useState(false)
+  const { t } = useTranslation()
+  const initErrorMessage = t('errors.init')
 
   const { initData, isReady: tgIsReady } = useTelegram()
   const { authenticate } = useUser()
@@ -52,7 +55,7 @@ function App() {
           ])
           setIsInitialized(true)
         } catch (e) {
-          showToast('Не удалось инициализировать приложение', 'error')
+          showToast(initErrorMessage, 'error')
         }
       }
     }
@@ -60,7 +63,7 @@ function App() {
     if (!isInitialized) {
       initScript()
     }
-  }, [tgIsReady])
+  }, [tgIsReady, initErrorMessage])
 
   return (
     <div className="main-container">
@@ -70,7 +73,11 @@ function App() {
             <Route
               path={MENU_PATH}
               element={
-                <Layout withCartProvider withNavHeader headerText="Меню">
+                <Layout
+                  withCartProvider
+                  withNavHeader
+                  headerText={t('navigation.menu')}
+                >
                   <MenuPage />
                 </Layout>
               }
@@ -79,7 +86,7 @@ function App() {
               path={ORDERS_PATH}
               loader={refreshOrders}
               element={
-                <Layout withNavHeader headerText="Мои заказы">
+                <Layout withNavHeader headerText={t('navigation.orders')}>
                   <OrdersPage />
                 </Layout>
               }
@@ -87,7 +94,7 @@ function App() {
             <Route
               path={ORDER_PATH}
               element={
-                <Layout withNavHeader headerText="Заказ">
+                <Layout withNavHeader headerText={t('navigation.order')}>
                   <OrderPage />
                 </Layout>
               }

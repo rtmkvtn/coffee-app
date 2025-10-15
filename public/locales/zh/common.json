@@ -1,0 +1,29 @@
+{
+  "navigation": {
+    "menu": "菜单",
+    "orders": "我的订单",
+    "order": "订单",
+    "home": "首页"
+  },
+  "notFound": {
+    "title": "未找到页面",
+    "subtitle": "我们没有找到您正在访问的页面，请返回首页。",
+    "cta": "返回首页"
+  },
+  "home": {
+    "tagline": "贝加尔湖近在咫尺，咖啡更近！",
+    "makeOrder": "去下单",
+    "myOrders": "查看订单",
+    "greetings": {
+      "morning": "早上好",
+      "day": "下午好",
+      "evening": "晚上好",
+      "morningWithName": "早上好,\n{{name}}",
+      "dayWithName": "下午好,\n{{name}}",
+      "eveningWithName": "晚上好,\n{{name}}"
+    }
+  },
+  "errors": {
+    "init": "无法初始化应用程序"
+  }
+}

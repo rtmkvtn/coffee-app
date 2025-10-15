@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@components/button/Button'
@@ -8,6 +9,7 @@ import styles from './NotFoundPage.module.scss'
 
 const NotFoundPage = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const handleNavigateHome = () => {
     navigate(HOME_PATH)
@@ -16,13 +18,10 @@ const NotFoundPage = () => {
   return (
     <div className={styles.wrapper}>
       <Icon type="notFound" width={160} height={160} className={styles.icon} />
-      <h1 className={styles.title}>Страница не найдена</h1>
-      <p className={styles.subtitle}>
-        Мы не нашли страницу, которую вы искали. Попробуйте вернуться на
-        главную.
-      </p>
+      <h1 className={styles.title}>{t('notFound.title')}</h1>
+      <p className={styles.subtitle}>{t('notFound.subtitle')}</p>
       <Button
-        text="На главную"
+        text={t('notFound.cta')}
         mode="primary"
         onClick={handleNavigateHome}
         className={styles.button}
