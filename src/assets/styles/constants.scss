@@ -2,16 +2,17 @@
 
 $main-font-family: 'TTFirs', sans-serif, serif;
 
-$main-bg-color: #23201c;
+$main-bg-color: #f5f5f5;
 $secondary-bg-color: #006db6;
 
+$color-black: #000;
 $color-white: #fff;
 $color-green: #62ae1c;
-$color-red: #e63e20;
-$color-orange: #e94d13;
+$color-red: #ff5151;
+$color-orange: #ff853e;
 
-$text-primary-color: #ebddbd;
-$text-inactive-color: #888;
+$text-primary-color: $color-black;
+$text-inactive-color: rgba(60, 60, 67, 0.6);
 
 //sidebar
 $sidebar-width: 320px;
