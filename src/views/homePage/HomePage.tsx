@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@components/button/Button'
+import LanguageSelector from '@components/languageSelector/LanguageSelector'
 import { MENU_PATH, ORDERS_PATH } from '@constants/routes'
 import { useOrders } from '@context/ordersContext'
 import { useUser } from '@context/userContext'
@@ -44,6 +45,7 @@ const HomePage = () => {
         withIndicator={hasWaitingPayment}
         indicatorColor="yellow"
       />
+      <LanguageSelector />
     </div>
   )
 }

@@ -1,0 +1,51 @@
+@use '@assets/styles/constants';
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.item {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 0 0 6px;
+  margin: 0;
+  font-family: constants.$main-font-family;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: constants.$text-inactive-color;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: transparent;
+    transition: background-color 0.2s ease;
+  }
+
+  &:focus-visible {
+    outline: none;
+    color: constants.$text-primary-color;
+
+    &::after {
+      background: constants.$text-primary-color;
+    }
+  }
+}
+
+.active {
+  color: constants.$text-primary-color;
+
+  &::after {
+    background: constants.$text-primary-color;
+  }
+}
