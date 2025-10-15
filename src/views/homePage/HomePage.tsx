@@ -22,6 +22,7 @@ const HomePage = () => {
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.greetingsText}>{getGreeting(user)}</h1>
+      <p className={styles.subtitleText}>Байкал близко, кофе – еще ближе!</p>
       <Button
         text="Сделать заказ"
         mode="primary"

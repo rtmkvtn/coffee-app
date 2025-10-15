@@ -32,23 +32,9 @@ body {
   /* 4. Improve text rendering */
   -webkit-font-smoothing: antialiased;
 
-  background: url('@assets/images/common/bg-sheet.png') bottom no-repeat;
   background-size: cover;
   position: relative;
   overflow: hidden;
-
-  &:after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    content: '';
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    opacity: 0.85;
-    z-index: -1;
-  }
 }
 
 button {

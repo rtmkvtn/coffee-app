@@ -17,3 +17,20 @@ $text-inactive-color: rgba(60, 60, 67, 0.6);
 //sidebar
 $sidebar-width: 320px;
 $sidebar-width-mobile: 282px;
+
+
+@mixin text-h1 {
+  font-family: $main-font-family;
+  color: $text-primary-color;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 32px;
+}
+
+@mixin text-regular {
+  font-family: $main-font-family;
+  color: $text-primary-color;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 24px;
+}
