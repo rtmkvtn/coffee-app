@@ -18,22 +18,21 @@
   max-width: 100%;
   word-break: keep-all;
   white-space: nowrap;
-  font-weight: 500;
   border: 1px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  line-height: 1;
   cursor: pointer;
   box-sizing: border-box;
   position: relative;
 
   border-radius: 12px;
-  padding: 0 16px;
-  font-size: 16px;
-  height: 40px;
-  max-height: 40px;
+  padding: 16px;
+  height: 56px;
+  max-height: 56px;
+
+  @include constants.text-btn;
 
   &:disabled {
     cursor: default;
@@ -82,7 +81,7 @@
 //Colors
 .primary {
   background-color: constants.$secondary-bg-color;
-  color: constants.$text-primary-color;
+  color: constants.$color-white;
   border-color: constants.$secondary-bg-color;
 
   @media (hover: hover) {
@@ -106,9 +105,9 @@
   }
 }
 .secondary {
-  background-color: constants.$text-primary-color;
-  color: constants.$color-orange;
-  border-color: constants.$color-orange;
+  background-color: constants.$color-beige;
+  color: constants.$color-black;
+  border-color: constants.$color-beige;
 
   @media (hover: hover) {
     button:hover {

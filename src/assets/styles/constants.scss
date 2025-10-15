@@ -35,3 +35,11 @@ $sidebar-width-mobile: 282px;
   font-size: 17px;
   line-height: 24px;
 }
+
+@mixin text-btn {
+  font-family: $main-font-family;
+  color: $text-primary-color;
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 500;
+}

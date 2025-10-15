@@ -7,8 +7,6 @@ import { useOrders } from '@context/ordersContext'
 import { useUser } from '@context/userContext'
 import { getGreetingPeriod } from '@views/homePage/homePage.helpers'
 
-import Icon from '@assets/images/Icon'
-
 import styles from './HomePage.module.scss'
 
 const HomePage = () => {
@@ -35,7 +33,6 @@ const HomePage = () => {
       <Button
         text={t('home.makeOrder')}
         mode="primary"
-        icon={<Icon type="arrowRight" />}
         onClick={() => navigate(MENU_PATH)}
         className={styles.button}
       />
