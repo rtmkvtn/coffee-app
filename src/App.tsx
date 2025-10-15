@@ -7,6 +7,7 @@ import GlobalLoader from '@components/loaders/globalLoader/GlobalLoader'
 import {
   HOME_PATH,
   MENU_PATH,
+  NOT_FOUND_PATH,
   ORDER_PATH,
   ORDERS_PATH,
 } from '@constants/routes'
@@ -21,6 +22,7 @@ import HomePage from '@views/homePage/HomePage'
 import MenuPage from '@views/menuPage/MenuPage'
 import OrderPage from '@views/orderPage'
 import OrdersPage from '@views/ordersPage/OrdersPage'
+import NotFoundPage from '@views/notFoundPage/NotFoundPage'
 
 import './App.scss'
 
@@ -95,6 +97,14 @@ function App() {
               element={
                 <Layout>
                   <HomePage />
+                </Layout>
+              }
+            />
+            <Route
+              path={NOT_FOUND_PATH}
+              element={
+                <Layout>
+                  <NotFoundPage />
                 </Layout>
               }
             />
