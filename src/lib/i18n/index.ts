@@ -5,8 +5,12 @@ import { initReactI18next } from 'react-i18next'
 
 const basePath = import.meta.env.MODE === 'development' ? '' : '/web-app'
 const localesVersion =
-  typeof COMMIT_HASH !== 'undefined' && COMMIT_HASH ? COMMIT_HASH : 'dev'
-const versionedBasePath = `${basePath}/locales/${localesVersion}`
+  import.meta.env.MODE === 'development'
+    ? ''
+    : typeof COMMIT_HASH !== 'undefined' && COMMIT_HASH
+      ? `/${COMMIT_HASH}`
+      : ''
+const versionedBasePath = `${basePath}/locales${localesVersion}`
 
 void i18n
   .use(HttpBackend)
