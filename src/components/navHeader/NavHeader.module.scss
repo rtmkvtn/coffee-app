@@ -2,8 +2,7 @@
 
 .wrapper {
   width: 100%;
-  background-color: constants.$text-primary-color;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: constants.$main-bg-color;
 }
 
 .content {
@@ -17,9 +16,7 @@
 }
 
 .text {
-  font-weight: 600;
-  font-size: 24px;
-  color: constants.$main-bg-color;
+  @include constants.text-medium;
 }
 
 .back {
@@ -28,14 +25,14 @@
   top: 50%;
   left: 12px;
   transform: translate(0, -50%) rotate(180deg);
-  color: constants.$main-bg-color;
+  color: constants.$color-black;
   border-radius: 8px;
 
   &:active {
-    background-color: constants.$main-bg-color;
+    background-color: constants.$color-beige;
 
     svg {
-      color: constants.$text-primary-color;
+      color: constants.$text-inactive-color;
     }
   }
 }

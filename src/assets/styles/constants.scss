@@ -19,7 +19,6 @@ $text-inactive-color: rgba(60, 60, 67, 0.6);
 $sidebar-width: 320px;
 $sidebar-width-mobile: 282px;
 
-
 @mixin text-h1 {
   font-family: $main-font-family;
   color: $text-primary-color;
@@ -36,7 +35,7 @@ $sidebar-width-mobile: 282px;
   line-height: 24px;
 }
 
-@mixin text-btn {
+@mixin text-medium {
   font-family: $main-font-family;
   color: $text-primary-color;
   font-size: 17px;
