@@ -1,15 +1,15 @@
 @use '@assets/styles/constants';
 
 .wrapper {
-  width: 100vw;
+  width: calc(100% + 32px);
   overflow-x: auto;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
   gap: 8px;
-  padding: 6px 0;
+  padding: 16px 16px;
   position: relative;
-  left: -24px;
+  left: -16px;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 
@@ -20,79 +20,29 @@
   .tab {
     display: flex;
     align-items: center;
-    padding: 2px 24px;
+    padding: 8px 12px;
     border-radius: 12px;
     white-space: nowrap;
     word-break: keep-all;
     cursor: pointer;
-    font-weight: 500;
+    @include constants.text-medium;
+    text-align: center;
+    font-size: 15px;
+    line-height: 1;
 
-    &:first-of-type {
-      margin-left: 24px;
-    }
-  }
-  &.primary > .tab {
-    border: 1px solid constants.$color-white;
-    background-color: constants.$color-white;
-    color: constants.$secondary-bg-color;
-    @media (hover: hover) {
-      &:hover {
-        background-color: constants.$text-primary-color;
-        border-color: constants.$secondary-bg-color;
-      }
-    }
+    border: 1px solid constants.$text-inactive-color;
+    background-color: transparent;
+
 
     &:active {
-      border-color: constants.$secondary-bg-color;
-      background-color: constants.$secondary-bg-color;
-      color: constants.$text-primary-color;
+      background-color: constants.$color-beige;
     }
 
     &Active {
       border-color: constants.$secondary-bg-color;
       background-color: constants.$secondary-bg-color;
-      color: constants.$text-primary-color;
+      color: constants.$color-white;
       cursor: default;
-      @media (hover: hover) {
-        &:hover {
-          border-color: constants.$secondary-bg-color;
-          background-color: constants.$secondary-bg-color;
-          color: constants.$text-primary-color;
-          cursor: default;
-        }
-      }
-    }
-  }
-  &.secondary > .tab {
-    border: 1px solid constants.$color-orange;
-    background-color: constants.$text-primary-color;
-    color: constants.$color-orange;
-    @media (hover: hover) {
-      &:hover {
-        background-color: constants.$text-primary-color;
-        border-color: constants.$main-bg-color;
-      }
-    }
-
-    &:active {
-      border-color: constants.$color-orange;
-      background-color: constants.$color-orange;
-      color: constants.$text-primary-color;
-    }
-
-    &Active {
-      border-color: constants.$color-orange;
-      background-color: constants.$color-orange;
-      color: constants.$text-primary-color;
-      cursor: default;
-      @media (hover: hover) {
-        &:hover {
-          border-color: constants.$color-orange;
-          background-color: constants.$color-orange;
-          color: constants.$text-primary-color;
-          cursor: default;
-        }
-      }
     }
   }
 }
