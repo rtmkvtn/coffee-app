@@ -1,6 +1,6 @@
-@use '../fonts/fonts';
+@forward '../fonts/fonts';
 
-$main-font-family: 'TTFirs', sans-serif, serif;
+$main-font-family: 'Helvetica Neue', sans-serif, serif;
 
 $main-bg-color: #f5f5f5;
 $secondary-bg-color: #006db6;
