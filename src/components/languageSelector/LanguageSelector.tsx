@@ -9,7 +9,7 @@ type LanguageCode = 'ru' | 'en' | 'zh'
 const LANGUAGE_OPTIONS: Array<{ code: LanguageCode; label: string }> = [
   { code: 'ru', label: 'RU' },
   { code: 'en', label: 'ENG' },
-  { code: 'zh', label: 'ZH' },
+  { code: 'zh', label: '中文' },
 ]
 
 type LanguageSelectorProps = {
