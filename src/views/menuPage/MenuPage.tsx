@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
+import FixedTabsNav from '@components/fixedTabsNav/FixedTabsNav'
 import TabsNav from '@components/tabsNav/TabsNav'
 import { ORDER_PATH } from '@constants/routes'
 import { useMenu } from '@context/menuContext'
@@ -100,9 +101,9 @@ const MenuPage = ({ className }: IProps) => {
 
   return (
     <div className={classNames(styles.wrapper, className && className)}>
-      <TabsNav
+      <FixedTabsNav
         activeTab={activeCategory.toString()}
-        tabs={[...categoryTabs, { id: 'other', label: 'Другое' }]}
+        tabs={categoryTabs}
         onChange={(tabId) => setActiveCategory(Number(tabId))}
       />
       {subcategories.length > 0 && (
