@@ -5,13 +5,14 @@ import classNames from 'classnames'
 
 import styles from './Button.module.scss'
 
-type IButtonMode = 'primary' | 'secondary' | 'success'
+type IButtonMode = 'primary' | 'secondary' | 'success' | 'orange'
 type IIndicatorColor = 'red' | 'green' | 'yellow'
 
 type IProps = {
   text: string
   mode: IButtonMode
   icon?: ReactNode
+  isIconSized?: boolean
   className?: string
   disabled?: boolean
   onClick?: () => void
@@ -28,6 +29,7 @@ const Button: FC<IProps> = ({
   text,
   mode,
   icon,
+  isIconSized,
   className,
   disabled,
   onClick,
@@ -53,6 +55,7 @@ const Button: FC<IProps> = ({
         styles.btn,
         styles[mode],
         icon ? styles.withIcon : '',
+        isIconSized && styles.iconSized,
         loading && styles.loading,
         withIndicator && styles.withIndicator,
         className && className

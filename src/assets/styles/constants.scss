@@ -42,3 +42,11 @@ $sidebar-width-mobile: 282px;
   line-height: 24px;
   font-weight: 500;
 }
+
+@mixin text-medium-lg {
+  font-family: $main-font-family;
+  color: $text-primary-color;
+  font-size: 21px;
+  line-height: 32px;
+  font-weight: 500;
+}

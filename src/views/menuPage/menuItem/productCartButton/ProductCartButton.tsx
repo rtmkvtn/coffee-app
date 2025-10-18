@@ -26,42 +26,29 @@ const ProductCartButton = ({
       className={classNames(
         styles.wrapper,
         quantity && styles.withQuant,
+        loading && styles.loading,
         className && className
       )}
     >
-      {quantity && quantity > 0 ? (
-        <div className={styles.quantWrapper}>
-          {loading && (
-            <div className={styles.loadingOverlay}>
-              <BubbleLoader className={styles.loading} />
-            </div>
-          )}
-          <div
-            className={classNames(styles.minus, styles.item)}
-            onClick={onRemoveFromCart}
-          >
-            <Icon type={'cartRemove'} />
-          </div>
-          <div className={classNames(styles.quant, styles.item)}>
-            <p className={styles.text}>{quantity}</p>{' '}
-          </div>
-          <div
-            className={classNames(styles.plus, styles.item)}
-            onClick={onAddToCart}
-          >
-            <Icon type={'cartAdd'} />
-          </div>
-        </div>
-      ) : (
-        <Button
-          loading={loading}
-          className={className}
-          text=""
-          icon={<Icon type="cartAdd" />}
-          mode="primary"
-          onClick={onAddToCart}
-        />
-      )}
+      <Button
+        className={styles.minus}
+        text=""
+        icon={<Icon type="minus" />}
+        isIconSized
+        mode="orange"
+        onClick={onRemoveFromCart}
+      />
+      <div className={styles.quant}>
+        {loading ? <BubbleLoader /> : quantity}
+      </div>
+      <Button
+        text=""
+        className={styles.plus}
+        icon={<Icon type="plus" />}
+        isIconSized
+        mode="orange"
+        onClick={onAddToCart}
+      />
     </div>
   )
 }

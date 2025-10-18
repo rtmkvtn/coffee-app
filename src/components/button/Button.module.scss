@@ -54,6 +54,11 @@
   &.withIndicator {
     padding-right: 24px;
   }
+
+  &.iconSized {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .indicator {
@@ -121,6 +126,26 @@
 
   .loader {
     color: constants.$text-primary-color;
+  }
+}
+
+.orange {
+  background-color: constants.$color-orange;
+  color: constants.$color-white;
+  border-color: constants.$color-orange;
+
+  @media (hover: hover) {
+    button:hover {
+      background-color: color.adjust(constants.$color-orange, $lightness: -10%);
+    }
+  }
+
+  &:active {
+    background-color: color.adjust(constants.$color-orange, $lightness: -10%);
+  }
+
+  .loader {
+    color: constants.$color-white;
   }
 }
 

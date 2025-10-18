@@ -1,8 +1,6 @@
 @use '@assets/styles/constants';
 
 .wrapper {
-  padding: 12px;
-  border-radius: 50%;
-  background-color: rgba(constants.$main-bg-color, 0.9);
-  box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.6); // <-- soft white glow
+  border-radius: 4px;
+  overflow: hidden;
 }
