@@ -19,9 +19,14 @@ const ensureVersionedLocales = () => {
     return
   }
 
-  if (fs.existsSync(versionedLocalesDir)) {
-    fs.rmSync(versionedLocalesDir, { recursive: true, force: true })
-  }
+  // Remove all old commit hash directories
+  const allEntries = fs.readdirSync(localesRoot, { withFileTypes: true })
+  allEntries
+    .filter((entry) => entry.isDirectory() && /^[0-9a-f]{7}$/.test(entry.name))
+    .forEach((entry) => {
+      const oldCommitDir = path.join(localesRoot, entry.name)
+      fs.rmSync(oldCommitDir, { recursive: true, force: true })
+    })
 
   fs.mkdirSync(versionedLocalesDir, { recursive: true })
 
