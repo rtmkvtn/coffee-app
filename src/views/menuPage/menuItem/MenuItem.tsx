@@ -57,20 +57,22 @@ const MenuItem = ({ product }: Props) => {
         className={styles.avatar}
         altText={product.name}
       />
-      <div className={styles.info}>
-        <p className={styles.name}>{product.name}</p>
-      </div>
-      <div className={styles.footer}>
-        <p className={styles.price}>
-          {formatPrice(getLowestPrice(product.portions))}
-        </p>
-        <ProductCartButton
-          loading={isPending}
-          quantity={quantityInCart}
-          onAddToCart={handleAddToCart}
-          onRemoveFromCart={handleRemoveFromCart}
-          className={styles.addButton}
-        />
+      <div className={styles.data}>
+        <div className={styles.header}>
+          <p className={styles.name}>{product.name}</p>
+        </div>
+        <div className={styles.footer}>
+          <p className={styles.price}>
+            {formatPrice(getLowestPrice(product.portions))}
+          </p>
+          <ProductCartButton
+            loading={isPending}
+            quantity={quantityInCart}
+            onAddToCart={handleAddToCart}
+            onRemoveFromCart={handleRemoveFromCart}
+            className={styles.addButton}
+          />
+        </div>
       </div>
     </div>
   )

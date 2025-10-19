@@ -7,7 +7,8 @@ import TabsNav from '@components/tabsNav/TabsNav'
 import { ORDER_PATH } from '@constants/routes'
 import { useMenu } from '@context/menuContext'
 import { useOrders } from '@context/ordersContext'
-import { useInfiniteScroll } from '@hooks/useInfiniteScroll'
+import { useVirtualScroll } from '@hooks/useVirtualScroll'
+import { useLayout } from '@lib/layout/LayoutContext'
 import { IProduct } from '@models/index'
 import classNames from 'classnames'
 
@@ -84,20 +85,12 @@ const MenuPage = ({ className }: IProps) => {
     )
   }, [activeCategory, activeSubcategory, products])
 
-  // Use infinite scroll hook
-  const { visibleItems, hasMore, loadingRef } = useInfiniteScroll(
-    productsList,
-    4
-  )
+  const { availableHeight } = useLayout()
+  const fixedNavTabsHeight = 51
+  const navTabsHeight = 65
 
-  // Memoize product items
-  const productItems = useMemo(
-    () =>
-      visibleItems.map((product) => (
-        <MenuItem key={`menu-product-${product.id}`} product={product} />
-      )),
-    [visibleItems]
-  )
+  const { scrollRef, virtualItems, totalSize, renderVirtualItem } =
+    useVirtualScroll(productsList, 110)
 
   return (
     <div className={classNames(styles.wrapper, className && className)}>
@@ -117,9 +110,26 @@ const MenuPage = ({ className }: IProps) => {
           activeTabColor="secondary"
         />
       )}
-      <div className={styles.products}>
-        {productItems}
-        {hasMore && <div ref={loadingRef} style={{ height: '20px' }} />}
+      <div
+        className={styles.products}
+        ref={scrollRef}
+        style={{
+          height: `${availableHeight - fixedNavTabsHeight - navTabsHeight}px`,
+        }}
+      >
+        <div
+          className={styles.scrolling}
+          style={{
+            position: 'relative',
+            height: `${totalSize}px`,
+          }}
+        >
+          {virtualItems.map((virtualItem) =>
+            renderVirtualItem(virtualItem, (product) => (
+              <MenuItem product={product} />
+            ))
+          )}
+        </div>
       </div>
     </div>
   )

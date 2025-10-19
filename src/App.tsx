@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useTranslation } from 'react-i18next'
 import { Route } from 'react-router'
 import { Routes } from 'react-router-dom'
 
@@ -21,9 +21,9 @@ import Layout from '@lib/layout/Layout'
 import { showToast } from '@lib/toasts/toast'
 import HomePage from '@views/homePage/HomePage'
 import MenuPage from '@views/menuPage/MenuPage'
+import NotFoundPage from '@views/notFoundPage/NotFoundPage'
 import OrderPage from '@views/orderPage'
 import OrdersPage from '@views/ordersPage/OrdersPage'
-import NotFoundPage from '@views/notFoundPage/NotFoundPage'
 
 import './App.scss'
 
@@ -39,10 +39,25 @@ function App() {
   const { initializeCart } = useCart()
 
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      '--app-height',
-      `${window.innerHeight}px`
-    )
+    const setAppHeight = () => {
+      document.documentElement.style.setProperty(
+        '--app-height',
+        `${window.innerHeight}px`
+      )
+    }
+
+    // Set initial height
+    setAppHeight()
+
+    // Update on resize
+    window.addEventListener('resize', setAppHeight)
+
+    return () => {
+      window.removeEventListener('resize', setAppHeight)
+    }
+  }, [])
+
+  useEffect(() => {
     const initScript = async () => {
       if (initData) {
         try {
@@ -54,7 +69,7 @@ function App() {
             refreshOrders(),
           ])
           setIsInitialized(true)
-        } catch (e) {
+        } catch {
           showToast(initErrorMessage, 'error')
         }
       }

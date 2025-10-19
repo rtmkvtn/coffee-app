@@ -5,6 +5,7 @@ import NavHeader from '@components/navHeader/NavHeader'
 import classNames from 'classnames'
 
 import styles from './Layout.module.scss'
+import { LayoutProvider } from './LayoutContext'
 
 type IProps = {
   withNavHeader?: boolean
@@ -37,22 +38,27 @@ const Layout = ({
   }, [withNavHeader, headerRef])
 
   return (
-    <div
-      className={classNames(styles.wrapper, withNavHeader && styles.withHeader)}
-    >
-      {withNavHeader && (
-        <div className={styles.header} ref={headerRef}>
-          <NavHeader text={headerText} />
-        </div>
-      )}
-      <div className={styles.content} ref={contentRef}>
-        {withCartProvider ? (
-          <CartProviderWrapper>{children}</CartProviderWrapper>
-        ) : (
-          children
+    <LayoutProvider>
+      <div
+        className={classNames(
+          styles.wrapper,
+          withNavHeader && styles.withHeader
         )}
+      >
+        {withNavHeader && (
+          <div className={styles.header} ref={headerRef}>
+            <NavHeader text={headerText} />
+          </div>
+        )}
+        <div className={styles.content} ref={contentRef}>
+          {withCartProvider ? (
+            <CartProviderWrapper>{children}</CartProviderWrapper>
+          ) : (
+            children
+          )}
+        </div>
       </div>
-    </div>
+    </LayoutProvider>
   )
 }
 

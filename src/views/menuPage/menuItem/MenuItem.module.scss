@@ -2,29 +2,30 @@
 
 .product {
   width: 100%;
-  background-color: constants.$text-primary-color;
+  height: 106px;
+  background-color: constants.$color-white;
   border-radius: 12px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  row-gap: 0;
-  padding: 12px;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 
   .avatar {
-    width: 60px;
+    width: 90px;
   }
 
-  .info {
-    flex-grow: 1;
+  .data {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-
+    gap: 8px;
+    flex-grow: 1;
+  }
+  .header {
+    width: 100%;
     .name {
-      color: constants.$main-bg-color;
-      font-weight: 600;
-      font-size: 20px;
+      @include constants.text-medium;
     }
   }
   .footer {
@@ -34,10 +35,7 @@
     justify-content: space-between;
 
     .price {
-      color: constants.$secondary-bg-color;
-      white-space: nowrap;
-      font-weight: 600;
-      font-size: 18px;
+      @include constants.text-medium-lg;
     }
 
     .addButton {

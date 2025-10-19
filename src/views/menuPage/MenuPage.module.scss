@@ -2,11 +2,12 @@
 
 .wrapper {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .products {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  position: relative;
+  overflow-y: auto;
 }
