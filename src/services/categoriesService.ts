@@ -15,7 +15,7 @@ export const getCategories = async (): Promise<
         populate: {
           subcategories: {
             sort: ['order:asc'],
-            fields: ['id', 'name'],
+            fields: ['id', 'name', 'avatar'],
           },
         },
       },

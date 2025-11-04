@@ -9,6 +9,7 @@ import styles from './TabsNav.module.scss'
 type ITabProps = {
   id: string
   label: string
+  image?: string
 }
 
 type IProps<T extends ITabProps[]> = {
@@ -62,7 +63,7 @@ const TabsNav = <T extends ITabProps[]>({
       )}
       ref={wrapperRef}
     >
-      {tabs.map(({ id, label }) =>
+      {tabs.map(({ id, label, image }) =>
         asLinks ? (
           <Link
             to={id}
@@ -72,6 +73,7 @@ const TabsNav = <T extends ITabProps[]>({
               activeTab === id && styles.tabActive
             )}
           >
+            {image && <img src={image} className={styles.tabImg} alt={label} />}
             <p className={styles.label}>{label}</p>
           </Link>
         ) : (
@@ -83,6 +85,7 @@ const TabsNav = <T extends ITabProps[]>({
             )}
             onClick={() => handleClick(id)}
           >
+            {image && <img src={image} className={styles.tabImg} alt={label} />}
             <p className={styles.label}>{label}</p>
           </div>
         )

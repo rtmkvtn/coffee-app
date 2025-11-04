@@ -3,4 +3,5 @@ export type ISubcategory = {
   documentId: string
   name: string
   description?: string
+  avatar: string
 }

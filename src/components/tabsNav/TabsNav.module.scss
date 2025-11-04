@@ -20,15 +20,20 @@
   .tab {
     display: flex;
     align-items: center;
+    gap: 4px;
     padding: 0 12px;
     height: 36px;
     border-radius: 12px;
-    white-space: nowrap;
-    word-break: keep-all;
     cursor: pointer;
 
     border: 1px solid constants.$text-inactive-color;
     background-color: transparent;
+
+    &Img {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+    }
 
     .label {
       position: relative;
@@ -37,6 +42,9 @@
       text-align: center;
       font-size: 15px;
       line-height: 1;
+      white-space: nowrap;
+      word-break: keep-all;
+
     }
 
 

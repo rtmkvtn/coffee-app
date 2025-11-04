@@ -9,6 +9,7 @@ import { useMenu } from '@context/menuContext'
 import { useModal } from '@context/modalContext'
 import { useOrders } from '@context/ordersContext'
 import { useVirtualScroll } from '@hooks/useVirtualScroll'
+import { getImgUrl } from '@lib/helpers'
 import { useLayout } from '@lib/layout/LayoutContext'
 import { IProduct } from '@models/index'
 import classNames from 'classnames'
@@ -67,6 +68,7 @@ const MenuPage = ({ className }: IProps) => {
         targetCategory.subcategories.map((x) => ({
           id: x.id.toString(),
           label: x.name,
+          image: x.avatar ? getImgUrl(x.avatar) : '',
         }))
       )
     }
@@ -93,7 +95,7 @@ const MenuPage = ({ className }: IProps) => {
   const { scrollRef, virtualItems, totalSize, renderVirtualItem } =
     useVirtualScroll(productsList, 110)
   const { isOpen, showModal } = useModal()
-  console.log(productsList)
+
   // useEffect(() => {
   //   showModal({
   //     type: 'custom',
