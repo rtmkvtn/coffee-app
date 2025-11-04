@@ -72,7 +72,7 @@ const TabsNav = <T extends ITabProps[]>({
               activeTab === id && styles.tabActive
             )}
           >
-            {label}
+            <p className={styles.label}>{label}</p>
           </Link>
         ) : (
           <div
@@ -83,7 +83,7 @@ const TabsNav = <T extends ITabProps[]>({
             )}
             onClick={() => handleClick(id)}
           >
-            {label}
+            <p className={styles.label}>{label}</p>
           </div>
         )
       )}

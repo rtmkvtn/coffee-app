@@ -9,7 +9,7 @@ $color-black: #000;
 $color-white: #fff;
 $color-green: #62ae1c;
 $color-red: #ff5151;
-$color-orange: #ff853e;
+$color-orange: #914a20;
 $color-beige: #ebddbd;
 
 $text-primary-color: $color-black;
@@ -49,4 +49,12 @@ $sidebar-width-mobile: 282px;
   font-size: 21px;
   line-height: 32px;
   font-weight: 500;
+}
+
+@mixin text-sm-inactive {
+  font-family: $main-font-family;
+  color: $text-inactive-color;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 14px;
 }

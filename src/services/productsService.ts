@@ -23,7 +23,7 @@ export const getAllProducts = async (): Promise<
       throw new Error('Invalid API response structure')
     }
 
-    const transformedData = productsArray.map((x) => {
+    const transformedData: IProduct[] = productsArray.map((x) => {
       // Ensure all required fields exist with defaults
       return {
         id: x.id || 0,
@@ -55,6 +55,7 @@ export const getAllProducts = async (): Promise<
                 documentId: x.subcategory.documentId || '',
               }
             : { id: 0, documentId: 'other' },
+        temperatures: x.temperatures || [],
       }
     })
 

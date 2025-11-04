@@ -6,6 +6,7 @@ import FixedTabsNav from '@components/fixedTabsNav/FixedTabsNav'
 import TabsNav from '@components/tabsNav/TabsNav'
 import { ORDER_PATH } from '@constants/routes'
 import { useMenu } from '@context/menuContext'
+import { useModal } from '@context/modalContext'
 import { useOrders } from '@context/ordersContext'
 import { useVirtualScroll } from '@hooks/useVirtualScroll'
 import { useLayout } from '@lib/layout/LayoutContext'
@@ -91,7 +92,14 @@ const MenuPage = ({ className }: IProps) => {
 
   const { scrollRef, virtualItems, totalSize, renderVirtualItem } =
     useVirtualScroll(productsList, 110)
-
+  const { isOpen, showModal } = useModal()
+  console.log(productsList)
+  // useEffect(() => {
+  //   showModal({
+  //     type: 'custom',
+  //     content: <div></div>,
+  //   })
+  // }, [])
   return (
     <div className={classNames(styles.wrapper, className && className)}>
       <FixedTabsNav

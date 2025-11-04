@@ -19,13 +19,19 @@
   .data {
     display: flex;
     flex-direction: column;
+    height: 100%;
     gap: 8px;
     flex-grow: 1;
   }
   .header {
     width: 100%;
+    flex-grow: 1;
     .name {
       @include constants.text-medium;
+    }
+    .weight {
+      margin-top: 2px;
+      @include constants.text-sm-inactive;
     }
   }
   .footer {

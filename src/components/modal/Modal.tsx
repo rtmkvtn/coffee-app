@@ -57,7 +57,7 @@ const Modal = () => {
         className={classNames(styles.modal, styles[`type_${modal.type}`])}
       >
         <button className={styles.closeButton} onClick={hideModal}>
-          <Icon type="close" size={24} />
+          <Icon type="close" size={12} />
         </button>
 
         {modal.title && <h2 className={styles.title}>{modal.title}</h2>}

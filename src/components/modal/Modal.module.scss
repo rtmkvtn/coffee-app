@@ -6,17 +6,17 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(60, 60, 67, 0.32);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 16px;
+  padding: 9px 24px;
 }
 
 .modal {
-  background-color: constants.$text-primary-color;
-  border-radius: 12px;
+  background-color: constants.$color-white;
+  border-radius: 16px;
   padding: 24px;
   width: 100%;
   max-width: 400px;
@@ -38,15 +38,15 @@
 }
 
 .closeButton {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: none;
+  top: 8px;
+  right: 10px;
   border: none;
-  padding: 4px;
   cursor: pointer;
-  color: constants.$main-bg-color;
-  border-radius: 50%;
+  color: constants.$color-black;
   display: flex;
   align-items: center;
   justify-content: center;

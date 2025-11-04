@@ -1,8 +1,9 @@
 import { IAdditionalIngredient } from './additionalIngredient.model'
 import { ICategory } from './category.model'
-import { IStrapiMedia } from './media.model'
 import { IProductPortion } from './portion.model'
 import { ISubcategory } from './subcategory.model'
+
+export type IProductTemperature = 'cold' | 'hot'
 
 export type IProduct = {
   order: number
@@ -14,8 +15,9 @@ export type IProduct = {
   ingredients?: string
   additionalIngredients: IAdditionalIngredient[]
   portions: IProductPortion[]
-  avatar?: IStrapiMedia
+  avatar?: string
   category: Pick<ICategory, 'id' | 'documentId'>
+  temperatures: IProductTemperature[]
   subcategory: Pick<ISubcategory, 'id' | 'documentId'>
 }
 
@@ -26,7 +28,7 @@ export type IProductBackend = {
   description?: string
   documentId: string
   id: number
-  avatar?: IStrapiMedia
+  avatar?: string
   ingredients?: string
   locale: string
   name: string
@@ -34,5 +36,6 @@ export type IProductBackend = {
   order: number
   prices: IProductPortion[]
   subcategory: Pick<ISubcategory, 'id' | 'documentId'>
+  temperatures: IProductTemperature[]
   updatedAt: string // Datetime
 }

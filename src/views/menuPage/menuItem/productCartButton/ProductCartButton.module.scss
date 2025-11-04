@@ -42,8 +42,8 @@
     @include constants.text-medium-lg;
     color: constants.$color-orange;
 
-    border-top: 1px solid constants.$color-orange;
-    border-bottom: 1px solid constants.$color-orange;
+    border-top: 1px solid rgba(constants.$color-orange, 0.4);
+    border-bottom: 1px solid rgba(constants.$color-orange, 0.4);
 
     transition: all 0.2s ease-in-out;
   }

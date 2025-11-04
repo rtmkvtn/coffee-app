@@ -20,18 +20,24 @@
   .tab {
     display: flex;
     align-items: center;
-    padding: 8px 12px;
+    padding: 0 12px;
+    height: 36px;
     border-radius: 12px;
     white-space: nowrap;
     word-break: keep-all;
     cursor: pointer;
-    @include constants.text-medium;
-    text-align: center;
-    font-size: 15px;
-    line-height: 1;
 
     border: 1px solid constants.$text-inactive-color;
     background-color: transparent;
+
+    .label {
+      position: relative;
+      top: 1px;
+      @include constants.text-medium;
+      text-align: center;
+      font-size: 15px;
+      line-height: 1;
+    }
 
 
     &:active {

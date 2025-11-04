@@ -1,8 +1,8 @@
-import { useTransition } from 'react'
+import { useMemo, useTransition } from 'react'
 
 import ProductImage from '@components/productImage/ProductImage'
 import { useCart } from '@context/cartContext'
-import { formatPrice, getImgUrlFromStrapiMediaOrDefault } from '@lib/helpers'
+import { formatPrice, getImgUrl } from '@lib/helpers'
 import { IProduct } from '@models/index'
 import { IProductPortion } from '@models/portion.model'
 
@@ -37,34 +37,37 @@ const MenuItem = ({ product }: Props) => {
     })
   }
 
-  const getLowestPrice = (prices: IProductPortion[]) => {
-    let result = prices[0].price
+  const smallestPortion = useMemo(() => {
+    const portions: IProductPortion[] = product.portions
+    let result = portions[0]
 
-    if (prices.length === 1) return result
+    if (portions.length === 1) return result
 
-    for (let i = 1; i < prices.length; i++) {
-      if (prices[i].price < result) {
-        result = prices[i].price
+    for (let i = 1; i < portions.length; i++) {
+      if (portions[i].price < result.price) {
+        result = portions[i]
       }
     }
     return result
-  }
+  }, [product.portions])
 
   return (
     <div className={styles.product}>
       <ProductImage
-        imgSrc={getImgUrlFromStrapiMediaOrDefault(product.avatar)}
+        imgSrc={getImgUrl(product.avatar)}
         className={styles.avatar}
         altText={product.name}
+        temperatures={product.temperatures}
       />
       <div className={styles.data}>
         <div className={styles.header}>
           <p className={styles.name}>{product.name}</p>
+          {smallestPortion?.weight && (
+            <p className={styles.weight}>{smallestPortion.weight}</p>
+          )}
         </div>
         <div className={styles.footer}>
-          <p className={styles.price}>
-            {formatPrice(getLowestPrice(product.portions))}
-          </p>
+          <p className={styles.price}>{formatPrice(smallestPortion.price)}</p>
           <ProductCartButton
             loading={isPending}
             quantity={quantityInCart}
