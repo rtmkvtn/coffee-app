@@ -23,6 +23,3 @@ public/locales/[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]/
 *.njsproj
 *.sln
 *.sw?
-
-.claude
-CLAUDE.md
