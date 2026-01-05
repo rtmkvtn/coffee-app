@@ -23,33 +23,15 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": "./src",
     "paths": {
-      "@views/*": [
-        "./views/*"
-      ],
-      "@components/*": [
-        "./components/*"
-      ],
-      "@hooks/*": [
-        "./hooks/*"
-      ],
-      "@lib/*": [
-        "./lib/*"
-      ],
-      "@assets/*": [
-        "./assets/*"
-      ],
-      "@context/*": [
-        "./context/*"
-      ],
-      "@models/*": [
-        "./models/*"
-      ],
-      "@services/*": [
-        "./services/*"
-      ],
-      "@constants/*": [
-        "./constants/*"
-      ]
+      "@views/*": ["./views/*"],
+      "@components/*": ["./components/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@lib/*": ["./lib/*"],
+      "@assets/*": ["./assets/*"],
+      "@context/*": ["./context/*"],
+      "@models/*": ["./models/*"],
+      "@services/*": ["./services/*"],
+      "@constants/*": ["./constants/*"]
     }
   },
   "include": ["src"]

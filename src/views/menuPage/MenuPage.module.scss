@@ -11,3 +11,9 @@
   position: relative;
   overflow-y: auto;
 }
+
+.subcategoryHeader {
+  @include constants.text-medium;
+  margin: 14px 0 8px 0;
+  font-weight: inherit;
+}

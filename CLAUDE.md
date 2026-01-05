@@ -5,7 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Important Policies
 
 ### Git Commits
+
 **CRITICAL**: AI assistants MUST NOT create git commits. Only the human developer can make commits to this repository. AI can:
+
 - Suggest commit messages
 - Review changes before committing
 - Help stage files
@@ -14,7 +16,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 But AI MUST NEVER execute `git commit` commands.
 
 ### Backend Repository
+
 The backend for this application is located in the sibling directory: `../coffee-strapi`
+
 - This is a Strapi CMS instance
 - Development server runs on `http://localhost:1337`
 - Production server: `https://cms.democoffeeandseaguls.ru`
@@ -31,6 +35,7 @@ The backend for this application is located in the sibling directory: `../coffee
 This is a React TypeScript application built for Telegram Web App, serving as a coffee ordering system. The app uses a context-based state management pattern with multiple providers for different domains.
 
 ### Key Technologies
+
 - **React 19** with TypeScript
 - **Vite 7** for build tooling and development server
 - **React Router v7** for navigation
@@ -45,7 +50,9 @@ This is a React TypeScript application built for Telegram Web App, serving as a 
 ### Project Structure
 
 #### Context Architecture
+
 The application uses a multi-layered context provider pattern in `src/main.tsx`:
+
 - `UserProvider` - User authentication and profile management
 - `MenuProvider` - Product categories and menu items
 - `CartProvider` - Shopping cart state and operations
@@ -53,6 +60,7 @@ The application uses a multi-layered context provider pattern in `src/main.tsx`:
 - `ModalProvider` - Global modal state
 
 #### Path Aliases (configured in `vite.config.ts`)
+
 - `@views` → `./src/views`
 - `@components` → `./src/components`
 - `@hooks` → `./src/hooks`
@@ -64,6 +72,7 @@ The application uses a multi-layered context provider pattern in `src/main.tsx`:
 - `@constants` → `./src/constants`
 
 #### Core Directories
+
 - `src/views/` - Page components (HomePage, MenuPage, OrderPage, OrdersPage, NotFoundPage)
 - `src/components/` - Reusable UI components
 - `src/context/` - React context providers for state management
@@ -76,10 +85,12 @@ The application uses a multi-layered context provider pattern in `src/main.tsx`:
 ### API Integration
 
 The app communicates with a Strapi CMS backend located in `../coffee-strapi`:
+
 - **Development**: `http://localhost:1337`
 - **Production**: `https://cms.democoffeeandseaguls.ru`
 
 API client configured in `src/services/api/index.ts` with:
+
 - Request/response interceptors
 - Bearer token authentication
 - Error handling for connection upgrades (426 status)
@@ -87,6 +98,7 @@ API client configured in `src/services/api/index.ts` with:
 ### Telegram Integration
 
 The app is designed as a Telegram Web App with a companion bot located in `../coffee-bot`:
+
 - Custom TypeScript definitions in `src/telegram.d.ts`
 - Telegram Web App API access through `window.Telegram.WebApp`
 - Custom hook `useTelegram` for Telegram-specific functionality
@@ -95,6 +107,7 @@ The app is designed as a Telegram Web App with a companion bot located in `../co
 ### Internationalization (i18n)
 
 The app uses i18next for multi-language support:
+
 - Configuration in `src/lib/i18n/index.ts`
 - Supported languages: Russian (default), English, Chinese
 - Translation files loaded from `/locales/{lang}/{namespace}.json`
@@ -113,12 +126,14 @@ The app uses i18next for multi-language support:
 ### State Management Pattern
 
 Each context follows a consistent pattern:
+
 1. State interface definition
 2. Context type with actions
 3. Provider component with state and methods
 4. Custom hook for consuming context with error handling
 
 Example from CartContext:
+
 ```typescript
 const useCart = () => {
   const ctx = useContext(CartContext)
@@ -147,6 +162,7 @@ const useCart = () => {
 ### Related Projects
 
 This repository is part of a multi-project coffee ordering system:
+
 - **coffee-app** (this repo) - React TypeScript frontend Telegram Web App
 - **coffee-strapi** (`../coffee-strapi`) - Strapi CMS backend
 - **coffee-bot** (`../coffee-bot`) - Telegram Bot companion

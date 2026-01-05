@@ -4,14 +4,15 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 
 export const useVirtualScroll = <T,>(
   items: T[],
-  estimateSize: number = 110
+  estimateSize: number | ((index: number) => number) = 110
 ) => {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const virtualizer = useVirtualizer({
     count: items.length,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => estimateSize,
+    estimateSize:
+      typeof estimateSize === 'function' ? estimateSize : () => estimateSize,
   })
 
   const virtualItems = virtualizer.getVirtualItems()

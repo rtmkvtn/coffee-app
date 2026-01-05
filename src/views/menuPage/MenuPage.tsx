@@ -20,6 +20,37 @@ type IProps = {
   className?: string
 }
 
+// List item types for rendering with headers
+type SubcategoryHeader = {
+  type: 'header'
+  subcategoryId: number
+  name: string
+}
+
+type ProductItem = {
+  type: 'product'
+  data: IProduct
+}
+
+type ListItem = SubcategoryHeader | ProductItem
+
+// Tab item type for subcategory navigation
+type TabItem = {
+  id: string
+  label: string
+  image?: string
+}
+
+// Layout and sizing constants
+const LAYOUT_CONSTANTS = {
+  FIXED_TABS_HEIGHT: 51,
+  SUBCATEGORY_TABS_HEIGHT: 65,
+  ITEM_SIZES: {
+    HEADER: 46, // 14px margin-top + 24px line-height + 8px margin-bottom
+    PRODUCT: 110, // 106px item height + 4px gap
+  },
+} as const
+
 const MenuPage = ({ className }: IProps) => {
   const { categories, products } = useMenu()
   const { orders } = useOrders()
@@ -28,12 +59,7 @@ const MenuPage = ({ className }: IProps) => {
   const [activeCategory, setActiveCategory] = useState<number>(
     categories[0]?.id
   )
-  const [subcategories, setSubcategories] = useState<
-    {
-      id: string
-      label: string
-    }[]
-  >([])
+  const [subcategories, setSubcategories] = useState<TabItem[]>([])
   const [activeSubcategory, setActiveSubcategory] = useState<number | null>(
     null
   )
@@ -87,12 +113,76 @@ const MenuPage = ({ className }: IProps) => {
     )
   }, [activeCategory, activeSubcategory, products])
 
+  // Group products with subcategory headers
+  const groupedListItems: ListItem[] = useMemo(() => {
+    if (productsList.length === 0) return []
+
+    // Create subcategory name lookup map
+    const currentCategory = categories.find((cat) => cat.id === activeCategory)
+    const subcategoryMap = new Map<number, string>()
+    if (currentCategory) {
+      currentCategory.subcategories.forEach((sub) => {
+        subcategoryMap.set(sub.id, sub.name)
+      })
+    }
+
+    // Group products by subcategory ID
+    const grouped = productsList.reduce(
+      (acc, product) => {
+        const subId = product.subcategory.id
+        if (!acc[subId]) {
+          acc[subId] = []
+        }
+        acc[subId].push(product)
+        return acc
+      },
+      {} as Record<number, IProduct[]>
+    )
+
+    // Convert to flat list with headers
+    const items: ListItem[] = []
+    Object.entries(grouped).forEach(([subIdStr, products]) => {
+      const subId = Number(subIdStr)
+      const subName = subcategoryMap.get(subId)
+
+      // Add header only if subcategory name exists
+      if (subName) {
+        items.push({
+          type: 'header',
+          subcategoryId: subId,
+          name: subName,
+        })
+      } else {
+        console.warn(
+          `Missing subcategory name for ID: ${subId}, skipping header`
+        )
+      }
+
+      // Add products
+      products.forEach((product) => {
+        items.push({
+          type: 'product',
+          data: product,
+        })
+      })
+    })
+
+    return items
+  }, [productsList, categories, activeCategory])
+
   const { availableHeight } = useLayout()
-  const fixedNavTabsHeight = 51
-  const navTabsHeight = 65
+
+  // Dynamic size estimator for headers vs products
+  const estimateItemSize = (index: number) => {
+    const item = groupedListItems[index]
+    if (!item) return LAYOUT_CONSTANTS.ITEM_SIZES.PRODUCT
+    return item.type === 'header'
+      ? LAYOUT_CONSTANTS.ITEM_SIZES.HEADER
+      : LAYOUT_CONSTANTS.ITEM_SIZES.PRODUCT
+  }
 
   const { scrollRef, virtualItems, totalSize, renderVirtualItem } =
-    useVirtualScroll(productsList, 110)
+    useVirtualScroll(groupedListItems, estimateItemSize)
 
   return (
     <div className={classNames(styles.wrapper, className && className)}>
@@ -115,8 +205,10 @@ const MenuPage = ({ className }: IProps) => {
       <div
         className={styles.products}
         ref={scrollRef}
+        role="region"
+        aria-label="Product list"
         style={{
-          height: `${availableHeight - fixedNavTabsHeight - navTabsHeight}px`,
+          height: `${availableHeight - LAYOUT_CONSTANTS.FIXED_TABS_HEIGHT - LAYOUT_CONSTANTS.SUBCATEGORY_TABS_HEIGHT}px`,
         }}
       >
         <div
@@ -127,9 +219,12 @@ const MenuPage = ({ className }: IProps) => {
           }}
         >
           {virtualItems.map((virtualItem) =>
-            renderVirtualItem(virtualItem, (product) => (
-              <MenuItem product={product} />
-            ))
+            renderVirtualItem(virtualItem, (item) => {
+              if (item.type === 'header') {
+                return <h2 className={styles.subcategoryHeader}>{item.name}</h2>
+              }
+              return <MenuItem product={item.data} />
+            })
           )}
         </div>
       </div>

@@ -2,8 +2,9 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@components/button/Button'
-import Icon from '@assets/images/Icon'
 import { HOME_PATH } from '@constants/routes'
+
+import Icon from '@assets/images/Icon'
 
 import styles from './NotFoundPage.module.scss'
 
