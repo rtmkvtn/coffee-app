@@ -1,0 +1,36 @@
+@use '@assets/styles/constants';
+
+.quantSelectorWrapper {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid constants.$color-orange-light;
+  height: 56px;
+  display: flex;
+  align-items: center;
+
+  .quantityButton {
+    width: 40px;
+    min-width: 40px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: constants.$color-orange;
+
+    &.disabled {
+      color: constants.$color-orange-light;
+    }
+  }
+
+  .quantityValue {
+    @include constants.text-medium;
+    font-weight: 700;
+    color: constants.$color-orange;
+    position: relative;
+    top: 2px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

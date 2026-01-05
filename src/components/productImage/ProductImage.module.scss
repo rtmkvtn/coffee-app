@@ -26,4 +26,11 @@
   img {
     height: 100%;
   }
+
+  &.lg {
+    .tempIcon {
+      top: 8px;
+      left: 8px;
+    }
+  }
 }

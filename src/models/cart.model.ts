@@ -1,6 +1,10 @@
 import { IProduct } from './index'
 
-export type CartItem = IProduct & { quantity: number }
+export type CartItem = Omit<IProduct, 'portions'> & {
+  price: number
+  weight: string
+  quantity: number
+}
 
 export interface ICart {
   id: number

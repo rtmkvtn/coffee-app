@@ -6,7 +6,8 @@
       "Bash(npm audit:*)",
       "Bash(npm ls:*)",
       "Bash(npm --version)",
-      "Bash(npm view:*)"
+      "Bash(npm view:*)",
+      "Bash(npm run build)"
     ],
     "deny": []
   }

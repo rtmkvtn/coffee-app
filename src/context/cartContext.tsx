@@ -1,8 +1,11 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 
 import { showToast } from '@lib/toasts/toast'
+import { IAdditionalIngredient } from '@models/additionalIngredient.model'
 import { CartItem } from '@models/cart.model'
 import { ICart, IProduct } from '@models/index'
+import { IProductPortion } from '@models/portion.model'
+import { IProductTemperature } from '@models/product.model'
 import { getMyCart, updateCart } from '@services/cartService'
 
 type CartState = {
@@ -12,7 +15,15 @@ type CartState = {
 type CartContextType = CartState & {
   initializeCart: () => Promise<void>
   setCart: (cart: ICart | null) => void
-  addToCart: (product: IProduct) => Promise<void>
+  addToCart: (
+    product: IProduct,
+    config: {
+      portion: IProductPortion
+      temperature?: IProductTemperature
+      additionalIngredients: IAdditionalIngredient[]
+      quantity: number
+    }
+  ) => Promise<void>
   removeFromCart: (productId: number) => Promise<void>
   updateCartItemQuantity: (
     productId: number,
@@ -46,7 +57,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const addToCart = async (product: IProduct) => {
+  const addToCart = async (
+    product: IProduct,
+    config: {
+      portion: IProductPortion
+      temperature?: IProductTemperature
+      additionalIngredients: IAdditionalIngredient[]
+      quantity: number
+    }
+  ) => {
     if (!state.cart) {
       showToast('Cart is not initialized', 'error')
       return
@@ -54,23 +73,37 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       const currentItems = (state.cart.items || []) as CartItem[]
+
+      // Calculate final price including additional ingredients
+      const ingredientsPrice = config.additionalIngredients.reduce(
+        (sum, ing) => sum + ing.priceModifier,
+        0
+      )
+      const finalPrice = config.portion.price + ingredientsPrice
+
+      // Check if exact same item exists (same product ID, same final price)
       const existingItemIndex = currentItems.findIndex(
-        (item) => item.id === product.id
+        (item) => item.id === product.id && item.price === finalPrice
       )
 
       let newItems: CartItem[]
       if (existingItemIndex >= 0) {
+        // Update existing item quantity
         newItems = [...currentItems]
         newItems[existingItemIndex] = {
           ...newItems[existingItemIndex],
-          quantity: newItems[existingItemIndex].quantity + 1,
+          quantity: newItems[existingItemIndex].quantity + config.quantity,
         }
       } else {
+        // Add new item
+        const { portions, ...productWithoutPortions } = product
         newItems = [
           ...currentItems,
           {
-            ...product,
-            quantity: 1,
+            ...productWithoutPortions,
+            price: finalPrice,
+            weight: config.portion.weight,
+            quantity: config.quantity,
           },
         ]
       }

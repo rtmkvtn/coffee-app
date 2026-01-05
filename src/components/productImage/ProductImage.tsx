@@ -9,12 +9,25 @@ type IProps = {
   className?: string
   imgSrc: string
   altText?: string
+  isLg?: boolean
   temperatures: IProductTemperature[]
 }
 
-const ProductImage = ({ className, imgSrc, altText, temperatures }: IProps) => {
+const ProductImage = ({
+  className,
+  imgSrc,
+  altText,
+  isLg,
+  temperatures,
+}: IProps) => {
   return (
-    <div className={classNames(styles.wrapper, className && className)}>
+    <div
+      className={classNames(
+        styles.wrapper,
+        isLg && styles.lg,
+        className && className
+      )}
+    >
       {temperatures.length > 0 ? (
         <div className={styles.tempIcon}>
           {getTemperaturesImage(temperatures)}

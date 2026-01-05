@@ -1,7 +1,9 @@
 import { useMemo, useTransition } from 'react'
 
 import ProductImage from '@components/productImage/ProductImage'
+import ProductSelectionModal from '@components/productSelectionModal/ProductSelectionModal'
 import { useCart } from '@context/cartContext'
+import { useModal } from '@context/modalContext'
 import { formatPrice, getImgUrl } from '@lib/helpers'
 import { IProduct } from '@models/index'
 import { IProductPortion } from '@models/portion.model'
@@ -15,15 +17,27 @@ type Props = {
 
 const MenuItem = ({ product }: Props) => {
   const { cart, addToCart, updateCartItemQuantity, removeFromCart } = useCart()
+  const { showModal, hideModal } = useModal()
 
   const quantityInCart =
     cart?.items.find((x) => x.id === product.id)?.quantity ?? undefined
 
   const [isPending, startTransition] = useTransition()
 
-  const handleAddToCart = async (): Promise<void> => {
-    startTransition(async () => {
-      await addToCart(product)
+  const handleAddToCart = (): void => {
+    showModal({
+      type: 'custom',
+      content: (
+        <ProductSelectionModal
+          product={product}
+          onAddToCart={(config) => {
+            startTransition(async () => {
+              await addToCart(product, config)
+              hideModal()
+            })
+          }}
+        />
+      ),
     })
   }
 
