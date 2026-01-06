@@ -1,9 +1,12 @@
+import { IAdditionalIngredient } from './additionalIngredient.model'
 import { IProduct } from './index'
 
 export type CartItem = Omit<IProduct, 'portions'> & {
   price: number
   weight: string
   quantity: number
+  selectedTemperature?: string
+  selectedAdditionalIngredients: IAdditionalIngredient[]
 }
 
 export interface ICart {

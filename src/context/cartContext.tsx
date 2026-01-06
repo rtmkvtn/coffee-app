@@ -8,6 +8,53 @@ import { IProductPortion } from '@models/portion.model'
 import { IProductTemperature } from '@models/product.model'
 import { getMyCart, updateCart } from '@services/cartService'
 
+/**
+ * Creates a unique key for an ingredient based on all its properties
+ */
+const getIngredientKey = (ingredient: IAdditionalIngredient): string => {
+  return `${ingredient.name}|${ingredient.weight}|${ingredient.priceModifier}`
+}
+
+/**
+ * Compares two arrays of additional ingredients to check if they're identical
+ */
+const areIngredientsEqual = (
+  ingredients1: IAdditionalIngredient[],
+  ingredients2: IAdditionalIngredient[]
+): boolean => {
+  if (ingredients1.length !== ingredients2.length) return false
+
+  // Create sorted arrays of unique keys
+  const keys1 = ingredients1.map(getIngredientKey).sort()
+  const keys2 = ingredients2.map(getIngredientKey).sort()
+
+  return keys1.every((key, index) => key === keys2[index])
+}
+
+/**
+ * Finds an existing cart item that matches the product configuration exactly
+ */
+const findMatchingCartItem = (
+  items: CartItem[],
+  productId: number,
+  temperature: string | undefined,
+  additionalIngredients: IAdditionalIngredient[]
+): number => {
+  return items.findIndex((item) => {
+    // Match product ID
+    if (item.id !== productId) return false
+
+    // Match temperature (both undefined or same value)
+    if (item.selectedTemperature !== temperature) return false
+
+    // Match additional ingredients exactly
+    return areIngredientsEqual(
+      item.selectedAdditionalIngredients,
+      additionalIngredients
+    )
+  })
+}
+
 type CartState = {
   cart: ICart | null
 }
@@ -81,9 +128,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       )
       const finalPrice = config.portion.price + ingredientsPrice
 
-      // Check if exact same item exists (same product ID, same final price)
-      const existingItemIndex = currentItems.findIndex(
-        (item) => item.id === product.id && item.price === finalPrice
+      // Find exact matching item (same product, temperature, and ingredients)
+      const existingItemIndex = findMatchingCartItem(
+        currentItems,
+        product.id,
+        config.temperature,
+        config.additionalIngredients
       )
 
       let newItems: CartItem[]
@@ -95,15 +145,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           quantity: newItems[existingItemIndex].quantity + config.quantity,
         }
       } else {
-        // Add new item
-        const { portions, ...productWithoutPortions } = product
         newItems = [
           ...currentItems,
           {
-            ...productWithoutPortions,
+            ...product,
             price: finalPrice,
             weight: config.portion.weight,
             quantity: config.quantity,
+            selectedTemperature: config.temperature,
+            selectedAdditionalIngredients: config.additionalIngredients,
           },
         ]
       }
