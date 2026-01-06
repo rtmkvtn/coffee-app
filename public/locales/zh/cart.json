@@ -1,0 +1,22 @@
+{
+  "title": "购物车",
+  "nextButton": "下一步",
+  "defaultCategory": "其他",
+  "total": "总计",
+  "closeCart": "关闭购物车",
+  "removeItem": "删除 {{name}}",
+  "showIngredients": "显示配料 ({{count}})",
+  "hideIngredients": "隐藏配料",
+  "goodsPlural": {
+    "other": "件商品"
+  },
+  "empty": {
+    "title": "这里是空的，连海鸥都不飞",
+    "description": "添加咖啡或其他美味到您的购物车",
+    "altText": "空购物车"
+  },
+  "errors": {
+    "maxQuantity": "最大数量：{{max}}",
+    "minQuantity": "最小数量：{{min}}"
+  }
+}

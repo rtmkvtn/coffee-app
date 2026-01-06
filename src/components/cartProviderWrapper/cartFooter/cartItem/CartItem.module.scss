@@ -30,12 +30,15 @@
 }
 
 .item {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
-  padding: 12px;
+  gap: 12px;
+  row-gap: 0;
+  padding: 8px;
   background-color: constants.$color-white;
-  border-radius: 8px;
+  border-radius: 12px;
   transition:
     transform 0.3s ease-out,
     opacity 0.3s ease-out;
@@ -44,66 +47,160 @@
     animation: slideOut 0.3s ease-out forwards;
   }
 
-  .itemInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  .avatarWrapper {
+    position: relative;
+    width: 90px;
+    flex-shrink: 0;
 
-    .itemName {
-      color: constants.$main-bg-color;
-      font-size: 16px;
-      font-weight: 600;
+    .avatar {
+      width: 100%;
     }
 
-    .quantityRow {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .ingredientsBadge {
+      position: absolute;
+      bottom: 4px;
+      left: 4px;
+      background-color: constants.$color-orange;
+      color: constants.$color-white;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
-      .itemQuantity {
-        color: constants.$secondary-bg-color;
-        font-size: 14px;
-        font-weight: 500;
-
-        span {
-          color: constants.$main-bg-color;
-          font-weight: 600;
+      @media (hover: hover) {
+        &:hover {
+          background-color: constants.$color-orange-light;
+          transform: scale(1.05);
         }
       }
 
-      .quantityControls {
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  .infoBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-grow: 1;
+    max-width: calc(100% - 90px - 12px);
+
+    .infoHeader {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      position: relative;
+
+      .category {
+        @include constants.text-sm-inactive;
+        width: 100%;
+        word-break: keep-all;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: calc(100% - 18px);
+      }
+      .name {
+        @include constants.text-medium;
+        width: 100%;
+        word-break: keep-all;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: calc(100% - 18px);
+      }
+      .rmBtn {
+        color: constants.$text-inactive-color;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 24px;
+        height: 24px;
         display: flex;
         align-items: center;
-        gap: 4px;
+        justify-content: center;
+      }
+    }
 
-        .quantityButton {
-          background: none;
-          border: none;
-          padding: 4px;
-          cursor: pointer;
-          color: constants.$main-bg-color;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.2s ease-in-out;
-          -webkit-tap-highlight-color: transparent;
+    .infoFooter {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 4px;
 
-          &:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-          }
+      &Left {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
 
-          @media (hover: hover) {
-            &:hover:not(:disabled) {
-              background-color: rgba(0, 0, 0, 0.05);
-            }
-          }
-
-          &:active:not(:disabled) {
-            background-color: rgba(0, 0, 0, 0.05);
-          }
+        .weight {
+          @include constants.text-sm-inactive;
         }
+        .price {
+          @include constants.text-medium-lg;
+          position: relative;
+          top: 2px;
+        }
+      }
+    }
+  }
+
+  .ingredientsList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0 8px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    margin-top: 0;
+    transition:
+      max-height 0.3s ease-in-out,
+      opacity 0.3s ease-in-out,
+      padding 0.3s ease-in-out,
+      gap 0.3s ease-in-out,
+      margin-top 0.3s ease-in-out,
+      border-color 0.3s ease-in-out;
+
+    &.expanded {
+      max-height: 500px;
+      opacity: 1;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 12px 8px 8px;
+      border-top-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .ingredientItem {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      background-color: constants.$main-bg-color;
+      border-radius: 8px;
+
+      .ingredientName {
+        @include constants.text-regular;
+        font-size: 14px;
+        flex-grow: 1;
+      }
+
+      .ingredientWeight {
+        @include constants.text-sm-inactive;
+      }
+
+      .ingredientPrice {
+        @include constants.text-medium;
+        font-size: 14px;
+        color: constants.$color-orange;
       }
     }
   }

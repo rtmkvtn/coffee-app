@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 
+import { findMatchingCartItem, getCartItemKey } from '@lib/helpers/cartUtils'
 import { showToast } from '@lib/toasts/toast'
 import { IAdditionalIngredient } from '@models/additionalIngredient.model'
 import { CartItem } from '@models/cart.model'
@@ -8,55 +9,9 @@ import { IProductPortion } from '@models/portion.model'
 import { IProductTemperature } from '@models/product.model'
 import { getMyCart, updateCart } from '@services/cartService'
 
-/**
- * Creates a unique key for an ingredient based on all its properties
- */
-const getIngredientKey = (ingredient: IAdditionalIngredient): string => {
-  return `${ingredient.name}|${ingredient.weight}|${ingredient.priceModifier}`
-}
-
-/**
- * Compares two arrays of additional ingredients to check if they're identical
- */
-const areIngredientsEqual = (
-  ingredients1: IAdditionalIngredient[],
-  ingredients2: IAdditionalIngredient[]
-): boolean => {
-  if (ingredients1.length !== ingredients2.length) return false
-
-  // Create sorted arrays of unique keys
-  const keys1 = ingredients1.map(getIngredientKey).sort()
-  const keys2 = ingredients2.map(getIngredientKey).sort()
-
-  return keys1.every((key, index) => key === keys2[index])
-}
-
-/**
- * Finds an existing cart item that matches the product configuration exactly
- */
-const findMatchingCartItem = (
-  items: CartItem[],
-  productId: number,
-  temperature: string | undefined,
-  additionalIngredients: IAdditionalIngredient[]
-): number => {
-  return items.findIndex((item) => {
-    // Match product ID
-    if (item.id !== productId) return false
-
-    // Match temperature (both undefined or same value)
-    if (item.selectedTemperature !== temperature) return false
-
-    // Match additional ingredients exactly
-    return areIngredientsEqual(
-      item.selectedAdditionalIngredients,
-      additionalIngredients
-    )
-  })
-}
-
 type CartState = {
   cart: ICart | null
+  operationsInProgress: Set<string>
 }
 
 type CartContextType = CartState & {
@@ -71,12 +26,18 @@ type CartContextType = CartState & {
       quantity: number
     }
   ) => Promise<void>
-  removeFromCart: (productId: number) => Promise<void>
+  removeFromCart: (cartItemKey: string) => Promise<void>
   updateCartItemQuantity: (
+    cartItemKey: string,
+    newQuantity: number
+  ) => Promise<void>
+  removeFromCartByProductId: (productId: number) => Promise<void>
+  updateCartItemQuantityByProductId: (
     productId: number,
     newQuantity: number
   ) => Promise<void>
   clearCart: () => Promise<void>
+  isItemOperationInProgress: (cartItemKey: string) => boolean
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
@@ -84,10 +45,30 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<CartState>({
     cart: null,
+    operationsInProgress: new Set(),
   })
 
   const setCart = (cart: ICart | null) =>
     setState((prev) => ({ ...prev, cart }))
+
+  const addOperationInProgress = (key: string) => {
+    setState((prev) => ({
+      ...prev,
+      operationsInProgress: new Set(prev.operationsInProgress).add(key),
+    }))
+  }
+
+  const removeOperationInProgress = (key: string) => {
+    setState((prev) => {
+      const newSet = new Set(prev.operationsInProgress)
+      newSet.delete(key)
+      return { ...prev, operationsInProgress: newSet }
+    })
+  }
+
+  const isItemOperationInProgress = (cartItemKey: string): boolean => {
+    return state.operationsInProgress.has(cartItemKey)
+  }
 
   const initializeCart = async () => {
     try {
@@ -170,15 +151,24 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const removeFromCart = async (productId: number) => {
+  const removeFromCart = async (cartItemKey: string) => {
     if (!state.cart) {
       showToast('Cart is not initialized', 'error')
       return
     }
 
+    // Prevent concurrent operations on the same item
+    if (state.operationsInProgress.has(cartItemKey)) {
+      return
+    }
+
+    addOperationInProgress(cartItemKey)
+
     try {
       const currentItems = (state.cart.items || []) as CartItem[]
-      const newItems = currentItems.filter((item) => item.id !== productId)
+      const newItems = currentItems.filter(
+        (item) => getCartItemKey(item) !== cartItemKey
+      )
 
       const response = await updateCart(state.cart.documentId, newItems)
       if (!response.success) {
@@ -189,11 +179,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       showToast('Failed to remove item from cart', 'error')
       console.error('Error removing from cart:', error)
+    } finally {
+      removeOperationInProgress(cartItemKey)
     }
   }
 
   const updateCartItemQuantity = async (
-    productId: number,
+    cartItemKey: string,
     newQuantity: number
   ) => {
     if (!state.cart) {
@@ -201,10 +193,23 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return
     }
 
+    // Prevent concurrent operations on the same item
+    if (state.operationsInProgress.has(cartItemKey)) {
+      return
+    }
+
+    // Validate quantity
+    if (newQuantity < 1 || newQuantity > 99) {
+      showToast('Quantity must be between 1 and 99', 'warning')
+      return
+    }
+
+    addOperationInProgress(cartItemKey)
+
     try {
       const currentItems = (state.cart.items || []) as CartItem[]
       const existingItemIndex = currentItems.findIndex(
-        (item) => item.id === productId
+        (item) => getCartItemKey(item) === cartItemKey
       )
 
       if (existingItemIndex === -1) {
@@ -227,6 +232,49 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       showToast('Failed to update item quantity', 'error')
       console.error('Error updating item quantity:', error)
+    } finally {
+      removeOperationInProgress(cartItemKey)
+    }
+  }
+
+  /**
+   * Remove cart item by product ID (for backward compatibility with MenuItem)
+   * Removes the FIRST cart item matching the product ID
+   */
+  const removeFromCartByProductId = async (productId: number) => {
+    if (!state.cart) {
+      showToast('Cart is not initialized', 'error')
+      return
+    }
+
+    const currentItems = (state.cart.items || []) as CartItem[]
+    const itemToRemove = currentItems.find((item) => item.id === productId)
+
+    if (itemToRemove) {
+      const cartItemKey = getCartItemKey(itemToRemove)
+      await removeFromCart(cartItemKey)
+    }
+  }
+
+  /**
+   * Update cart item quantity by product ID (for backward compatibility with MenuItem)
+   * Updates the FIRST cart item matching the product ID
+   */
+  const updateCartItemQuantityByProductId = async (
+    productId: number,
+    newQuantity: number
+  ) => {
+    if (!state.cart) {
+      showToast('Cart is not initialized', 'error')
+      return
+    }
+
+    const currentItems = (state.cart.items || []) as CartItem[]
+    const itemToUpdate = currentItems.find((item) => item.id === productId)
+
+    if (itemToUpdate) {
+      const cartItemKey = getCartItemKey(itemToUpdate)
+      await updateCartItemQuantity(cartItemKey, newQuantity)
     }
   }
 
@@ -258,7 +306,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         addToCart,
         removeFromCart,
         updateCartItemQuantity,
+        removeFromCartByProductId,
+        updateCartItemQuantityByProductId,
         clearCart,
+        isItemOperationInProgress,
       }}
     >
       {children}

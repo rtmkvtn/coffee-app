@@ -1,0 +1,23 @@
+{
+  "title": "Cart",
+  "nextButton": "Next",
+  "defaultCategory": "Other",
+  "total": "Total",
+  "closeCart": "Close cart",
+  "removeItem": "Remove {{name}}",
+  "showIngredients": "Show add-ons ({{count}})",
+  "hideIngredients": "Hide add-ons",
+  "goodsPlural": {
+    "one": "item",
+    "other": "items"
+  },
+  "empty": {
+    "title": "Empty here, even seagulls aren't flying",
+    "description": "Add coffee or something tasty to your cart",
+    "altText": "Empty cart"
+  },
+  "errors": {
+    "maxQuantity": "Maximum quantity: {{max}}",
+    "minQuantity": "Minimum quantity: {{min}}"
+  }
+}

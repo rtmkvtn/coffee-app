@@ -1,0 +1,24 @@
+{
+  "title": "Корзина",
+  "nextButton": "Далее",
+  "defaultCategory": "Другое",
+  "total": "Итого",
+  "closeCart": "Закрыть корзину",
+  "removeItem": "Удалить {{name}}",
+  "showIngredients": "Показать добавки ({{count}})",
+  "hideIngredients": "Скрыть добавки",
+  "goodsPlural": {
+    "one": "товар",
+    "few": "товара",
+    "many": "товаров"
+  },
+  "empty": {
+    "title": "Тут пусто, даже чайки не летают",
+    "description": "Добавь в корзину кофе или что-нибудь вкусное",
+    "altText": "Пустая корзина"
+  },
+  "errors": {
+    "maxQuantity": "Максимальное количество: {{max}}",
+    "minQuantity": "Минимальное количество: {{min}}"
+  }
+}

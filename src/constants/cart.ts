@@ -1,0 +1,9 @@
+export const CART_CONSTANTS = {
+  MAX_QUANTITY: 99,
+  MIN_QUANTITY: 1,
+  ANIMATION: {
+    ITEM_REMOVE: 300,
+    PRICE_FLASH: 500,
+    SCROLL_CHECK_DELAY: 0,
+  },
+} as const

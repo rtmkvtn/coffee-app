@@ -16,7 +16,12 @@ type Props = {
 }
 
 const MenuItem = ({ product }: Props) => {
-  const { cart, addToCart, updateCartItemQuantity, removeFromCart } = useCart()
+  const {
+    cart,
+    addToCart,
+    updateCartItemQuantityByProductId,
+    removeFromCartByProductId,
+  } = useCart()
   const { showModal, hideModal } = useModal()
 
   const quantityInCart =
@@ -44,9 +49,9 @@ const MenuItem = ({ product }: Props) => {
   const handleRemoveFromCart = async (): Promise<void> => {
     startTransition(async () => {
       if (quantityInCart && quantityInCart === 1) {
-        await removeFromCart(product.id)
+        await removeFromCartByProductId(product.id)
       } else {
-        await updateCartItemQuantity(product.id, quantityInCart! - 1)
+        await updateCartItemQuantityByProductId(product.id, quantityInCart! - 1)
       }
     })
   }
