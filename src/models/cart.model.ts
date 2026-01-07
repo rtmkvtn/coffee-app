@@ -1,12 +1,16 @@
-import { IAdditionalIngredient } from './additionalIngredient.model'
-import { IProduct } from './index'
+import { LocalizedAdditionalIngredient, LocalizedProduct } from './index'
 
-export type CartItem = Omit<IProduct, 'portions'> & {
+/**
+ * Cart items are localized products with additional cart-specific fields
+ * Localized values (strings) are stored to ensure correct display even after language changes
+ */
+export type CartItem = Omit<LocalizedProduct, 'portions'> & {
+  // Cart-specific fields
   price: number
   weight: string
   quantity: number
   selectedTemperature?: string
-  selectedAdditionalIngredients: IAdditionalIngredient[]
+  selectedAdditionalIngredients: LocalizedAdditionalIngredient[]
 }
 
 export interface ICart {

@@ -2,26 +2,29 @@ import { useMemo, useState } from 'react'
 
 import FireIcon from '@assets/images/common/fire.svg?react'
 import IceIcon from '@assets/images/common/ice.svg?react'
+import { useTranslation } from 'react-i18next'
 
 import Button from '@components/button/Button'
 import ProductImage from '@components/productImage/ProductImage'
 import QuantitySelector from '@components/productSelectionModal/quantitySelector/QuantitySelector'
 import TilesSelect from '@components/tilesSelect/TilesSelect'
 import { formatPrice, getImgUrl } from '@lib/helpers'
-import { IAdditionalIngredient } from '@models/additionalIngredient.model'
-import { IProduct } from '@models/index'
-import { IProductPortion } from '@models/portion.model'
+import {
+  LocalizedAdditionalIngredient,
+  LocalizedPortion,
+  LocalizedProduct,
+} from '@models/index'
 import { IProductTemperature } from '@models/product.model'
 import classNames from 'classnames'
 
 import styles from './ProductSelectionModal.module.scss'
 
 interface ProductSelectionModalProps {
-  product: IProduct
+  product: LocalizedProduct
   onAddToCart: (config: {
-    portion: IProductPortion
+    portion: LocalizedPortion
     temperature?: IProductTemperature
-    additionalIngredients: IAdditionalIngredient[]
+    additionalIngredients: LocalizedAdditionalIngredient[]
     quantity: number
   }) => void
 }
@@ -30,9 +33,11 @@ const ProductSelectionModal = ({
   product,
   onAddToCart,
 }: ProductSelectionModalProps) => {
+  const { t } = useTranslation()
+
   const [selectedTemperature, setSelectedTemperature] =
     useState<IProductTemperature | null>(product.temperatures[0] || null)
-  const [selectedPortion, setSelectedPortion] = useState<IProductPortion>(
+  const [selectedPortion, setSelectedPortion] = useState<LocalizedPortion>(
     product.portions.reduce((smallest, current) =>
       current.price < smallest.price ? current : smallest
     )
@@ -117,7 +122,9 @@ const ProductSelectionModal = ({
                 ) : (
                   <IceIcon className={styles.icon} />
                 )}
-                <span>{temp === 'hot' ? 'Горячий' : 'Холодный'}</span>
+                <span>
+                  {temp === 'hot' ? t('product.hot') : t('product.cold')}
+                </span>
               </button>
             ))}
           </div>
@@ -137,12 +144,12 @@ const ProductSelectionModal = ({
               price: x.price,
               value: x.weight,
             }))}
-            onSelect={(nevValues) => {
+            onSelect={(newValues) => {
               setSelectedPortion(
-                product.portions.find((x) => x.weight === nevValues[0])!
+                product.portions.find((x) => x.weight === newValues[0])!
               )
             }}
-            value={[selectedPortion?.weight]}
+            value={[selectedPortion.weight]}
           />
         )}
 
@@ -184,7 +191,7 @@ const ProductSelectionModal = ({
 
         {/* Add to Cart Button */}
         <Button
-          text="В корзину"
+          text={t('product.addToCart')}
           mode="orange"
           onClick={handleAddToCart}
           className={styles.addButton}

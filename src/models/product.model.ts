@@ -1,3 +1,5 @@
+import { LocalizedString } from '@lib/helpers/locale'
+
 import { IAdditionalIngredient } from './additionalIngredient.model'
 import { ICategory } from './category.model'
 import { IProductPortion } from './portion.model'
@@ -9,10 +11,10 @@ export type IProduct = {
   order: number
   id: number
   documentId: string
-  name: string
-  description?: string
+  name_by_locale: LocalizedString
+  description_by_locale?: LocalizedString
   on_hold: boolean
-  ingredients?: string
+  ingredients_by_locale?: LocalizedString
   additionalIngredients: IAdditionalIngredient[]
   portions: IProductPortion[]
   avatar?: string
@@ -25,13 +27,13 @@ export type IProductBackend = {
   additionalIngredients: IAdditionalIngredient[]
   category: Pick<ICategory, 'id' | 'documentId'>
   createdAt: string // Datetime
-  description?: string
+  description_by_locale?: LocalizedString
   documentId: string
   id: number
   avatar?: string
-  ingredients?: string
+  ingredients_by_locale?: LocalizedString
   locale: string
-  name: string
+  name_by_locale: LocalizedString
   on_hold: boolean
   order: number
   prices: IProductPortion[]

@@ -9,13 +9,12 @@ export const getCategories = async (): Promise<
   try {
     const response = await api.get('/api/categories', {
       params: {
-        locale: 'ru',
         sort: ['order:asc'],
-        fields: ['id', 'name'],
+        fields: ['id', 'name_by_locale'],
         populate: {
           subcategories: {
             sort: ['order:asc'],
-            fields: ['id', 'name', 'avatar'],
+            fields: ['id', 'name_by_locale', 'avatar'],
           },
         },
       },

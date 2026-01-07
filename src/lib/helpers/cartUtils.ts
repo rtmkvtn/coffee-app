@@ -1,10 +1,15 @@
-import { IAdditionalIngredient } from '@models/additionalIngredient.model'
 import { CartItem } from '@models/cart.model'
+import { LocalizedAdditionalIngredient } from '@models/index'
 
 /**
- * Creates a unique key for an ingredient based on all its properties
+ * Creates a unique key for an ingredient
+ * All ingredients are now localized (with string name/weight)
  */
-export const getIngredientKey = (ingredient: IAdditionalIngredient): string => {
+export const getIngredientKey = (
+  ingredient:
+    | LocalizedAdditionalIngredient
+    | CartItem['selectedAdditionalIngredients'][number]
+): string => {
   return `${ingredient.name}|${ingredient.weight}|${ingredient.priceModifier}`
 }
 
@@ -22,28 +27,34 @@ export const getCartItemKey = (item: CartItem): string => {
 }
 
 /**
- * Compares two arrays of additional ingredients to check if they're identical
+ * Compares two arrays of ingredients by their IDs
  */
 export const areIngredientsEqual = (
-  ingredients1: IAdditionalIngredient[],
-  ingredients2: IAdditionalIngredient[]
+  ingredients1:
+    | LocalizedAdditionalIngredient[]
+    | CartItem['selectedAdditionalIngredients'],
+  ingredients2:
+    | LocalizedAdditionalIngredient[]
+    | CartItem['selectedAdditionalIngredients']
 ): boolean => {
   if (ingredients1.length !== ingredients2.length) return false
 
-  const keys1 = ingredients1.map(getIngredientKey).sort()
-  const keys2 = ingredients2.map(getIngredientKey).sort()
+  // Sort by ID for comparison
+  const ids1 = ingredients1.map((ing) => ing.id).sort()
+  const ids2 = ingredients2.map((ing) => ing.id).sort()
 
-  return keys1.every((key, index) => key === keys2[index])
+  return ids1.every((id, index) => id === ids2[index])
 }
 
 /**
  * Finds an existing cart item that matches the product configuration exactly
+ * Compares by product ID, temperature, and ingredient IDs
  */
 export const findMatchingCartItem = (
   items: CartItem[],
   productId: number,
   temperature: string | undefined,
-  additionalIngredients: IAdditionalIngredient[]
+  additionalIngredients: LocalizedAdditionalIngredient[]
 ): number => {
   return items.findIndex((item) => {
     if (item.id !== productId) return false

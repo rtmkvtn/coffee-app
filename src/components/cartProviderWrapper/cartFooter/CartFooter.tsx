@@ -39,7 +39,7 @@ const isValidTemperature = (temp?: string): temp is IProductTemperature => {
 const MemoizedCartItem = memo(CartItem)
 
 const CartFooter = () => {
-  const { t } = useTranslation('cart')
+  const { t } = useTranslation()
   const {
     cart,
     removeFromCart,
@@ -160,20 +160,10 @@ const CartFooter = () => {
     return map
   }, [categories])
 
-  // Get goods plural form based on quantity
+  // Get goods plural form based on quantity using i18next's built-in pluralization
   const getGoodsText = useCallback(
     (count: number) => {
-      // Russian pluralization rules
-      const mod10 = count % 10
-      const mod100 = count % 100
-
-      if (mod10 === 1 && mod100 !== 11) {
-        return t('goodsPlural.one', { count })
-      } else if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
-        return t('goodsPlural.few', { count })
-      } else {
-        return t('goodsPlural.many', { count })
-      }
+      return t('cart.goodsPlural', { count })
     },
     [t]
   )
@@ -202,14 +192,14 @@ const CartFooter = () => {
           {isExpanded ? (
             <>
               <h1 id="cart-title" className={styles.headerTitle}>
-                {t('title')}
+                {t('cart.title')}
               </h1>
               <button
                 ref={closeButtonRef}
                 type="button"
                 className={styles.icons}
                 onClick={handleToggleExpand}
-                aria-label={t('closeCart')}
+                aria-label={t('cart.closeCart')}
               >
                 <Icon
                   type="arrowRight"
@@ -224,7 +214,7 @@ const CartFooter = () => {
                 type="button"
                 className={styles.icons}
                 onClick={handleToggleExpand}
-                aria-label={t('title')}
+                aria-label={t('cart.title')}
               >
                 <Icon
                   type="cart"
@@ -254,7 +244,8 @@ const CartFooter = () => {
             {cart.items.map((item) => {
               const cartItemKey = getCartItemKey(item)
               const subcategoryName =
-                subcategoryMap.get(item.subcategory.id) || t('defaultCategory')
+                subcategoryMap.get(item.subcategory.id) ||
+                t('cart.defaultCategory')
               const temperature = isValidTemperature(item.selectedTemperature)
                 ? item.selectedTemperature
                 : undefined
@@ -288,14 +279,14 @@ const CartFooter = () => {
             )}
           >
             <div className={styles.totalBlock}>
-              <h3 className={styles.totalText}>{t('total')}</h3>
+              <h3 className={styles.totalText}>{t('cart.total')}</h3>
               <h3 className={styles.totalText}>{formatPrice(totalPrice)}</h3>
             </div>
             <p className={styles.totalItems}>
               {totalQuantity} {getGoodsText(totalQuantity)}
             </p>
             <Button
-              text={t('nextButton')}
+              text={t('cart.nextButton')}
               mode="primary"
               onClick={handleOrder}
               className={styles.orderButton}

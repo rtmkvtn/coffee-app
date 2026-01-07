@@ -6,7 +6,7 @@ import ProductImage from '@components/productImage/ProductImage'
 import { CART_CONSTANTS } from '@constants/cart'
 import { formatPrice, getImgUrl } from '@lib/helpers'
 import { getIngredientKey } from '@lib/helpers/cartUtils'
-import { IAdditionalIngredient } from '@models/additionalIngredient.model'
+import { LocalizedAdditionalIngredient } from '@models/index'
 import { IProductTemperature } from '@models/product.model'
 import ProductCartButton from '@views/menuPage/menuItem/productCartButton/ProductCartButton'
 import classNames from 'classnames'
@@ -21,7 +21,7 @@ interface CartItemProps {
   quantity: number
   price: number
   image?: string
-  additionalIngredients?: IAdditionalIngredient[]
+  additionalIngredients?: LocalizedAdditionalIngredient[]
   weight: string
   temperature?: IProductTemperature
   categoryName: string

@@ -5,14 +5,13 @@ import ProductSelectionModal from '@components/productSelectionModal/ProductSele
 import { useCart } from '@context/cartContext'
 import { useModal } from '@context/modalContext'
 import { formatPrice, getImgUrl } from '@lib/helpers'
-import { IProduct } from '@models/index'
-import { IProductPortion } from '@models/portion.model'
+import { LocalizedPortion, LocalizedProduct } from '@models/index'
 
 import styles from './MenuItem.module.scss'
 import ProductCartButton from './productCartButton/ProductCartButton'
 
 type Props = {
-  product: IProduct
+  product: LocalizedProduct
 }
 
 const MenuItem = ({ product }: Props) => {
@@ -57,7 +56,7 @@ const MenuItem = ({ product }: Props) => {
   }
 
   const smallestPortion = useMemo(() => {
-    const portions: IProductPortion[] = product.portions
+    const portions: LocalizedPortion[] = product.portions
     let result = portions[0]
 
     if (portions.length === 1) return result

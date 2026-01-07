@@ -28,18 +28,21 @@ export const getAllProducts = async (): Promise<
       return {
         id: x.id || 0,
         documentId: x.documentId || '',
-        name: x.name || 'Unknown Product',
-
-        description: x.description || '',
+        name_by_locale: x.name_by_locale || {
+          ru: 'Unknown Product',
+          en: 'Unknown Product',
+          zh: 'Unknown Product',
+        },
+        description_by_locale: x.description_by_locale,
         on_hold: Boolean(x.on_hold),
-        ingredients: x.ingredients || '',
+        ingredients_by_locale: x.ingredients_by_locale,
         order: x.order || 0,
         additionalIngredients: Array.isArray(x.additionalIngredients)
           ? x.additionalIngredients
           : [],
         portions: Array.isArray(x.prices)
           ? x.prices.map((price) => ({
-              weight: price?.weight || '',
+              weight: price?.weight || { ru: '', en: '', zh: '' },
               price: price?.price || 0,
             }))
           : [],

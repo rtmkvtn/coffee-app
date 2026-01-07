@@ -10,7 +10,7 @@ import { useOrders } from '@context/ordersContext'
 import { useVirtualScroll } from '@hooks/useVirtualScroll'
 import { getImgUrl } from '@lib/helpers'
 import { useLayout } from '@lib/layout/LayoutContext'
-import { IProduct } from '@models/index'
+import { LocalizedProduct } from '@models/index'
 import classNames from 'classnames'
 
 import MenuItem from './menuItem/MenuItem'
@@ -29,7 +29,7 @@ type SubcategoryHeader = {
 
 type ProductItem = {
   type: 'product'
-  data: IProduct
+  data: LocalizedProduct
 }
 
 type ListItem = SubcategoryHeader | ProductItem
@@ -100,7 +100,7 @@ const MenuPage = ({ className }: IProps) => {
   }, [activeCategory, categories])
 
   // Optimize products filtering
-  const productsList: IProduct[] = useMemo(() => {
+  const productsList: LocalizedProduct[] = useMemo(() => {
     if (!activeCategory) return products
     const categoryProducts = products.filter(
       (product) => product.category.id === activeCategory
@@ -136,7 +136,7 @@ const MenuPage = ({ className }: IProps) => {
         acc[subId].push(product)
         return acc
       },
-      {} as Record<number, IProduct[]>
+      {} as Record<number, LocalizedProduct[]>
     )
 
     // Convert to flat list with headers

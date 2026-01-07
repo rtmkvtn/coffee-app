@@ -2,10 +2,13 @@ import { createContext, ReactNode, useContext, useState } from 'react'
 
 import { findMatchingCartItem, getCartItemKey } from '@lib/helpers/cartUtils'
 import { showToast } from '@lib/toasts/toast'
-import { IAdditionalIngredient } from '@models/additionalIngredient.model'
 import { CartItem } from '@models/cart.model'
-import { ICart, IProduct } from '@models/index'
-import { IProductPortion } from '@models/portion.model'
+import {
+  ICart,
+  LocalizedAdditionalIngredient,
+  LocalizedPortion,
+  LocalizedProduct,
+} from '@models/index'
 import { IProductTemperature } from '@models/product.model'
 import { getMyCart, updateCart } from '@services/cartService'
 
@@ -18,11 +21,11 @@ type CartContextType = CartState & {
   initializeCart: () => Promise<void>
   setCart: (cart: ICart | null) => void
   addToCart: (
-    product: IProduct,
+    product: LocalizedProduct,
     config: {
-      portion: IProductPortion
+      portion: LocalizedPortion
       temperature?: IProductTemperature
-      additionalIngredients: IAdditionalIngredient[]
+      additionalIngredients: LocalizedAdditionalIngredient[]
       quantity: number
     }
   ) => Promise<void>
@@ -86,11 +89,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const addToCart = async (
-    product: IProduct,
+    product: LocalizedProduct,
     config: {
-      portion: IProductPortion
+      portion: LocalizedPortion
       temperature?: IProductTemperature
-      additionalIngredients: IAdditionalIngredient[]
+      additionalIngredients: LocalizedAdditionalIngredient[]
       quantity: number
     }
   ) => {
@@ -130,6 +133,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           ...currentItems,
           {
             ...product,
+            // Add cart-specific fields
             price: finalPrice,
             weight: config.portion.weight,
             quantity: config.quantity,
