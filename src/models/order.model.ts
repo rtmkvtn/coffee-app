@@ -3,6 +3,7 @@ import { CartItem } from '.'
 export type IPaymentMethod = 'cash'
 
 export type OrderStatus =
+  | 'draft'
   | 'waitingForPayment'
   | 'paymentProcessing'
   | 'paid'

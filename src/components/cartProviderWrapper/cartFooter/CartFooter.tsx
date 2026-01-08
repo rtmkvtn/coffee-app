@@ -160,14 +160,6 @@ const CartFooter = () => {
     return map
   }, [categories])
 
-  // Get goods plural form based on quantity using i18next's built-in pluralization
-  const getGoodsText = useCallback(
-    (count: number) => {
-      return t('cart.goodsPlural', { count })
-    },
-    [t]
-  )
-
   return (
     <div
       ref={modalRef}
@@ -283,7 +275,7 @@ const CartFooter = () => {
               <h3 className={styles.totalText}>{formatPrice(totalPrice)}</h3>
             </div>
             <p className={styles.totalItems}>
-              {totalQuantity} {getGoodsText(totalQuantity)}
+              {totalQuantity} {t('cart.goodsPlural', { count: totalQuantity })}
             </p>
             <Button
               text={t('cart.nextButton')}
