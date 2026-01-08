@@ -76,7 +76,7 @@ const MenuPage = ({ className }: IProps) => {
 
   useEffect(() => {
     const pendingOrder = orders.find(
-      (order) => order.state === 'waitingForPayment'
+      (order) => order.state === 'waitingForPayment' || order.state === 'draft'
     )
     if (pendingOrder) {
       navigate(ORDER_PATH.replace(':orderId', pendingOrder.documentId), {
