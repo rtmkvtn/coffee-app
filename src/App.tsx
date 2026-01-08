@@ -109,7 +109,7 @@ function App() {
             <Route
               path={ORDER_PATH}
               element={
-                <Layout withNavHeader headerText={t('navigation.order')}>
+                <Layout withNavHeader headerText={'Оформление заказа'}>
                   <OrderPage />
                 </Layout>
               }

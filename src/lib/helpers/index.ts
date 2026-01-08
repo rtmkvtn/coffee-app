@@ -68,26 +68,5 @@ export const formatDate = (dateString: string | Date, friendly?: boolean) => {
   })
 }
 
-export const getOrderStatusText = (status: string) => {
-  switch (status) {
-    case 'draft':
-      return 'Ожидает подтверждения'
-    case 'waitingForPayment':
-      return 'Ожидает оплаты'
-    case 'paymentProcessing':
-      return 'Обработка оплаты'
-    case 'paid':
-      return 'Оплачен'
-    case 'preparing':
-      return 'Готовится'
-    case 'completed':
-      return 'Выполнен'
-    case 'canceled':
-      return 'Отменен'
-    default:
-      return status
-  }
-}
-
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms))

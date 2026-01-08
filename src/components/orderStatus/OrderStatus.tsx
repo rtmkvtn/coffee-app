@@ -1,6 +1,7 @@
 import { FC } from 'react'
 
-import { getOrderStatusText } from '@lib/helpers'
+import { useTranslation } from 'react-i18next'
+
 import { OrderStatus as OrderStatusType } from '@models/index'
 import classNames from 'classnames'
 
@@ -12,6 +13,8 @@ type OrderStatusProps = {
 }
 
 const OrderStatus: FC<OrderStatusProps> = ({ status, className }) => {
+  const { t } = useTranslation()
+
   const getStatusColor = (state: OrderStatusType) => {
     switch (state) {
       case 'draft':
@@ -37,7 +40,7 @@ const OrderStatus: FC<OrderStatusProps> = ({ status, className }) => {
     <div
       className={classNames(styles.status, getStatusColor(status), className)}
     >
-      {getOrderStatusText(status)}
+      {t(`orders.status.${status}`)}
     </div>
   )
 }

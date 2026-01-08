@@ -52,6 +52,18 @@
       "minQuantity": "Минимальное количество: {{min}}"
     }
   },
+  "orders": {
+    "orderNumber": "Заказ №{{id}}",
+    "status": {
+      "draft": "Ожидает подтверждения",
+      "waitingForPayment": "Ожидает оплаты",
+      "paymentProcessing": "Обработка оплаты",
+      "paid": "Оплачен",
+      "preparing": "Готовится",
+      "completed": "Выполнен",
+      "canceled": "Отменен"
+    }
+  },
   "errors": {
     "init": "Не удалось инициализировать приложение"
   }

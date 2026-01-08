@@ -50,6 +50,18 @@
       "minQuantity": "Minimum quantity: {{min}}"
     }
   },
+  "orders": {
+    "orderNumber": "Order #{{id}}",
+    "status": {
+      "draft": "Awaiting confirmation",
+      "waitingForPayment": "Awaiting payment",
+      "paymentProcessing": "Processing payment",
+      "paid": "Paid",
+      "preparing": "Preparing",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    }
+  },
   "errors": {
     "init": "Failed to initialise the application"
   }

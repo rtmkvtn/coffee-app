@@ -1,54 +1,23 @@
 @use '@assets/styles/constants';
 
 .wrapper {
-  background: constants.$text-primary-color;
-  border-radius: 12px;
+  background: constants.$color-white;
+  border-radius: 16px;
   padding: 16px;
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+  gap: 4px;
 }
 
 .orderNumber {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.status {
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 14px;
-  font-weight: 500;
-  color: constants.$text-primary-color;
-
-  &_waitingForPayment {
-    background: constants.$color-orange;
-  }
-
-  &_paymentProcessing {
-    background: constants.$color-orange;
-  }
-
-  &_paid {
-    background: constants.$color-green;
-  }
-
-  &_preparing {
-    background: constants.$color-orange;
-  }
-
-  &_completed {
-    background: constants.$main-bg-color;
-  }
-
-  &_canceled {
-    background: constants.$color-red;
-  }
+  @include constants.text-medium;
+  position: relative;
+  top: 2px;
 }
 
 .content {
@@ -65,35 +34,113 @@
 
 .item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   font-size: 14px;
+  gap: 2px;
+  position: relative;
+
+  &Text {
+    @include constants.text-regular;
+  }
+
+  &Quant {
+    align-self: flex-start;
+  }
+  &Name {
+    flex-grow: 1;
+    overflow: hidden;
+
+    span {
+      position: relative;
+    }
+    span::after {
+      content: '';
+      height: 1px;
+      background-image: repeating-linear-gradient(
+        to right,
+        constants.$color-gray 0px,
+        constants.$color-gray 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      display: inline-block;
+      width: 1000px;
+      vertical-align: baseline;
+      position: absolute;
+      bottom: 3px;
+      left: calc(100% + 4px);
+    }
+  }
 }
 
-.itemName {
-  color: constants.$main-bg-color;
-}
-
-.itemPrice {
-  font-weight: 500;
-  color: constants.$main-bg-color;
+.dashDivider {
+  width: 100%;
+  height: 1px;
+  margin: 16px 0;
+  background-image: repeating-linear-gradient(
+    to right,
+    constants.$color-gray 0px,
+    constants.$color-gray 12px,
+    transparent 12px,
+    transparent 24px
+  );
 }
 
 .footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 16px;
-  border-top: 1px dashed constants.$main-bg-color;
+  gap: 4px;
+  @include constants.text-medium-lg;
 }
 
-.total {
-  font-weight: 500;
-  color: constants.$main-bg-color;
-}
-
-.totalPrice {
-  font-weight: 600;
-  font-size: 18px;
-  color: var(--text-primary);
+.draftBorder {
+  padding-bottom: 32px;
+  clip-path: polygon(
+    0 0,
+    0 calc(100% - 24px),
+    2.5% calc(100% - 12px),
+    5% calc(100% - 24px),
+    7.5% calc(100% - 12px),
+    10% calc(100% - 24px),
+    12.5% calc(100% - 12px),
+    15% calc(100% - 24px),
+    17.5% calc(100% - 12px),
+    20% calc(100% - 24px),
+    22.5% calc(100% - 12px),
+    25% calc(100% - 24px),
+    27.5% calc(100% - 12px),
+    30% calc(100% - 24px),
+    32.5% calc(100% - 12px),
+    35% calc(100% - 24px),
+    37.5% calc(100% - 12px),
+    40% calc(100% - 24px),
+    42.5% calc(100% - 12px),
+    45% calc(100% - 24px),
+    47.5% calc(100% - 12px),
+    50% calc(100% - 24px),
+    52.5% calc(100% - 12px),
+    55% calc(100% - 24px),
+    57.5% calc(100% - 12px),
+    60% calc(100% - 24px),
+    62.5% calc(100% - 12px),
+    65% calc(100% - 24px),
+    67.5% calc(100% - 12px),
+    70% calc(100% - 24px),
+    72.5% calc(100% - 12px),
+    75% calc(100% - 24px),
+    77.5% calc(100% - 12px),
+    80% calc(100% - 24px),
+    82.5% calc(100% - 12px),
+    85% calc(100% - 24px),
+    87.5% calc(100% - 12px),
+    90% calc(100% - 24px),
+    92.5% calc(100% - 12px),
+    95% calc(100% - 24px),
+    97.5% calc(100% - 12px),
+    100% calc(100% - 24px),
+    100% 0
+  );
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
