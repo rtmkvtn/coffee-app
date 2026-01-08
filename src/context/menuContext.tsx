@@ -111,7 +111,7 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
             id: ing.id,
             name: getLocalizedField(ing.name, state.currentLocale),
             priceModifier: ing.priceModifier,
-            weight: ing.weight, // Already a string from backend
+            weight: getLocalizedField(ing.weight, state.currentLocale),
           })),
         }
         return localizedProduct

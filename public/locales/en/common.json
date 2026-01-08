@@ -26,7 +26,8 @@
   "product": {
     "hot": "Hot",
     "cold": "Cold",
-    "addToCart": "Add to Cart"
+    "addToCart": "Add to Cart",
+    "addons": "Add-ons"
   },
   "cart": {
     "title": "Cart",

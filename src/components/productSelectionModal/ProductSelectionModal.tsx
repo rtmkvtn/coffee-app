@@ -61,16 +61,6 @@ const ProductSelectionModal = ({
     product.additionalIngredients,
   ])
 
-  const handleIngredientToggle = (ingredientId: number) => {
-    const newSet = new Set(selectedIngredients)
-    if (newSet.has(ingredientId)) {
-      newSet.delete(ingredientId)
-    } else {
-      newSet.add(ingredientId)
-    }
-    setSelectedIngredients(newSet)
-  }
-
   const handleAddToCart = () => {
     onAddToCart({
       portion: selectedPortion,
@@ -156,27 +146,19 @@ const ProductSelectionModal = ({
         {/* Additional Ingredients */}
         {product.additionalIngredients.length > 0 && (
           <div className={styles.ingredientsSection}>
-            {product.additionalIngredients.map((ingredient) => (
-              <button
-                key={ingredient.id}
-                className={styles.ingredientItem}
-                onClick={() => handleIngredientToggle(ingredient.id)}
-              >
-                <div className={styles.ingredientRadio}>
-                  <div
-                    className={classNames(
-                      styles.radioCircle,
-                      selectedIngredients.has(ingredient.id) && styles.selected
-                    )}
-                  />
-                </div>
-                <span className={styles.ingredientName}>{ingredient.name}</span>
-                <span className={styles.ingredientPrice}>
-                  {ingredient.priceModifier > 0 ? '+' : ''}
-                  {formatPrice(ingredient.priceModifier)}
-                </span>
-              </button>
-            ))}
+            <h3 className={styles.subtitle}>{t('product.addons')}</h3>
+            <TilesSelect
+              isMulti
+              options={product.additionalIngredients.map((x) => ({
+                label: x.name,
+                price: x.priceModifier,
+                value: x.id.toString(),
+              }))}
+              onSelect={(newValues) =>
+                setSelectedIngredients(new Set(newValues.map(Number)))
+              }
+              value={Array.from(selectedIngredients).map(String)}
+            />
           </div>
         )}
       </div>

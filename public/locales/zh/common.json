@@ -26,7 +26,8 @@
   "product": {
     "hot": "热的",
     "cold": "冷的",
-    "addToCart": "加入购物车"
+    "addToCart": "加入购物车",
+    "addons": "添加配料"
   },
   "cart": {
     "title": "购物车",

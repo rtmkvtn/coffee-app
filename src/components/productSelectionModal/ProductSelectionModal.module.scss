@@ -61,10 +61,6 @@
   margin-top: 4px;
 }
 
-.portionSelector {
-  margin-top: 12px;
-}
-
 .temperatureSelector {
   margin-top: 12px;
   display: flex;
@@ -111,75 +107,18 @@
   margin-top: 12px;
 }
 
+.portionSelector {
+  margin-top: 12px;
+}
+
 .ingredientsSection {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  margin-top: 12px;
 
-  .ingredientItem {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 56px;
-    padding: 12px;
-    border: 1px solid constants.$color-orange;
-    border-radius: 12px;
-    background: constants.$color-white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    opacity: 0.5;
-
-    &:hover {
-      background: rgba(0, 0, 0, 0.02);
-    }
-
-    .ingredientRadio {
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-
-      .radioCircle {
-        width: 20px;
-        height: 20px;
-        border: 2px solid constants.$text-inactive-color;
-        border-radius: 50%;
-        transition: all 0.2s ease;
-
-        &.selected {
-          border-color: constants.$color-orange;
-          background: constants.$color-orange;
-          position: relative;
-
-          &::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 8px;
-            height: 8px;
-            background: constants.$color-white;
-            border-radius: 50%;
-          }
-        }
-      }
-    }
-
-    .ingredientName {
-      @include constants.text-medium;
-      flex: 1;
-      text-align: left;
-    }
-
-    .ingredientPrice {
-      @include constants.text-medium;
-      font-weight: 600;
-      color: constants.$color-black;
-      flex-shrink: 0;
-    }
+  .subtitle {
+    @include constants.text-medium;
+    font-size: 14px;
   }
 }
 

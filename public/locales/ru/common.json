@@ -26,7 +26,8 @@
   "product": {
     "hot": "Горячий",
     "cold": "Холодный",
-    "addToCart": "В корзину"
+    "addToCart": "В корзину",
+    "addons": "Добавки"
   },
   "cart": {
     "title": "Корзина",
