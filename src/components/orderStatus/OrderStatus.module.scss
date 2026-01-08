@@ -3,45 +3,87 @@
 .status {
   font-size: 14px;
   font-weight: 500;
-  padding: 4px 8px;
+  padding: 2px 8px;
   border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 4px;
+  border: 1px solid transparent;
 
-  svg {
-    width: 16px;
-    height: 16px;
-    min-width: 16px;
+  @include constants.text-modal-description;
+  line-height: 20px;
+
+  &:before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: inherit;
+    position: relative;
+    top: -2px;
+    margin-right: 4px;
+  }
+
+  &.draft {
+    background: rgba(constants.$color-pink, 0.15);
+    color: constants.$color-pink;
+    border: 1px solid constants.$color-pink;
+    &:before {
+      background-color: constants.$color-pink;
+    }
   }
 
   &.waiting {
-    background: rgba(constants.$color-orange, 0.1);
-    color: constants.$color-orange;
+    background: rgba(constants.$color-red, 0.15);
+    color: constants.$color-red;
+    border: 1px solid constants.$color-red;
+    &:before {
+      background-color: constants.$color-red;
+    }
   }
 
   &.processing {
-    background: rgba(constants.$secondary-bg-color, 0.1);
-    color: constants.$secondary-bg-color;
+    background: rgba(constants.$color-orange, 0.15);
+    color: constants.$color-orange;
+    border: 1px solid constants.$color-orange;
+    &:before {
+      background-color: constants.$color-orange;
+    }
   }
 
   &.paid {
-    background: rgba(constants.$color-green, 0.1);
-    color: constants.$color-green;
+    background: rgba(constants.$color-green-light, 0.15);
+    color: constants.$color-green-light;
+    border: 1px solid constants.$color-green-light;
+    &:before {
+      background-color: constants.$color-green-light;
+    }
   }
 
   &.preparing {
-    background: rgba(constants.$color-orange, 0.1);
+    background: rgba(constants.$color-orange, 0.15);
     color: constants.$color-orange;
+    border: 1px solid constants.$color-orange;
+    &:before {
+      background-color: constants.$color-orange;
+    }
   }
 
   &.completed {
-    background: rgba(constants.$color-green, 0.1);
-    color: constants.$color-green;
+    background: rgba(constants.$color-green-dark, 0.15);
+    color: constants.$color-green-dark;
+    border: 1px solid constants.$color-green-dark;
+    &:before {
+      background-color: constants.$color-green-dark;
+    }
   }
 
   &.canceled {
     background: rgba(constants.$color-red, 0.3);
     color: constants.$color-red;
+    border: 1px solid constants.$color-red;
+    &:before {
+      background-color: constants.$color-red;
+    }
   }
 }

@@ -70,6 +70,8 @@ export const formatDate = (dateString: string | Date, friendly?: boolean) => {
 
 export const getOrderStatusText = (status: string) => {
   switch (status) {
+    case 'draft':
+      return 'Черновик'
     case 'waitingForPayment':
       return 'Ожидает оплаты'
     case 'paymentProcessing':
