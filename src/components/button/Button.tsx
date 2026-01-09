@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 import styles from './Button.module.scss'
 
-type IButtonMode = 'primary' | 'secondary' | 'success' | 'orange'
+type IButtonMode = 'primary' | 'secondary' | 'success' | 'orange' | 'danger'
 type IIndicatorColor = 'red' | 'green' | 'yellow'
 
 type IProps = {

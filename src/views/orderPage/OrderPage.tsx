@@ -158,7 +158,9 @@ const OrderPage = () => {
 
   const canCancel =
     order.state === 'waitingForPayment' ||
+    order.state === 'draft' ||
     (order.state === 'preparing' && timeLeft > 0)
+  const canConfirm = order.state === 'draft'
   const canPay = order.state === 'waitingForPayment'
 
   const withAction = canCancel || canPay
@@ -189,8 +191,18 @@ const OrderPage = () => {
               {canCancel && (
                 <Button
                   text="Отменить заказ"
-                  mode="secondary"
+                  mode="danger"
                   onClick={handleCancel}
+                  loading={isPending}
+                  disabled={isPending}
+                  className={styles.actionButton}
+                />
+              )}
+              {canConfirm && (
+                <Button
+                  text="Оформить заказ"
+                  mode="primary"
+                  onClick={handlePay}
                   loading={isPending}
                   disabled={isPending}
                   className={styles.actionButton}

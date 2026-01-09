@@ -169,6 +169,26 @@
   }
 }
 
+.danger {
+  background-color: transparent;
+  color: constants.$color-red;
+  border-color: constants.$color-red;
+
+  @media (hover: hover) {
+    button:hover {
+      background-color: color.adjust(constants.$color-red, $lightness: 45%);
+    }
+  }
+
+  &:active {
+    background-color: color.adjust(constants.$color-red, $lightness: 45%);
+  }
+
+  .loader {
+    color: constants.$color-red;
+  }
+}
+
 // hollow
 .hollow {
   background-color: transparent;
