@@ -3,11 +3,13 @@ import { useEffect, useState, useTransition } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import Button from '@components/button/Button'
+import TilesSelect from '@components/tilesSelect/TilesSelect'
+import { PAYMENT_METHODS } from '@constants/index'
 import { HOME_PATH } from '@constants/routes'
 import { useModal } from '@context/modalContext'
 import { useOrders } from '@context/ordersContext'
 import { showToast } from '@lib/toasts/toast'
-import { IOrder } from '@models/index'
+import { IOrder, IPaymentMethod } from '@models/index'
 import {
   cancelOrder,
   getOrderById,
@@ -26,7 +28,8 @@ const OrderPage = () => {
   const { refreshOrders } = useOrders()
   const [order, setOrder] = useState<IOrder | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [timeLeft, setTimeLeft] = useState<number>(0)
+
+  const [paymentMethod, setPaymentMethod] = useState<IPaymentMethod>('cash')
 
   const fetchOrder = async () => {
     if (!orderId) {
@@ -52,36 +55,6 @@ const OrderPage = () => {
   useEffect(() => {
     fetchOrder()
   }, [orderId])
-
-  useEffect(() => {
-    if (order?.state === 'preparing' && order.updatedAt) {
-      const updateTime = new Date(order.updatedAt).getTime()
-      const now = new Date().getTime()
-      const timePassed = Math.floor((now - updateTime) / 1000)
-      const timeLeft = Math.max(0, 120 - timePassed)
-      setTimeLeft(timeLeft)
-
-      if (timeLeft > 0) {
-        const timer = setInterval(() => {
-          setTimeLeft((prev) => {
-            if (prev <= 1) {
-              clearInterval(timer)
-              return 0
-            }
-            return prev - 1
-          })
-        }, 1000)
-
-        return () => clearInterval(timer)
-      }
-    }
-  }, [order?.state, order?.updatedAt])
-
-  const formatTimeLeft = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60)
-    const remainingSeconds = seconds % 60
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
-  }
 
   const handleCancel = () => {
     if (!orderId) return
@@ -147,6 +120,29 @@ const OrderPage = () => {
     })
   }
 
+  const handleConfirm = () => {
+    startTransition(async () => {
+      if (!orderId) return
+
+      try {
+        const response = await updateOrderStatus(
+          orderId,
+          'preparing',
+          paymentMethod
+        )
+        if (!response.success) {
+          throw new Error('Failed to update order status')
+        }
+        setOrder(response.data)
+        await refreshOrders()
+        showToast('Заказ принят в обработку', 'success')
+      } catch (error) {
+        console.error('Error updating order status:', error)
+        showToast('Не удалось обновить статус заказа', 'error')
+      }
+    })
+  }
+
   if (isLoading) {
     return <div className={styles.wrapper}>Loading...</div>
   }
@@ -156,9 +152,7 @@ const OrderPage = () => {
   }
 
   const canCancel =
-    order.state === 'waitingForPayment' ||
-    order.state === 'draft' ||
-    (order.state === 'preparing' && timeLeft > 0)
+    order.state === 'waitingForPayment' || order.state === 'draft'
   const canConfirm = order.state === 'draft'
   const canPay = order.state === 'waitingForPayment'
 
@@ -170,28 +164,29 @@ const OrderPage = () => {
       <div className={styles.ordersList}>
         <OrderItem order={order} />
       </div>
+      {
+        <TilesSelect
+          options={PAYMENT_METHODS.map((x) => ({
+            label: x.label,
+            value: x.key,
+            emoji: x.emoji,
+          }))}
+          onSelect={(newValue) => {
+            setPaymentMethod(newValue[0] as IPaymentMethod)
+          }}
+          value={[paymentMethod]}
+          isBlue
+        />
+      }
       {(withAction || isPreparing) && (
         <div className={styles.footer}>
-          {isPreparing && (
-            <div className={styles.statusText}>
-              {timeLeft > 0 ? (
-                <>
-                  Ваш заказ скоро начнут готовить. Вы можете отменить его в
-                  течение <strong>{formatTimeLeft(timeLeft)}</strong>, если
-                  заметили, что что-то не так.
-                </>
-              ) : (
-                <>Заказ готовят, его уже не получится отменить.</>
-              )}
-            </div>
-          )}
           {withAction && (
             <div className={styles.actions}>
               {canConfirm && (
                 <Button
                   text="Оформить заказ"
                   mode="primary"
-                  onClick={handlePay}
+                  onClick={handleConfirm}
                   loading={isPending}
                   disabled={isPending}
                   className={styles.actionButton}

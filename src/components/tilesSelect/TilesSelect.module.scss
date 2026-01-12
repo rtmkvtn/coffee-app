@@ -70,3 +70,56 @@
     cursor: default;
   }
 }
+
+.blueTiles {
+  gap: 8px;
+
+  .optionItem {
+    border-radius: 12px;
+    padding: 8px 16px;
+    flex-direction: row-reverse;
+    gap: 4px;
+    cursor: pointer;
+
+    .checkbox {
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      border: 2px solid constants.$secondary-bg-color;
+    }
+
+    .label {
+      @include constants.text-regular;
+      flex-grow: 1;
+      line-height: 1;
+      position: relative;
+      top: 2px;
+    }
+
+    .price {
+      @include constants.text-regular;
+      line-height: 1;
+      position: relative;
+      top: 2px;
+    }
+
+    &.selected {
+      border: 1px solid constants.$secondary-bg-color;
+
+      .checkbox {
+        position: relative;
+        &:before {
+          width: 8px;
+          height: 8px;
+          background-color: constants.$secondary-bg-color;
+        }
+      }
+    }
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
+
+}

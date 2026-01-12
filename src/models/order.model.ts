@@ -1,6 +1,6 @@
 import { CartItem } from '.'
 
-export type IPaymentMethod = 'cash'
+export type IPaymentMethod = 'cash' | 'card'
 
 export type OrderStatus =
   | 'draft'

@@ -1,4 +1,4 @@
-import { IOrder, OrderStatus } from '@models/index'
+import { IOrder, IPaymentMethod, OrderStatus } from '@models/index'
 
 import api from './api'
 import { IResponseWrapper, ISingleTypeResponseWrapper } from './services.types'
@@ -60,7 +60,7 @@ export const getOrderById = async (
 export const updateOrderStatus = async (
   orderId: string,
   status: OrderStatus,
-  paymentMethod?: 'cash'
+  paymentMethod?: IPaymentMethod
 ): Promise<ISingleTypeResponseWrapper<IOrder>> => {
   try {
     const response = await api.put(`/api/orders/${orderId}`, {
