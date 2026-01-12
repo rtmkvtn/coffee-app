@@ -3,6 +3,7 @@
     "menu": "菜单",
     "orders": "我的订单",
     "order": "订单",
+    "orderPlacement": "下订单",
     "home": "首页"
   },
   "notFound": {
@@ -61,7 +62,16 @@
       "canceled": "已取消"
     }
   },
+  "orderSuccess": {
+    "title": "您的订单已接受",
+    "description": "很快新鲜咖啡的香气和美味佳肴将等着您！",
+    "notification": "等待通知",
+    "imageAlt": "海鸥与咖啡",
+    "menuButton": "菜单",
+    "ordersButton": "我的订单"
+  },
   "errors": {
-    "init": "无法初始化应用程序"
+    "init": "无法初始化应用程序",
+    "orderAlreadyProcessed": "订单已被处理"
   }
 }

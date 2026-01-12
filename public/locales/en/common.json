@@ -3,6 +3,7 @@
     "menu": "Menu",
     "orders": "My Orders",
     "order": "Order",
+    "orderPlacement": "Order Placement",
     "home": "Home"
   },
   "notFound": {
@@ -62,7 +63,16 @@
       "canceled": "Canceled"
     }
   },
+  "orderSuccess": {
+    "title": "Your order has been accepted",
+    "description": "Soon the aroma of fresh coffee and delicious dishes will be waiting for you!",
+    "notification": "Wait for notification",
+    "imageAlt": "Seagull with coffee",
+    "menuButton": "Menu",
+    "ordersButton": "My orders"
+  },
   "errors": {
-    "init": "Failed to initialise the application"
+    "init": "Failed to initialise the application",
+    "orderAlreadyProcessed": "Order has already been processed"
   }
 }

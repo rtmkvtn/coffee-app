@@ -1,11 +1,12 @@
 import { useEffect, useState, useTransition } from 'react'
 
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import Button from '@components/button/Button'
 import TilesSelect from '@components/tilesSelect/TilesSelect'
 import { PAYMENT_METHODS } from '@constants/index'
-import { HOME_PATH } from '@constants/routes'
+import { HOME_PATH, ORDER_SUCCESS_PATH, ORDERS_PATH } from '@constants/routes'
 import { useModal } from '@context/modalContext'
 import { useOrders } from '@context/ordersContext'
 import { showToast } from '@lib/toasts/toast'
@@ -23,6 +24,7 @@ import PaymentMethodModal from './paymentMethodModal/PaymentMethodModal'
 const OrderPage = () => {
   const { orderId } = useParams()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [isPending, startTransition] = useTransition()
   const { showModal } = useModal()
   const { refreshOrders } = useOrders()
@@ -121,9 +123,16 @@ const OrderPage = () => {
   }
 
   const handleConfirm = () => {
-    startTransition(async () => {
-      if (!orderId) return
+    if (!orderId) return
 
+    // Guard against re-confirming already-processed orders
+    if (order?.state !== 'draft') {
+      showToast(t('errors.orderAlreadyProcessed'), 'error')
+      navigate(ORDERS_PATH, { replace: true })
+      return
+    }
+
+    startTransition(async () => {
       try {
         const response = await updateOrderStatus(
           orderId,
@@ -136,6 +145,7 @@ const OrderPage = () => {
         setOrder(response.data)
         await refreshOrders()
         showToast('Заказ принят в обработку', 'success')
+        navigate(ORDER_SUCCESS_PATH, { replace: true })
       } catch (error) {
         console.error('Error updating order status:', error)
         showToast('Не удалось обновить статус заказа', 'error')

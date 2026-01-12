@@ -10,12 +10,14 @@ import { LayoutProvider } from './LayoutContext'
 type IProps = {
   withNavHeader?: boolean
   headerText?: string
+  noBackOption?: boolean
   withCartProvider?: boolean
   children: ReactNode
 }
 
 const Layout = ({
   withNavHeader,
+  noBackOption,
   headerText,
   withCartProvider,
   children,
@@ -47,7 +49,7 @@ const Layout = ({
       >
         {withNavHeader && (
           <div className={styles.header} ref={headerRef}>
-            <NavHeader text={headerText} />
+            <NavHeader text={headerText} noBackOption={noBackOption} />
           </div>
         )}
         <div className={styles.content} ref={contentRef}>

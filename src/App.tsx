@@ -10,6 +10,7 @@ import {
   MENU_PATH,
   NOT_FOUND_PATH,
   ORDER_PATH,
+  ORDER_SUCCESS_PATH,
   ORDERS_PATH,
 } from '@constants/routes'
 import { useCart } from '@context/cartContext'
@@ -24,6 +25,7 @@ import MenuPage from '@views/menuPage/MenuPage'
 import NotFoundPage from '@views/notFoundPage/NotFoundPage'
 import OrderPage from '@views/orderPage'
 import OrdersPage from '@views/ordersPage/OrdersPage'
+import OrderSuccessPage from '@views/orderSuccessPage/OrderSuccessPage'
 
 import './App.scss'
 
@@ -109,8 +111,20 @@ function App() {
             <Route
               path={ORDER_PATH}
               element={
-                <Layout withNavHeader headerText={'Оформление заказа'}>
+                <Layout withNavHeader headerText={t('navigation.orderPlacement')}>
                   <OrderPage />
+                </Layout>
+              }
+            />
+            <Route
+              path={ORDER_SUCCESS_PATH}
+              element={
+                <Layout
+                  withNavHeader
+                  noBackOption
+                  headerText={t('navigation.orderPlacement')}
+                >
+                  <OrderSuccessPage />
                 </Layout>
               }
             />

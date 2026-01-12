@@ -10,11 +10,12 @@ import styles from './NavHeader.module.scss'
 
 type IProps = {
   className?: string
+  noBackOption?: boolean
   text?: string
 }
 
 const NavHeader = forwardRef<HTMLDivElement, IProps>(
-  ({ className, text }, ref) => {
+  ({ className, noBackOption, text }, ref) => {
     const navigate = useNavigate()
 
     return (
@@ -23,14 +24,16 @@ const NavHeader = forwardRef<HTMLDivElement, IProps>(
         className={classNames(styles.wrapper, className && className)}
       >
         <div className={styles.content}>
-          <div
-            className={styles.back}
-            onClick={() => {
-              navigate(-1)
-            }}
-          >
-            <Icon type={'arrowRight'} size={24} />
-          </div>
+          {!noBackOption && (
+            <div
+              className={styles.back}
+              onClick={() => {
+                navigate(-1)
+              }}
+            >
+              <Icon type={'arrowRight'} size={24} />
+            </div>
+          )}
           {text && <p className={styles.text}>{text}</p>}
         </div>
       </div>
