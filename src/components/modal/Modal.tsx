@@ -56,9 +56,11 @@ const Modal = () => {
         ref={modalRef}
         className={classNames(styles.modal, styles[`type_${modal.type}`])}
       >
-        <button className={styles.closeButton} onClick={hideModal}>
-          <Icon type="close" size={12} />
-        </button>
+        {modal.type !== 'confirm' && (
+          <button className={styles.closeButton} onClick={hideModal}>
+            <Icon type="close" size={12} />
+          </button>
+        )}
 
         {modal.title && <h2 className={styles.title}>{modal.title}</h2>}
 
@@ -66,20 +68,20 @@ const Modal = () => {
 
         {modal.type !== 'custom' && (
           <div className={styles.footer}>
-            {modal.type === 'confirm' && (
-              <Button
-                text={modal.cancelText || 'Отмена'}
-                mode="secondary"
-                onClick={handleCancel}
-                className={styles.button}
-              />
-            )}
             <Button
               text={modal.confirmText || 'OK'}
               mode="primary"
               onClick={handleConfirm}
               className={styles.button}
             />
+            {modal.type === 'confirm' && (
+              <Button
+                text={modal.cancelText || 'Отмена'}
+                mode="danger"
+                onClick={handleCancel}
+                className={styles.button}
+              />
+            )}
           </div>
         )}
       </div>

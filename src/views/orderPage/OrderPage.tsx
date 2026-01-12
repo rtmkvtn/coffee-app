@@ -88,7 +88,6 @@ const OrderPage = () => {
 
     showModal({
       type: 'confirm',
-      title: 'Отменить заказ',
       content: 'Вы уверены, что хотите отменить заказ?',
       confirmText: 'Отменить',
       cancelText: 'Нет',
@@ -188,16 +187,6 @@ const OrderPage = () => {
           )}
           {withAction && (
             <div className={styles.actions}>
-              {canCancel && (
-                <Button
-                  text="Отменить заказ"
-                  mode="danger"
-                  onClick={handleCancel}
-                  loading={isPending}
-                  disabled={isPending}
-                  className={styles.actionButton}
-                />
-              )}
               {canConfirm && (
                 <Button
                   text="Оформить заказ"
@@ -213,6 +202,16 @@ const OrderPage = () => {
                   text="Оплатить"
                   mode="success"
                   onClick={handlePay}
+                  loading={isPending}
+                  disabled={isPending}
+                  className={styles.actionButton}
+                />
+              )}
+              {canCancel && (
+                <Button
+                  text="Отменить заказ"
+                  mode="danger"
+                  onClick={handleCancel}
                   loading={isPending}
                   disabled={isPending}
                   className={styles.actionButton}
