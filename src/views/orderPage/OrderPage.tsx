@@ -17,7 +17,7 @@ import {
   updateOrderStatus,
 } from '@services/ordersService'
 
-import OrderItem from './orderItem/OrderItem'
+import OrderItem from '@components/orderItem'
 import styles from './OrderPage.module.scss'
 import PaymentMethodModal from './paymentMethodModal/PaymentMethodModal'
 
@@ -63,9 +63,9 @@ const OrderPage = () => {
 
     showModal({
       type: 'confirm',
-      content: 'Вы уверены, что хотите отменить заказ?',
-      confirmText: 'Отменить',
-      cancelText: 'Нет',
+      content: t('orders.confirmCancel'),
+      confirmText: t('orders.cancelButton'),
+      cancelText: t('orders.cancelButtonNo'),
       onConfirm: () => {
         startTransition(async () => {
           try {
@@ -75,11 +75,11 @@ const OrderPage = () => {
             }
             setOrder(response.data)
             await refreshOrders()
-            showToast('Заказ отменен', 'success')
+            showToast(t('orders.messages.orderCanceled'), 'success')
             navigate(HOME_PATH)
           } catch (error) {
             console.error('Error canceling order:', error)
-            showToast('Не удалось отменить заказ', 'error')
+            showToast(t('orders.messages.failedToCancel'), 'error')
           }
         })
       },
@@ -106,10 +106,10 @@ const OrderPage = () => {
                 }
                 setOrder(response.data)
                 await refreshOrders()
-                showToast('Заказ принят в обработку', 'success')
+                showToast(t('orders.messages.orderAccepted'), 'success')
               } catch (error) {
                 console.error('Error updating order status:', error)
-                showToast('Не удалось обновить статус заказа', 'error')
+                showToast(t('orders.messages.failedToUpdateStatus'), 'error')
               }
             })
           }}
@@ -144,11 +144,11 @@ const OrderPage = () => {
         }
         setOrder(response.data)
         await refreshOrders()
-        showToast('Заказ принят в обработку', 'success')
+        showToast(t('orders.messages.orderAccepted'), 'success')
         navigate(ORDER_SUCCESS_PATH, { replace: true })
       } catch (error) {
         console.error('Error updating order status:', error)
-        showToast('Не удалось обновить статус заказа', 'error')
+        showToast(t('orders.messages.failedToUpdateStatus'), 'error')
       }
     })
   }
@@ -194,7 +194,7 @@ const OrderPage = () => {
             <div className={styles.actions}>
               {canConfirm && (
                 <Button
-                  text="Оформить заказ"
+                  text={t('orders.confirmOrderButton')}
                   mode="primary"
                   onClick={handleConfirm}
                   loading={isPending}
@@ -204,7 +204,7 @@ const OrderPage = () => {
               )}
               {canPay && (
                 <Button
-                  text="Оплатить"
+                  text={t('orders.payButton')}
                   mode="success"
                   onClick={handlePay}
                   loading={isPending}
@@ -214,7 +214,7 @@ const OrderPage = () => {
               )}
               {canCancel && (
                 <Button
-                  text="Отменить заказ"
+                  text={t('orders.cancelOrderButton')}
                   mode="danger"
                   onClick={handleCancel}
                   loading={isPending}

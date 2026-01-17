@@ -1,5 +1,8 @@
+import { memo } from 'react'
+
 import { useTranslation } from 'react-i18next'
 
+import Button from '@components/button/Button'
 import OrderStatus from '@components/orderStatus/OrderStatus'
 import { formatPrice } from '@lib/helpers'
 import { IOrder } from '@models/index'
@@ -11,15 +14,15 @@ type Props = {
   order: IOrder
 }
 
-const OrderItem = ({ order }: Props) => {
+const OrderItem = memo(({ order }: Props) => {
   const { t } = useTranslation()
 
+  if (!order.items || order.items.length === 0) {
+    return null
+  }
+
   return (
-    <div
-      className={classNames(styles.wrapper, {
-        [styles.draftBorder]: order.state === 'draft',
-      })}
-    >
+    <div className={classNames(styles.wrapper, styles.draftBorder)}>
       <div className={styles.header}>
         <span className={styles.orderNumber}>
           {t('orders.orderNumber', { id: order.id })}
@@ -53,8 +56,19 @@ const OrderItem = ({ order }: Props) => {
           </span>
         </div>
       </div>
+      {/*{order.state === 'completed' && (*/}
+      <div className={styles.footer}>
+        <Button
+          className={styles.footerBtn}
+          text="Повторить заказ"
+          mode="secondary"
+        />
+      </div>
+      {/*)}*/}
     </div>
   )
-}
+})
+
+OrderItem.displayName = 'OrderItem'
 
 export default OrderItem

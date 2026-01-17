@@ -55,6 +55,14 @@
   },
   "orders": {
     "orderNumber": "Заказ №{{id}}",
+    "noItems": "В заказе нет товаров",
+    "emptyOrders": "У вас пока нет заказов",
+    "confirmCancel": "Вы уверены, что хотите отменить заказ?",
+    "cancelButton": "Отменить",
+    "cancelButtonNo": "Нет",
+    "confirmOrderButton": "Оформить заказ",
+    "payButton": "Оплатить",
+    "cancelOrderButton": "Отменить заказ",
     "status": {
       "draft": "Ожидает подтверждения",
       "waitingForPayment": "Ожидает оплаты",
@@ -63,6 +71,12 @@
       "preparing": "Готовится",
       "completed": "Выполнен",
       "canceled": "Отменен"
+    },
+    "messages": {
+      "orderCanceled": "Заказ отменен",
+      "orderAccepted": "Заказ принят в обработку",
+      "failedToCancel": "Не удалось отменить заказ",
+      "failedToUpdateStatus": "Не удалось обновить статус заказа"
     }
   },
   "orderSuccess": {

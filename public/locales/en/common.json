@@ -53,6 +53,14 @@
   },
   "orders": {
     "orderNumber": "Order #{{id}}",
+    "noItems": "No items in order",
+    "emptyOrders": "You don't have any orders yet",
+    "confirmCancel": "Are you sure you want to cancel the order?",
+    "cancelButton": "Cancel",
+    "cancelButtonNo": "No",
+    "confirmOrderButton": "Confirm order",
+    "payButton": "Pay",
+    "cancelOrderButton": "Cancel order",
     "status": {
       "draft": "Awaiting confirmation",
       "waitingForPayment": "Awaiting payment",
@@ -61,6 +69,12 @@
       "preparing": "Preparing",
       "completed": "Completed",
       "canceled": "Canceled"
+    },
+    "messages": {
+      "orderCanceled": "Order canceled",
+      "orderAccepted": "Order accepted for processing",
+      "failedToCancel": "Failed to cancel order",
+      "failedToUpdateStatus": "Failed to update order status"
     }
   },
   "orderSuccess": {
