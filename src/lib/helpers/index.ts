@@ -70,3 +70,5 @@ export const formatDate = (dateString: string | Date, friendly?: boolean) => {
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms))
+
+export { isSimpleProduct, getSimpleProductConfig } from './productUtils'

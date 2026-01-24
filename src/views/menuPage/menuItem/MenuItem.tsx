@@ -4,7 +4,12 @@ import ProductImage from '@components/productImage/ProductImage'
 import ProductSelectionModal from '@components/productSelectionModal/ProductSelectionModal'
 import { useCart } from '@context/cartContext'
 import { useModal } from '@context/modalContext'
-import { formatPrice, getImgUrl } from '@lib/helpers'
+import {
+  formatPrice,
+  getImgUrl,
+  isSimpleProduct,
+  getSimpleProductConfig,
+} from '@lib/helpers'
 import { LocalizedPortion, LocalizedProduct } from '@models/index'
 
 import styles from './MenuItem.module.scss'
@@ -29,20 +34,27 @@ const MenuItem = ({ product }: Props) => {
   const [isPending, startTransition] = useTransition()
 
   const handleAddToCart = (): void => {
-    showModal({
-      type: 'custom',
-      content: (
-        <ProductSelectionModal
-          product={product}
-          onAddToCart={(config) => {
-            startTransition(async () => {
-              await addToCart(product, config)
-              hideModal()
-            })
-          }}
-        />
-      ),
-    })
+    if (isSimpleProduct(product)) {
+      startTransition(async () => {
+        const config = getSimpleProductConfig(product)
+        await addToCart(product, config)
+      })
+    } else {
+      showModal({
+        type: 'custom',
+        content: (
+          <ProductSelectionModal
+            product={product}
+            onAddToCart={(config) => {
+              startTransition(async () => {
+                await addToCart(product, config)
+                hideModal()
+              })
+            }}
+          />
+        ),
+      })
+    }
   }
 
   const handleRemoveFromCart = async (): Promise<void> => {
