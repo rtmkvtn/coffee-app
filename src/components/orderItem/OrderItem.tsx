@@ -56,15 +56,15 @@ const OrderItem = memo(({ order }: Props) => {
           </span>
         </div>
       </div>
-      {/*{order.state === 'completed' && (*/}
-      <div className={styles.footer}>
-        <Button
-          className={styles.footerBtn}
-          text="Повторить заказ"
-          mode="secondary"
-        />
-      </div>
-      {/*)}*/}
+      {order.state === 'completed' && (
+        <div className={styles.footer}>
+          <Button
+            className={styles.footerBtn}
+            text="Повторить заказ"
+            mode="secondary"
+          />
+        </div>
+      )}
     </div>
   )
 })
