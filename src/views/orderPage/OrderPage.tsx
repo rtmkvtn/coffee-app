@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import Button from '@components/button/Button'
+import OrderItem from '@components/orderItem'
 import TilesSelect from '@components/tilesSelect/TilesSelect'
 import { PAYMENT_METHODS } from '@constants/index'
 import { HOME_PATH, ORDER_SUCCESS_PATH, ORDERS_PATH } from '@constants/routes'
@@ -17,7 +18,6 @@ import {
   updateOrderStatus,
 } from '@services/ordersService'
 
-import OrderItem from '@components/orderItem'
 import styles from './OrderPage.module.scss'
 import PaymentMethodModal from './paymentMethodModal/PaymentMethodModal'
 

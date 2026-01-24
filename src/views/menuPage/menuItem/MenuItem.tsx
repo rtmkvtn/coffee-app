@@ -7,8 +7,8 @@ import { useModal } from '@context/modalContext'
 import {
   formatPrice,
   getImgUrl,
-  isSimpleProduct,
   getSimpleProductConfig,
+  isSimpleProduct,
 } from '@lib/helpers'
 import { LocalizedPortion, LocalizedProduct } from '@models/index'
 
@@ -33,6 +33,23 @@ const MenuItem = ({ product }: Props) => {
 
   const [isPending, startTransition] = useTransition()
 
+  const handleCardClick = (): void => {
+    showModal({
+      type: 'custom',
+      content: (
+        <ProductSelectionModal
+          product={product}
+          onAddToCart={(config) => {
+            startTransition(async () => {
+              await addToCart(product, config)
+              hideModal()
+            })
+          }}
+        />
+      ),
+    })
+  }
+
   const handleAddToCart = (): void => {
     if (isSimpleProduct(product)) {
       startTransition(async () => {
@@ -40,20 +57,7 @@ const MenuItem = ({ product }: Props) => {
         await addToCart(product, config)
       })
     } else {
-      showModal({
-        type: 'custom',
-        content: (
-          <ProductSelectionModal
-            product={product}
-            onAddToCart={(config) => {
-              startTransition(async () => {
-                await addToCart(product, config)
-                hideModal()
-              })
-            }}
-          />
-        ),
-      })
+      handleCardClick()
     }
   }
 
@@ -83,30 +87,30 @@ const MenuItem = ({ product }: Props) => {
 
   return (
     <div className={styles.product}>
-      <ProductImage
-        imgSrc={getImgUrl(product.avatar)}
-        className={styles.avatar}
-        altText={product.name}
-        temperatures={product.temperatures}
-      />
-      <div className={styles.data}>
-        <div className={styles.header}>
-          <p className={styles.name}>{product.name}</p>
-          {smallestPortion?.weight && (
-            <p className={styles.weight}>{smallestPortion.weight}</p>
-          )}
-        </div>
-        <div className={styles.footer}>
+      <div className={styles.clickableArea} onClick={handleCardClick}>
+        <ProductImage
+          imgSrc={getImgUrl(product.avatar)}
+          className={styles.avatar}
+          altText={product.name}
+          temperatures={product.temperatures}
+        />
+        <div className={styles.info}>
+          <div className={styles.header}>
+            <p className={styles.name}>{product.name}</p>
+            {smallestPortion?.weight && (
+              <p className={styles.weight}>{smallestPortion.weight}</p>
+            )}
+          </div>
           <p className={styles.price}>{formatPrice(smallestPortion.price)}</p>
-          <ProductCartButton
-            loading={isPending}
-            quantity={quantityInCart}
-            onAddToCart={handleAddToCart}
-            onRemoveFromCart={handleRemoveFromCart}
-            className={styles.addButton}
-          />
         </div>
       </div>
+      <ProductCartButton
+        loading={isPending}
+        quantity={quantityInCart}
+        onAddToCart={handleAddToCart}
+        onRemoveFromCart={handleRemoveFromCart}
+        className={styles.addButton}
+      />
     </div>
   )
 }

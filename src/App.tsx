@@ -111,7 +111,10 @@ function App() {
             <Route
               path={ORDER_PATH}
               element={
-                <Layout withNavHeader headerText={t('navigation.orderPlacement')}>
+                <Layout
+                  withNavHeader
+                  headerText={t('navigation.orderPlacement')}
+                >
                   <OrderPage />
                 </Layout>
               }

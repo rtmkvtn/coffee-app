@@ -12,40 +12,46 @@
   padding: 8px;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 
-  .avatar {
-    width: 90px;
-  }
-
-  .data {
+  .clickableArea {
     display: flex;
-    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    flex-grow: 1;
+    cursor: pointer;
     height: 100%;
-    gap: 8px;
-    flex-grow: 1;
-  }
-  .header {
-    width: 100%;
-    flex-grow: 1;
-    .name {
-      @include constants.text-medium;
-    }
-    .weight {
-      margin-top: 2px;
-      @include constants.text-sm-inactive;
-    }
-  }
-  .footer {
-    width: 100%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
 
-    .price {
-      @include constants.text-medium-lg;
+    .avatar {
+      width: 90px;
     }
 
-    .addButton {
-      align-self: flex-end;
+    .info {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      gap: 8px;
+      flex-grow: 1;
+
+      .header {
+        width: 100%;
+        flex-grow: 1;
+
+        .name {
+          @include constants.text-medium;
+        }
+
+        .weight {
+          margin-top: 2px;
+          @include constants.text-sm-inactive;
+        }
+      }
+
+      .price {
+        @include constants.text-medium-lg;
+      }
     }
+  }
+
+  .addButton {
+    align-self: flex-end;
   }
 }
