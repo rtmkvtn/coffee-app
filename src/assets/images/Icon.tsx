@@ -9,6 +9,7 @@ import ArrowUpIcon from './ui/arrow.svg?react'
 import CartAddIcon from './ui/cart-add.svg?react'
 import CartRemoveIcon from './ui/cart-remove.svg?react'
 import CartIcon from './ui/cart.svg?react'
+import CheckCircleIcon from './ui/check-circle.svg?react'
 import CheckIcon from './ui/check.svg?react'
 import ClockIcon from './ui/clock.svg?react'
 import CloseIcon from './ui/close.svg?react'
@@ -41,6 +42,7 @@ import TrashIcon from './ui/trash.svg?react'
 import UserNoFrameIcon from './ui/user-no-frame.svg?react'
 import UserIcon from './ui/user.svg?react'
 import VoiceIcon from './ui/voice.svg?react'
+import WarningCircleIcon from './ui/warning-circle.svg?react'
 
 import notFoundIcon from './ui/404.svg'
 import addTicketIcon from './ui/add-ticket.svg'
@@ -51,6 +53,7 @@ import arrowUpIcon from './ui/arrow.svg'
 import cartAddIcon from './ui/cart-add.svg'
 import cartRemoveIcon from './ui/cart-remove.svg'
 import cartIcon from './ui/cart.svg'
+import checkCircleIcon from './ui/check-circle.svg'
 import checkIcon from './ui/check.svg'
 import clockIcon from './ui/clock.svg'
 import closeIcon from './ui/close.svg'
@@ -83,6 +86,7 @@ import trashIcon from './ui/trash.svg'
 import userNoFrameIcon from './ui/user-no-frame.svg'
 import userIcon from './ui/user.svg'
 import voiceIcon from './ui/voice.svg'
+import warningCircleIcon from './ui/warning-circle.svg'
 
 type SvgIconComponent = FunctionComponent<SVGProps<SVGSVGElement>>
 
@@ -96,6 +100,7 @@ export type IconTypes =
   | 'cartAdd'
   | 'cartRemove'
   | 'check'
+  | 'checkCircle'
   | 'clock'
   | 'close'
   | 'collectCoins'
@@ -128,6 +133,7 @@ export type IconTypes =
   | 'user'
   | 'userNoFrame'
   | 'voice'
+  | 'warningCircle'
 
 type IProps = {
   tag?: 'svg' | 'img'
@@ -168,6 +174,8 @@ const Icon = ({
   else if (type === 'cartRemove')
     result = { img: cartRemoveIcon, svg: CartRemoveIcon }
   else if (type === 'check') result = { img: checkIcon, svg: CheckIcon }
+  else if (type === 'checkCircle')
+    result = { img: checkCircleIcon, svg: CheckCircleIcon }
   else if (type === 'clock') result = { img: clockIcon, svg: ClockIcon }
   else if (type === 'close') result = { img: closeIcon, svg: CloseIcon }
   else if (type === 'collectCoins')
@@ -207,6 +215,8 @@ const Icon = ({
   else if (type === 'userNoFrame')
     result = { img: userNoFrameIcon, svg: UserNoFrameIcon }
   else if (type === 'voice') result = { img: voiceIcon, svg: VoiceIcon }
+  else if (type === 'warningCircle')
+    result = { img: warningCircleIcon, svg: WarningCircleIcon }
 
   if (isSvg && result.svg) {
     return (
