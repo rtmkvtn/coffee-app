@@ -1,8 +1,13 @@
+import { createElement } from 'react'
+
 import { toast, ToastOptions } from 'react-toastify'
+
+import checkCircleIcon from '@assets/images/ui/check-circle.svg'
+import warningCircleIcon from '@assets/images/ui/warning-circle.svg'
 
 const defaultOptions: ToastOptions = {
   position: 'top-center',
-  autoClose: 3000,
+  autoClose: 1500,
   hideProgressBar: true,
   closeOnClick: true,
   pauseOnHover: true,
@@ -10,11 +15,15 @@ const defaultOptions: ToastOptions = {
   theme: 'dark',
   closeButton: false,
   style: {
-    background: 'rgba(35, 32, 28, 0.9)',
-    color: '#006db6',
-    fontFamily: 'TTFirs, sans-serif',
-    fontWeight: 600,
+    color: '#fff',
   },
+}
+
+const toastIcons: Record<'success' | 'error' | 'info' | 'warning', string> = {
+  success: checkCircleIcon,
+  error: warningCircleIcon,
+  warning: warningCircleIcon,
+  info: checkCircleIcon,
 }
 
 export const showToast = (
@@ -31,9 +40,16 @@ export const showToast = (
 
   toast[type](message, {
     ...defaultOptions,
+    icon: () =>
+      createElement('img', {
+        src: toastIcons[type],
+        alt: type,
+        width: 24,
+        height: 24,
+      }),
     style: {
       ...defaultOptions.style,
-      color: typeColors[type],
+      background: typeColors[type],
     },
     ...options,
   })

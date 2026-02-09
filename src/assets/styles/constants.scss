@@ -82,3 +82,11 @@ $sidebar-width-mobile: 282px;
   font-size: 15px;
   line-height: 14px;
 }
+
+@mixin text-toast {
+  font-family: $main-font-family;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: 0;
+}
