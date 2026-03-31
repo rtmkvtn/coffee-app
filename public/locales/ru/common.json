@@ -63,6 +63,8 @@
     "confirmOrderButton": "Оформить заказ",
     "payButton": "Оплатить",
     "cancelOrderButton": "Отменить заказ",
+    "repeatOrder": "Повторить заказ",
+    "orderNotFound": "Заказ не найден",
     "status": {
       "draft": "Ожидает подтверждения",
       "waitingForPayment": "Ожидает оплаты",
@@ -86,6 +88,20 @@
     "imageAlt": "Чайка с кофе",
     "menuButton": "Меню",
     "ordersButton": "Мои заказы"
+  },
+  "modal": {
+    "cancel": "Отмена"
+  },
+  "payment": {
+    "selectMethod": "Выберите способ оплаты",
+    "cashAtCounter": "Оплата на кассе",
+    "card": "Картой",
+    "cardOnPickup": "Картой при получении",
+    "cashOnPickup": "Наличными при получении"
+  },
+  "dates": {
+    "today": "Сегодня",
+    "yesterday": "Вчера"
   },
   "errors": {
     "init": "Не удалось инициализировать приложение",

@@ -61,6 +61,8 @@
     "confirmOrderButton": "Confirm order",
     "payButton": "Pay",
     "cancelOrderButton": "Cancel order",
+    "repeatOrder": "Repeat order",
+    "orderNotFound": "Order not found",
     "status": {
       "draft": "Awaiting confirmation",
       "waitingForPayment": "Awaiting payment",
@@ -84,6 +86,20 @@
     "imageAlt": "Seagull with coffee",
     "menuButton": "Menu",
     "ordersButton": "My orders"
+  },
+  "modal": {
+    "cancel": "Cancel"
+  },
+  "payment": {
+    "selectMethod": "Select payment method",
+    "cashAtCounter": "Pay at counter",
+    "card": "Card",
+    "cardOnPickup": "Card on pickup",
+    "cashOnPickup": "Cash on pickup"
+  },
+  "dates": {
+    "today": "Today",
+    "yesterday": "Yesterday"
   },
   "errors": {
     "init": "Failed to initialise the application",

@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import { useTranslation } from 'react-i18next'
+
 import Button from '@components/button/Button'
 import { useModal } from '@context/modalContext'
 
@@ -14,6 +16,7 @@ const PaymentMethodModal: FC<PaymentMethodModalProps> = ({
   onCashPayment,
   // onCardPayment,
 }) => {
+  const { t } = useTranslation()
   const { hideModal } = useModal()
 
   const handleCashPayment = () => {
@@ -28,16 +31,16 @@ const PaymentMethodModal: FC<PaymentMethodModalProps> = ({
 
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.title}>Выберите способ оплаты</h2>
+      <h2 className={styles.title}>{t('payment.selectMethod')}</h2>
       <div className={styles.buttons}>
         <Button
-          text="Оплата на кассе"
+          text={t('payment.cashAtCounter')}
           mode="success"
           onClick={handleCashPayment}
           className={styles.button}
         />
         {/* <Button
-          text="Картой"
+          text={t('payment.card')}
           mode="primary"
           onClick={handleCardPayment}
           className={styles.button}

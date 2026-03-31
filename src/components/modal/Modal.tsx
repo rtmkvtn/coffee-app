@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 
+import { useTranslation } from 'react-i18next'
+
 import Button from '@components/button/Button'
 import { useModal } from '@context/modalContext'
 import classNames from 'classnames'
@@ -9,6 +11,7 @@ import Icon from '@assets/images/Icon'
 import styles from './Modal.module.scss'
 
 const Modal = () => {
+  const { t } = useTranslation()
   const { modal, isOpen, hideModal } = useModal()
   const modalRef = useRef<HTMLDivElement>(null)
 
@@ -76,7 +79,7 @@ const Modal = () => {
             />
             {modal.type === 'confirm' && (
               <Button
-                text={modal.cancelText || 'Отмена'}
+                text={modal.cancelText || t('modal.cancel')}
                 mode="danger"
                 onClick={handleCancel}
                 className={styles.button}

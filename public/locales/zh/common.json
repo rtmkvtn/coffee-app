@@ -60,6 +60,8 @@
     "confirmOrderButton": "确认订单",
     "payButton": "付款",
     "cancelOrderButton": "取消订单",
+    "repeatOrder": "重新下单",
+    "orderNotFound": "未找到订单",
     "status": {
       "draft": "等待确认",
       "waitingForPayment": "等待付款",
@@ -83,6 +85,20 @@
     "imageAlt": "海鸥与咖啡",
     "menuButton": "菜单",
     "ordersButton": "我的订单"
+  },
+  "modal": {
+    "cancel": "取消"
+  },
+  "payment": {
+    "selectMethod": "选择付款方式",
+    "cashAtCounter": "柜台付款",
+    "card": "银行卡",
+    "cardOnPickup": "取货时刷卡",
+    "cashOnPickup": "取货时付现金"
+  },
+  "dates": {
+    "today": "今天",
+    "yesterday": "昨天"
   },
   "errors": {
     "init": "无法初始化应用程序",

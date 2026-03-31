@@ -14,12 +14,12 @@ export const EMOJI = {
 export const PAYMENT_METHODS = [
   {
     key: 'CARD',
-    label: 'Картой при получении',
+    labelKey: 'payment.cardOnPickup',
     emoji: EMOJI.CREDIT_CARD,
   },
   {
     key: 'CASH',
-    label: 'Наличными при получении',
+    labelKey: 'payment.cashOnPickup',
     emoji: EMOJI.CASH,
   },
 ]

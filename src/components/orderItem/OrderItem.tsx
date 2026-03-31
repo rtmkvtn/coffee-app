@@ -31,20 +31,32 @@ const OrderItem = memo(({ order }: Props) => {
       </div>
       <div className={styles.content}>
         <div className={styles.items}>
-          {order.items.map((item) => (
-            <div key={item.id} className={styles.item}>
-              <span className={classNames(styles.itemText, styles.itemQuant)}>
-                {item.quantity}x
-              </span>
-              <span className={classNames(styles.itemText, styles.itemName)}>
-                {/*need this span for dots positioning*/}
-                <span>{item.name}</span>
-              </span>
-              <span className={classNames(styles.itemText, styles.itemPrice)}>
-                {formatPrice(item.price * item.quantity)}
-              </span>
-            </div>
-          ))}
+          {order.items.map((item) => {
+            const lineTotal =
+              (Number(item.unitPrice) + Number(item.ingredientsPrice)) *
+              item.quantity
+
+            return (
+              <div key={item.id} className={styles.item}>
+                <span
+                  className={classNames(styles.itemText, styles.itemQuant)}
+                >
+                  {item.quantity}x
+                </span>
+                <span
+                  className={classNames(styles.itemText, styles.itemName)}
+                >
+                  {/*need this span for dots positioning*/}
+                  <span>{item.productSnapshot.name}</span>
+                </span>
+                <span
+                  className={classNames(styles.itemText, styles.itemPrice)}
+                >
+                  {formatPrice(lineTotal)}
+                </span>
+              </div>
+            )
+          })}
         </div>
         <div className={styles.dashDivider} />
         <div className={styles.footer}>
@@ -56,11 +68,11 @@ const OrderItem = memo(({ order }: Props) => {
           </span>
         </div>
       </div>
-      {order.state === 'completed' && (
+      {order.state === 'COMPLETED' && (
         <div className={styles.footer}>
           <Button
             className={styles.footerBtn}
-            text="Повторить заказ"
+            text={t('orders.repeatOrder')}
             mode="secondary"
           />
         </div>
