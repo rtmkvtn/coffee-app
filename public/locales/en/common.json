@@ -62,6 +62,13 @@
     "payButton": "Pay",
     "cancelOrderButton": "Cancel order",
     "repeatOrder": "Repeat order",
+    "repeat": {
+      "unavailableTitle": "Some items are unavailable",
+      "unavailableDescription": "The following items are no longer available:",
+      "addAvailable": "Add available items",
+      "failed": "Failed to repeat order",
+      "noneAvailable": "None of the items are available"
+    },
     "orderNotFound": "Order not found",
     "status": {
       "draft": "Awaiting confirmation",

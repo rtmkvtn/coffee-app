@@ -1,15 +1,43 @@
-import { IOrder, IPaymentMethod, OrderStatus } from '@models/index'
+import { CartItem, IOrder, IPaymentMethod } from '@models/index'
 
 import api from './api'
-import { IResponseWrapper, ISingleTypeResponseWrapper } from './services.types'
+import { IResponseWrapper } from './services.types'
+
+export type UnavailableItem = {
+  name: string
+  reason: string
+}
+
+export type RepeatOrderResponse = {
+  available: CartItem[]
+  unavailable: UnavailableItem[]
+}
 
 export const createOrder = async (
-  cartId: number
-): Promise<ISingleTypeResponseWrapper<IOrder>> => {
+  paymentMethod?: IPaymentMethod
+): Promise<IResponseWrapper<IOrder>> => {
   try {
     const response = await api.post('/api/orders', {
-      cartId,
+      ...(paymentMethod && { paymentMethod }),
     })
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (e: any) {
+    return {
+      success: false,
+      code: e.status,
+    }
+  }
+}
+
+export const repeatOrder = async (
+  orderId: string
+): Promise<IResponseWrapper<RepeatOrderResponse>> => {
+  try {
+    const response = await api.post(`/api/orders/${orderId}/repeat`)
 
     return {
       success: true,
@@ -26,71 +54,6 @@ export const createOrder = async (
 export const getOrders = async (): Promise<IResponseWrapper<IOrder[]>> => {
   try {
     const response = await api.get('/api/orders/my')
-
-    return {
-      success: true,
-      data: response.data,
-    }
-  } catch (e: any) {
-    return {
-      success: false,
-      code: e.status,
-    }
-  }
-}
-
-export const getOrderById = async (
-  orderId: string
-): Promise<ISingleTypeResponseWrapper<IOrder>> => {
-  try {
-    const response = await api.get(`/api/orders/${orderId}`)
-
-    return {
-      success: true,
-      data: response.data.data,
-    }
-  } catch (e: any) {
-    return {
-      success: false,
-      code: e.status,
-    }
-  }
-}
-
-export const updateOrderStatus = async (
-  orderId: string,
-  status: OrderStatus,
-  paymentMethod?: IPaymentMethod
-): Promise<ISingleTypeResponseWrapper<IOrder>> => {
-  try {
-    const response = await api.put(`/api/orders/${orderId}`, {
-      data: {
-        state: status,
-        ...(paymentMethod && { paymentMethod }),
-      },
-    })
-
-    return {
-      success: true,
-      data: response.data.data,
-    }
-  } catch (e: any) {
-    return {
-      success: false,
-      code: e.status,
-    }
-  }
-}
-
-export const cancelOrder = async (
-  orderId: string
-): Promise<ISingleTypeResponseWrapper<IOrder>> => {
-  try {
-    const response = await api.put(`/api/orders/${orderId}`, {
-      data: {
-        state: 'canceled' as OrderStatus,
-      },
-    })
 
     return {
       success: true,

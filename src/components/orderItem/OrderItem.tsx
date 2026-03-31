@@ -1,11 +1,18 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
+import AvailabilityDialog from '@components/availabilityDialog/AvailabilityDialog'
 import Button from '@components/button/Button'
 import OrderStatus from '@components/orderStatus/OrderStatus'
+import { MENU_PATH } from '@constants/routes'
+import { useCart } from '@context/cartContext'
+import { useModal } from '@context/modalContext'
 import { formatPrice } from '@lib/helpers'
+import { showToast } from '@lib/toasts/toast'
 import { IOrder } from '@models/index'
+import { repeatOrder } from '@services/ordersService'
 import classNames from 'classnames'
 
 import styles from './OrderItem.module.scss'
@@ -16,6 +23,53 @@ type Props = {
 
 const OrderItem = memo(({ order }: Props) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const { clearCart, setItems } = useCart()
+  const { showModal } = useModal()
+  const [repeatLoading, setRepeatLoading] = useState(false)
+
+  const handleRepeatOrder = async () => {
+    setRepeatLoading(true)
+    try {
+      const response = await repeatOrder(order.id)
+      if (!response.success) {
+        showToast(t('orders.repeat.failed'), 'error')
+        return
+      }
+
+      const { available, unavailable } = response.data
+
+      if (available.length === 0) {
+        showToast(t('orders.repeat.noneAvailable'), 'error')
+        return
+      }
+
+      if (unavailable.length === 0) {
+        clearCart()
+        setItems(available)
+        navigate(MENU_PATH)
+        return
+      }
+
+      showModal({
+        type: 'custom',
+        content: (
+          <AvailabilityDialog
+            unavailableItems={unavailable}
+            onAddAvailable={() => {
+              clearCart()
+              setItems(available)
+              navigate(MENU_PATH)
+            }}
+          />
+        ),
+      })
+    } catch {
+      showToast(t('orders.repeat.failed'), 'error')
+    } finally {
+      setRepeatLoading(false)
+    }
+  }
 
   if (!order.items || order.items.length === 0) {
     return null
@@ -74,6 +128,8 @@ const OrderItem = memo(({ order }: Props) => {
             className={styles.footerBtn}
             text={t('orders.repeatOrder')}
             mode="secondary"
+            onClick={handleRepeatOrder}
+            loading={repeatLoading}
           />
         </div>
       )}

@@ -64,6 +64,13 @@
     "payButton": "Оплатить",
     "cancelOrderButton": "Отменить заказ",
     "repeatOrder": "Повторить заказ",
+    "repeat": {
+      "unavailableTitle": "Некоторые товары недоступны",
+      "unavailableDescription": "Следующие товары больше недоступны:",
+      "addAvailable": "Добавить доступные",
+      "failed": "Не удалось повторить заказ",
+      "noneAvailable": "Ни один из товаров недоступен"
+    },
     "orderNotFound": "Заказ не найден",
     "status": {
       "draft": "Ожидает подтверждения",

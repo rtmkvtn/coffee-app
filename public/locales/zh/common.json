@@ -61,6 +61,13 @@
     "payButton": "付款",
     "cancelOrderButton": "取消订单",
     "repeatOrder": "重新下单",
+    "repeat": {
+      "unavailableTitle": "部分商品不可用",
+      "unavailableDescription": "以下商品已不再可用：",
+      "addAvailable": "添加可用商品",
+      "failed": "重新下单失败",
+      "noneAvailable": "所有商品均不可用"
+    },
     "orderNotFound": "未找到订单",
     "status": {
       "draft": "等待确认",
