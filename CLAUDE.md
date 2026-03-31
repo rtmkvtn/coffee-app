@@ -17,11 +17,10 @@ But AI MUST NEVER execute `git commit` commands.
 
 ### Backend Repository
 
-The backend for this application is located in the sibling directory: `../coffee-strapi`
+The backend for this application is located in the sibling directory: `../coffee-backend`
 
-- This is a Strapi CMS instance
 - Development server runs on `http://localhost:1337`
-- Production server: `https://cms.democoffeeandseaguls.ru`
+- Production URL is configured via `VITE_API_URL` environment variable
 
 ## Development Commands
 
@@ -84,10 +83,10 @@ The application uses a multi-layered context provider pattern in `src/main.tsx`:
 
 ### API Integration
 
-The app communicates with a Strapi CMS backend located in `../coffee-strapi`:
+The app communicates with a backend API located in `../coffee-backend`:
 
 - **Development**: `http://localhost:1337`
-- **Production**: `https://cms.democoffeeandseaguls.ru`
+- **Production**: Configured via `VITE_API_URL` environment variable
 
 API client configured in `src/services/api/index.ts` with:
 
@@ -164,5 +163,5 @@ const useCart = () => {
 This repository is part of a multi-project coffee ordering system:
 
 - **coffee-app** (this repo) - React TypeScript frontend Telegram Web App
-- **coffee-strapi** (`../coffee-strapi`) - Strapi CMS backend
+- **coffee-backend** (`../coffee-backend`) - Backend API
 - **coffee-bot** (`../coffee-bot`) - Telegram Bot companion

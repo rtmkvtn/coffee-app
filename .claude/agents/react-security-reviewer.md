@@ -67,7 +67,7 @@ This codebase uses:
 - Context-based state management (UserProvider, MenuProvider, CartProvider, OrdersProvider, ModalProvider)
 - Path aliases (@views, @components, @hooks, @lib, @context, @models, @services, @constants)
 - SCSS with CSS modules
-- Axios for API communication with Strapi CMS backend
+- Axios for API communication with backend
 - Telegram Web App API integration
 - React Router v7
 

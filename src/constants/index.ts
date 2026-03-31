@@ -2,9 +2,7 @@ export * from './routes'
 export * from './temp'
 
 export const BASE_URL =
-  import.meta.env.MODE === 'development'
-    ? 'http://localhost:1337'
-    : 'https://cms.democoffeeandseaguls.ru'
+  import.meta.env.VITE_API_URL || 'http://localhost:1337'
 
 export const EMOJI = {
   RAISING_HANDS: '\u{1F64C}',
@@ -15,12 +13,12 @@ export const EMOJI = {
 
 export const PAYMENT_METHODS = [
   {
-    key: 'card',
+    key: 'CARD',
     label: 'Картой при получении',
     emoji: EMOJI.CREDIT_CARD,
   },
   {
-    key: 'cash',
+    key: 'CASH',
     label: 'Наличными при получении',
     emoji: EMOJI.CASH,
   },
