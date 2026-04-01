@@ -1,37 +1,34 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 
-import { findMatchingCartItem, getCartItemKey } from '@lib/helpers/cartUtils'
 import { showToast } from '@lib/toasts/toast'
 import { CartItem } from '@models/cart.model'
 import {
-  ICart,
-  LocalizedAdditionalIngredient,
-  LocalizedPortion,
-  LocalizedProduct,
-} from '@models/index'
-import { IProductTemperature } from '@models/product.model'
-import { getMyCart, updateCart } from '@services/cartService'
+  addCartItem,
+  getMyCart,
+  removeCartItem,
+  updateCartItemQuantity as updateCartItemQuantityApi,
+} from '@services/cartService'
 
 type CartState = {
-  cart: ICart | null
-  operationsInProgress: Set<string>
+  items: CartItem[]
+  operationsInProgress: Set<number>
 }
 
 type CartContextType = CartState & {
   initializeCart: () => Promise<void>
-  setCart: (cart: ICart | null) => void
+  setItems: (items: CartItem[]) => void
   addToCart: (
-    product: LocalizedProduct,
+    productId: number,
     config: {
-      portion: LocalizedPortion
-      temperature?: IProductTemperature
-      additionalIngredients: LocalizedAdditionalIngredient[]
+      portionId: number
+      temperatureId?: number
+      ingredientIds: number[]
       quantity: number
     }
   ) => Promise<void>
-  removeFromCart: (cartItemKey: string) => Promise<void>
+  removeFromCart: (itemId: number) => Promise<void>
   updateCartItemQuantity: (
-    cartItemKey: string,
+    itemId: number,
     newQuantity: number
   ) => Promise<void>
   removeFromCartByProductId: (productId: number) => Promise<void>
@@ -39,38 +36,38 @@ type CartContextType = CartState & {
     productId: number,
     newQuantity: number
   ) => Promise<void>
-  clearCart: () => Promise<void>
-  isItemOperationInProgress: (cartItemKey: string) => boolean
+  clearCart: () => void
+  isItemOperationInProgress: (itemId: number) => boolean
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<CartState>({
-    cart: null,
+    items: [],
     operationsInProgress: new Set(),
   })
 
-  const setCart = (cart: ICart | null) =>
-    setState((prev) => ({ ...prev, cart }))
+  const setItems = (items: CartItem[]) =>
+    setState((prev) => ({ ...prev, items }))
 
-  const addOperationInProgress = (key: string) => {
+  const addOperationInProgress = (id: number) => {
     setState((prev) => ({
       ...prev,
-      operationsInProgress: new Set(prev.operationsInProgress).add(key),
+      operationsInProgress: new Set(prev.operationsInProgress).add(id),
     }))
   }
 
-  const removeOperationInProgress = (key: string) => {
+  const removeOperationInProgress = (id: number) => {
     setState((prev) => {
       const newSet = new Set(prev.operationsInProgress)
-      newSet.delete(key)
+      newSet.delete(id)
       return { ...prev, operationsInProgress: newSet }
     })
   }
 
-  const isItemOperationInProgress = (cartItemKey: string): boolean => {
-    return state.operationsInProgress.has(cartItemKey)
+  const isItemOperationInProgress = (itemId: number): boolean => {
+    return state.operationsInProgress.has(itemId)
   }
 
   const initializeCart = async () => {
@@ -81,224 +78,129 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         throw new Error('Failed to initialize cart')
       }
 
-      setCart(response.data)
+      setItems(response.data)
     } catch (error) {
       showToast('Failed to initialize cart', 'error')
-      console.error('Error adding to cart:', error)
+      console.error('Error initializing cart:', error)
     }
   }
 
   const addToCart = async (
-    product: LocalizedProduct,
+    productId: number,
     config: {
-      portion: LocalizedPortion
-      temperature?: IProductTemperature
-      additionalIngredients: LocalizedAdditionalIngredient[]
+      portionId: number
+      temperatureId?: number
+      ingredientIds: number[]
       quantity: number
     }
   ) => {
-    if (!state.cart) {
-      showToast('Cart is not initialized', 'error')
-      return
-    }
-
     try {
-      const currentItems = (state.cart.items || []) as CartItem[]
+      const response = await addCartItem({
+        productId,
+        portionId: config.portionId,
+        temperatureId: config.temperatureId,
+        ingredientIds:
+          config.ingredientIds.length > 0 ? config.ingredientIds : undefined,
+        quantity: config.quantity,
+      })
 
-      // Calculate final price including additional ingredients
-      const ingredientsPrice = config.additionalIngredients.reduce(
-        (sum, ing) => sum + ing.priceModifier,
-        0
-      )
-      const finalPrice = config.portion.price + ingredientsPrice
-
-      // Find exact matching item (same product, temperature, and ingredients)
-      const existingItemIndex = findMatchingCartItem(
-        currentItems,
-        product.id,
-        config.temperature,
-        config.additionalIngredients
-      )
-
-      let newItems: CartItem[]
-      if (existingItemIndex >= 0) {
-        // Update existing item quantity
-        newItems = [...currentItems]
-        newItems[existingItemIndex] = {
-          ...newItems[existingItemIndex],
-          quantity: newItems[existingItemIndex].quantity + config.quantity,
-        }
-      } else {
-        newItems = [
-          ...currentItems,
-          {
-            ...product,
-            // Add cart-specific fields
-            price: finalPrice,
-            weight: config.portion.weight,
-            quantity: config.quantity,
-            selectedTemperature: config.temperature,
-            selectedAdditionalIngredients: config.additionalIngredients,
-          },
-        ]
-      }
-
-      const response = await updateCart(state.cart.documentId, newItems)
       if (!response.success) {
-        throw new Error('Failed to update cart')
+        throw new Error('Failed to add item to cart')
       }
 
-      setCart(response.data)
+      setState((prev) => ({
+        ...prev,
+        items: [...prev.items, response.data],
+      }))
     } catch (error) {
       showToast('Failed to add item to cart', 'error')
       console.error('Error adding to cart:', error)
     }
   }
 
-  const removeFromCart = async (cartItemKey: string) => {
-    if (!state.cart) {
-      showToast('Cart is not initialized', 'error')
+  const removeFromCart = async (itemId: number) => {
+    if (state.operationsInProgress.has(itemId)) {
       return
     }
 
-    // Prevent concurrent operations on the same item
-    if (state.operationsInProgress.has(cartItemKey)) {
-      return
-    }
-
-    addOperationInProgress(cartItemKey)
+    addOperationInProgress(itemId)
 
     try {
-      const currentItems = (state.cart.items || []) as CartItem[]
-      const newItems = currentItems.filter(
-        (item) => getCartItemKey(item) !== cartItemKey
-      )
-
-      const response = await updateCart(state.cart.documentId, newItems)
+      const response = await removeCartItem(itemId)
       if (!response.success) {
-        throw new Error('Failed to update cart')
+        throw new Error('Failed to remove item from cart')
       }
 
-      setCart(response.data)
+      setState((prev) => ({
+        ...prev,
+        items: prev.items.filter((item) => item.id !== itemId),
+      }))
     } catch (error) {
       showToast('Failed to remove item from cart', 'error')
       console.error('Error removing from cart:', error)
     } finally {
-      removeOperationInProgress(cartItemKey)
+      removeOperationInProgress(itemId)
     }
   }
 
   const updateCartItemQuantity = async (
-    cartItemKey: string,
+    itemId: number,
     newQuantity: number
   ) => {
-    if (!state.cart) {
-      showToast('Cart is not initialized', 'error')
+    if (state.operationsInProgress.has(itemId)) {
       return
     }
 
-    // Prevent concurrent operations on the same item
-    if (state.operationsInProgress.has(cartItemKey)) {
-      return
-    }
-
-    // Validate quantity
     if (newQuantity < 1 || newQuantity > 99) {
       showToast('Quantity must be between 1 and 99', 'warning')
       return
     }
 
-    addOperationInProgress(cartItemKey)
+    addOperationInProgress(itemId)
 
     try {
-      const currentItems = (state.cart.items || []) as CartItem[]
-      const existingItemIndex = currentItems.findIndex(
-        (item) => getCartItemKey(item) === cartItemKey
-      )
-
-      if (existingItemIndex === -1) {
-        showToast('Item not found in cart', 'error')
-        return
-      }
-
-      const newItems = [...currentItems]
-      newItems[existingItemIndex] = {
-        ...newItems[existingItemIndex],
-        quantity: newQuantity,
-      }
-
-      const response = await updateCart(state.cart.documentId, newItems)
+      const response = await updateCartItemQuantityApi(itemId, newQuantity)
       if (!response.success) {
-        throw new Error('Failed to update cart')
+        throw new Error('Failed to update item quantity')
       }
 
-      setCart(response.data)
+      setState((prev) => ({
+        ...prev,
+        items: prev.items.map((item) =>
+          item.id === itemId ? { ...item, quantity: newQuantity } : item
+        ),
+      }))
     } catch (error) {
       showToast('Failed to update item quantity', 'error')
       console.error('Error updating item quantity:', error)
     } finally {
-      removeOperationInProgress(cartItemKey)
+      removeOperationInProgress(itemId)
     }
   }
 
-  /**
-   * Remove cart item by product ID (for backward compatibility with MenuItem)
-   * Removes the FIRST cart item matching the product ID
-   */
   const removeFromCartByProductId = async (productId: number) => {
-    if (!state.cart) {
-      showToast('Cart is not initialized', 'error')
-      return
-    }
-
-    const currentItems = (state.cart.items || []) as CartItem[]
-    const itemToRemove = currentItems.find((item) => item.id === productId)
-
+    const itemToRemove = state.items.find(
+      (item) => item.productId === productId
+    )
     if (itemToRemove) {
-      const cartItemKey = getCartItemKey(itemToRemove)
-      await removeFromCart(cartItemKey)
+      await removeFromCart(itemToRemove.id)
     }
   }
 
-  /**
-   * Update cart item quantity by product ID (for backward compatibility with MenuItem)
-   * Updates the FIRST cart item matching the product ID
-   */
   const updateCartItemQuantityByProductId = async (
     productId: number,
     newQuantity: number
   ) => {
-    if (!state.cart) {
-      showToast('Cart is not initialized', 'error')
-      return
-    }
-
-    const currentItems = (state.cart.items || []) as CartItem[]
-    const itemToUpdate = currentItems.find((item) => item.id === productId)
-
+    const itemToUpdate = state.items.find(
+      (item) => item.productId === productId
+    )
     if (itemToUpdate) {
-      const cartItemKey = getCartItemKey(itemToUpdate)
-      await updateCartItemQuantity(cartItemKey, newQuantity)
+      await updateCartItemQuantity(itemToUpdate.id, newQuantity)
     }
   }
 
-  const clearCart = async () => {
-    if (!state.cart) {
-      showToast('Cart is not initialized', 'error')
-      return
-    }
-
-    try {
-      const response = await updateCart(state.cart.documentId, [])
-      if (!response.success) {
-        throw new Error('Failed to clear cart')
-      }
-
-      setCart(response.data)
-    } catch (error) {
-      showToast('Failed to clear cart', 'error')
-      console.error('Error clearing cart:', error)
-    }
+  const clearCart = () => {
+    setItems([])
   }
 
   return (
@@ -306,7 +208,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       value={{
         ...state,
         initializeCart,
-        setCart,
+        setItems,
         addToCart,
         removeFromCart,
         updateCartItemQuantity,

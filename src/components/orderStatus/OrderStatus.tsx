@@ -12,35 +12,39 @@ type OrderStatusProps = {
   className?: string
 }
 
+const statusToI18nKey: Record<OrderStatusType, string> = {
+  DRAFT: 'draft',
+  WAITING_FOR_PAYMENT: 'waitingForPayment',
+  PAYMENT_PROCESSING: 'paymentProcessing',
+  PAID: 'paid',
+  PREPARING: 'preparing',
+  COMPLETED: 'completed',
+  CANCELED: 'canceled',
+}
+
+const getStatusColor = (state: OrderStatusType): string => {
+  switch (state) {
+    case 'PREPARING':
+      return styles.preparing
+    case 'COMPLETED':
+      return styles.completed
+    case 'CANCELED':
+      return styles.canceled
+    default:
+      return styles.other
+  }
+}
+
 const OrderStatus: FC<OrderStatusProps> = ({ status, className }) => {
   const { t } = useTranslation()
 
-  const getStatusColor = (state: OrderStatusType) => {
-    switch (state) {
-      case 'draft':
-        return styles.draft
-      case 'waitingForPayment':
-        return styles.waiting
-      case 'paymentProcessing':
-        return styles.processing
-      case 'paid':
-        return styles.paid
-      case 'preparing':
-        return styles.preparing
-      case 'completed':
-        return styles.completed
-      case 'canceled':
-        return styles.canceled
-      default:
-        return ''
-    }
-  }
+  const i18nKey = statusToI18nKey[status] ?? status
 
   return (
     <div
       className={classNames(styles.status, getStatusColor(status), className)}
     >
-      {t(`orders.status.${status}`)}
+      {t(`orders.status.${i18nKey}`)}
     </div>
   )
 }

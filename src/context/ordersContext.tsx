@@ -25,7 +25,7 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
     orders: [],
   })
 
-  const { cart, setCart } = useCart()
+  const { clearCart } = useCart()
 
   const refreshOrders = async () => {
     try {
@@ -35,7 +35,7 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
       }
       setState((prev) => ({
         ...prev,
-        orders: response.data.data,
+        orders: response.data,
       }))
     } catch (error) {
       showToast('Failed to refresh orders', 'error')
@@ -44,24 +44,14 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const createOrder = async () => {
-    if (!cart?.id) {
-      showToast('Cart is not initialized', 'error')
-      return
-    }
-
     try {
-      const response = await createOrderService(cart.id)
+      const response = await createOrderService()
       if (!response.success) {
         throw new Error('Failed to create order')
       }
 
-      // Clear cart locally since backend already clears it
-      if (cart) {
-        setCart({
-          ...cart,
-          items: [],
-        })
-      }
+      // Clear cart locally since backend already moved items to the order
+      clearCart()
 
       // Add new order to the state
       setState((prev) => ({

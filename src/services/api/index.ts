@@ -1,5 +1,6 @@
 import { BASE_URL } from '@constants/index'
 import axios from 'axios'
+import i18n from '@lib/i18n'
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -11,12 +12,12 @@ const api = axios.create({
   withCredentials: true,
 })
 
-// Optional: add auth token interceptor
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token') // or use any other auth logic
+  const token = localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
+  config.headers['Accept-Language'] = i18n.language || 'ru'
   return config
 })
 

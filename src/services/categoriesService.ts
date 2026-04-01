@@ -7,18 +7,7 @@ export const getCategories = async (): Promise<
   IResponseWrapper<ICategory[]>
 > => {
   try {
-    const response = await api.get('/api/categories', {
-      params: {
-        sort: ['order:asc'],
-        fields: ['id', 'name_by_locale'],
-        populate: {
-          subcategories: {
-            sort: ['order:asc'],
-            fields: ['id', 'name_by_locale', 'avatar'],
-          },
-        },
-      },
-    })
+    const response = await api.get('/api/categories')
 
     return {
       success: true,

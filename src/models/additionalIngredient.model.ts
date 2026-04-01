@@ -1,8 +1,5 @@
-import { LocalizedString } from '@lib/helpers/locale'
-
 export type IAdditionalIngredient = {
-  id: number
-  name: LocalizedString
-  priceModifier: number
-  weight: LocalizedString
+  ingredientId: number
+  name: string
+  price: number
 }

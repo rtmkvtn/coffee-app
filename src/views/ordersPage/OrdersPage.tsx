@@ -19,7 +19,7 @@ const OrdersPage = () => {
     <div className={styles.wrapper}>
       <div className={styles.ordersList}>
         {orders.map((order) => (
-          <div key={order.documentId} className={styles.orderItem}>
+          <div key={order.id} className={styles.orderItem}>
             <OrderItem order={order} />
           </div>
         ))}

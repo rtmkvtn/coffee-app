@@ -10,7 +10,7 @@ import { useOrders } from '@context/ordersContext'
 import { useVirtualScroll } from '@hooks/useVirtualScroll'
 import { getImgUrl } from '@lib/helpers'
 import { useLayout } from '@lib/layout/LayoutContext'
-import { LocalizedProduct } from '@models/index'
+import { IProduct } from '@models/index'
 import classNames from 'classnames'
 
 import MenuItem from './menuItem/MenuItem'
@@ -29,7 +29,7 @@ type SubcategoryHeader = {
 
 type ProductItem = {
   type: 'product'
-  data: LocalizedProduct
+  data: IProduct
 }
 
 type ListItem = SubcategoryHeader | ProductItem
@@ -76,10 +76,11 @@ const MenuPage = ({ className }: IProps) => {
 
   useEffect(() => {
     const pendingOrder = orders.find(
-      (order) => order.state === 'waitingForPayment' || order.state === 'draft'
+      (order) =>
+        order.state === 'WAITING_FOR_PAYMENT' || order.state === 'DRAFT'
     )
     if (pendingOrder) {
-      navigate(ORDER_PATH.replace(':orderId', pendingOrder.documentId), {
+      navigate(ORDER_PATH.replace(':orderId', pendingOrder.id), {
         replace: true,
       })
     }
@@ -93,25 +94,31 @@ const MenuPage = ({ className }: IProps) => {
         targetCategory.subcategories.map((x) => ({
           id: x.id.toString(),
           label: x.name,
-          image: x.avatar ? getImgUrl(x.avatar) : '',
+          image: x.image ? getImgUrl(x.image) : '',
         }))
       )
     }
   }, [activeCategory, categories])
 
+  // Build set of subcategory IDs for the active category
+  const activeSubcategoryIds = useMemo(() => {
+    const cat = categories.find((c) => c.id === activeCategory)
+    return new Set(cat?.subcategories.map((s) => s.id) ?? [])
+  }, [categories, activeCategory])
+
   // Optimize products filtering
-  const productsList: LocalizedProduct[] = useMemo(() => {
+  const productsList: IProduct[] = useMemo(() => {
     if (!activeCategory) return products
-    const categoryProducts = products.filter(
-      (product) => product.category.id === activeCategory
+    const categoryProducts = products.filter((product) =>
+      activeSubcategoryIds.has(product.subcategoryId)
     )
 
     if (!activeSubcategory) return categoryProducts
 
     return categoryProducts.filter(
-      (product) => product.subcategory.id === activeSubcategory
+      (product) => product.subcategoryId === activeSubcategory
     )
-  }, [activeCategory, activeSubcategory, products])
+  }, [activeCategory, activeSubcategory, products, activeSubcategoryIds])
 
   // Group products with subcategory headers
   const groupedListItems: ListItem[] = useMemo(() => {
@@ -129,14 +136,14 @@ const MenuPage = ({ className }: IProps) => {
     // Group products by subcategory ID
     const grouped = productsList.reduce(
       (acc, product) => {
-        const subId = product.subcategory.id
+        const subId = product.subcategoryId
         if (!acc[subId]) {
           acc[subId] = []
         }
         acc[subId].push(product)
         return acc
       },
-      {} as Record<number, LocalizedProduct[]>
+      {} as Record<number, IProduct[]>
     )
 
     // Convert to flat list with headers

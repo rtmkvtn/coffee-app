@@ -86,4 +86,13 @@
       background-color: constants.$color-red;
     }
   }
+
+  &.other {
+    background: rgba(constants.$color-gray, 0.15);
+    color: constants.$color-gray;
+    border: 1px solid constants.$color-gray;
+    &:before {
+      background-color: constants.$color-gray;
+    }
+  }
 }

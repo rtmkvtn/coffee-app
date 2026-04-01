@@ -1,24 +1,48 @@
-import { LocalizedAdditionalIngredient, LocalizedProduct } from './index'
+import { IProductTemperature } from './product.model'
 
 /**
- * Cart items are localized products with additional cart-specific fields
- * Localized values (strings) are stored to ensure correct display even after language changes
+ * Cart item returned by the NestJS backend.
+ * Items come pre-hydrated with product/portion/temperature/ingredient data.
  */
-export type CartItem = Omit<LocalizedProduct, 'portions'> & {
-  // Cart-specific fields
-  price: number
-  weight: string
+export type CartItem = {
+  id: number
+  productId: number
+  portionId: number
+  temperatureId: number | null
   quantity: number
-  selectedTemperature?: string
-  selectedAdditionalIngredients: LocalizedAdditionalIngredient[]
+  unitPrice: number
+  ingredientsPrice: number
+  product: { id: number; name: string; image: string | null }
+  portion: { id: number; name: string }
+  temperature: { id: number; type: string } | null
+  ingredients: { ingredientId: number; name: string; price: number }[]
 }
 
-export interface ICart {
+/**
+ * Input DTO for adding a cart item.
+ */
+export type AddCartItemInput = {
+  productId: number
+  portionId: number
+  temperatureId?: number
+  ingredientIds?: number[]
+  quantity: number
+}
+
+/**
+ * Hydrated cart item for display, derived from CartItem.
+ */
+export type DisplayCartItem = {
   id: number
-  documentId: string
-  items: CartItem[]
-  createdAt: string
-  updatedAt: string
-  publishedAt: string
-  locale: string | null
+  productId: number
+  portionId: number
+  temperatureId: number | null
+  quantity: number
+  name: string
+  image: string | null
+  portionName: string
+  price: number
+  temperature?: IProductTemperature
+  ingredients: { ingredientId: number; name: string; price: number }[]
+  subcategoryId: number
 }

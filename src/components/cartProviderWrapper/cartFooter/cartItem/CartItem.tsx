@@ -5,8 +5,7 @@ import { useTranslation } from 'react-i18next'
 import ProductImage from '@components/productImage/ProductImage'
 import { CART_CONSTANTS } from '@constants/cart'
 import { formatPrice, getImgUrl } from '@lib/helpers'
-import { getIngredientKey } from '@lib/helpers/cartUtils'
-import { LocalizedAdditionalIngredient } from '@models/index'
+import { DisplayCartItem } from '@models/cart.model'
 import { IProductTemperature } from '@models/product.model'
 import ProductCartButton from '@views/menuPage/menuItem/productCartButton/ProductCartButton'
 import classNames from 'classnames'
@@ -15,29 +14,31 @@ import Icon from '@assets/images/Icon'
 
 import styles from './CartItem.module.scss'
 
+type IngredientDisplay = DisplayCartItem['ingredients'][number]
+
 interface CartItemProps {
-  cartItemKey: string
+  itemId: number
   name: string
   quantity: number
   price: number
-  image?: string
-  additionalIngredients?: LocalizedAdditionalIngredient[]
-  weight: string
+  image?: string | null
+  additionalIngredients?: IngredientDisplay[]
+  portionName: string
   temperature?: IProductTemperature
   categoryName: string
   isLoading?: boolean
-  onRemove: (cartItemKey: string) => void
-  onQuantityChange: (cartItemKey: string, newQuantity: number) => void
+  onRemove: (itemId: number) => void
+  onQuantityChange: (itemId: number, newQuantity: number) => void
 }
 
 const CartItem: FC<CartItemProps> = ({
-  cartItemKey,
+  itemId,
   name,
   quantity,
   price,
   image,
   additionalIngredients,
-  weight,
+  portionName,
   temperature,
   categoryName,
   isLoading = false,
@@ -70,25 +71,25 @@ const CartItem: FC<CartItemProps> = ({
   useEffect(() => {
     if (isRemoving) {
       const timer = setTimeout(() => {
-        onRemoveRef.current(cartItemKey)
+        onRemoveRef.current(itemId)
       }, CART_CONSTANTS.ANIMATION.ITEM_REMOVE)
       return () => clearTimeout(timer)
     }
-  }, [isRemoving, cartItemKey])
+  }, [isRemoving, itemId])
 
   const handleDecrease = useCallback(() => {
     if (quantity > CART_CONSTANTS.MIN_QUANTITY && !isLoading) {
-      onQuantityChangeRef.current(cartItemKey, quantity - 1)
+      onQuantityChangeRef.current(itemId, quantity - 1)
       setIsFlashing(true)
     }
-  }, [quantity, cartItemKey, isLoading])
+  }, [quantity, itemId, isLoading])
 
   const handleIncrease = useCallback(() => {
     if (quantity < CART_CONSTANTS.MAX_QUANTITY && !isLoading) {
-      onQuantityChangeRef.current(cartItemKey, quantity + 1)
+      onQuantityChangeRef.current(itemId, quantity + 1)
       setIsFlashing(true)
     }
-  }, [quantity, cartItemKey, isLoading])
+  }, [quantity, itemId, isLoading])
 
   const handleRemove = useCallback(() => {
     if (!isLoading) {
@@ -143,7 +144,7 @@ const CartItem: FC<CartItemProps> = ({
         </div>
         <div className={styles.infoFooter}>
           <div className={styles.infoFooterLeft}>
-            <p className={styles.weight}>{weight}</p>
+            <p className={styles.weight}>{portionName}</p>
             <p className={styles.price}>{formatPrice(price)}</p>
           </div>
           <div className={styles.infoFooterRight}>
@@ -171,15 +172,12 @@ const CartItem: FC<CartItemProps> = ({
         >
           {additionalIngredients.map((ingredient) => (
             <div
-              key={getIngredientKey(ingredient)}
+              key={ingredient.ingredientId}
               className={styles.ingredientItem}
             >
               <span className={styles.ingredientName}>{ingredient.name}</span>
-              <span className={styles.ingredientWeight}>
-                {ingredient.weight}
-              </span>
               <span className={styles.ingredientPrice}>
-                +{formatPrice(ingredient.priceModifier)}
+                +{formatPrice(ingredient.price)}
               </span>
             </div>
           ))}

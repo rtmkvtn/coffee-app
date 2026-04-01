@@ -16,8 +16,7 @@ import { useCart } from '@context/cartContext'
 import { useMenu } from '@context/menuContext'
 import { useOrders } from '@context/ordersContext'
 import { formatPrice } from '@lib/helpers'
-import { getCartItemKey } from '@lib/helpers/cartUtils'
-import { IProductTemperature } from '@models/product.model'
+import { toDisplayCartItems } from '@lib/helpers/cartUtils'
 import classNames from 'classnames'
 
 import Icon from '@assets/images/Icon'
@@ -27,13 +26,6 @@ import CartItem from './cartItem/CartItem'
 import EmptyCart from './emptyCart/EmptyCart'
 
 /**
- * Type guard to validate if a temperature string is a valid IProductTemperature
- */
-const isValidTemperature = (temp?: string): temp is IProductTemperature => {
-  return temp === 'cold' || temp === 'hot'
-}
-
-/**
  * Memoized CartItem to prevent unnecessary re-renders
  */
 const MemoizedCartItem = memo(CartItem)
@@ -41,15 +33,15 @@ const MemoizedCartItem = memo(CartItem)
 const CartFooter = () => {
   const { t } = useTranslation()
   const {
-    cart,
+    items,
     removeFromCart,
     updateCartItemQuantity,
     isItemOperationInProgress,
   } = useCart()
-  const { categories } = useMenu()
+  const { categories, products } = useMenu()
   const { createOrder } = useOrders()
 
-  const hasItems = cart?.items && cart.items.length > 0
+  const hasItems = items.length > 0
   const [isExpanded, setIsExpanded] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [hasScroll, setHasScroll] = useState(false)
@@ -58,6 +50,12 @@ const CartFooter = () => {
   const itemsListRef = useRef<HTMLDivElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  // Convert cart items to display items
+  const displayItems = useMemo(
+    () => toDisplayCartItems(items, products),
+    [items, products]
+  )
 
   const checkScrollHeight = () => {
     if (itemsListRef.current) {
@@ -89,7 +87,7 @@ const CartFooter = () => {
         }
       }
     }
-  }, [isExpanded, cart?.items])
+  }, [isExpanded, items])
 
   const handleToggleExpand = useCallback(() => {
     setIsExpanded((prev) => !prev)
@@ -97,15 +95,15 @@ const CartFooter = () => {
 
   // Stable callback refs to prevent stale closures
   const handleRemoveItem = useCallback(
-    (cartItemKey: string) => {
-      removeFromCart(cartItemKey)
+    (itemId: number) => {
+      removeFromCart(itemId)
     },
     [removeFromCart]
   )
 
   const handleQuantityChange = useCallback(
-    (cartItemKey: string, newQuantity: number) => {
-      updateCartItemQuantity(cartItemKey, newQuantity)
+    (itemId: number, newQuantity: number) => {
+      updateCartItemQuantity(itemId, newQuantity)
     },
     [updateCartItemQuantity]
   )
@@ -139,14 +137,16 @@ const CartFooter = () => {
   // Memoize expensive calculations
   const totalPrice = useMemo(
     () =>
-      cart?.items.reduce((sum, item) => sum + item.price * item.quantity, 0) ||
-      0,
-    [cart?.items]
+      displayItems.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      ),
+    [displayItems]
   )
 
   const totalQuantity = useMemo(
-    () => cart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0,
-    [cart?.items]
+    () => displayItems.reduce((sum, item) => sum + item.quantity, 0),
+    [displayItems]
   )
 
   // Memoize subcategory map for O(1) lookups instead of O(n*m)
@@ -233,28 +233,24 @@ const CartFooter = () => {
             className={styles.itemsList}
             onScroll={handleScroll}
           >
-            {cart.items.map((item) => {
-              const cartItemKey = getCartItemKey(item)
+            {displayItems.map((item) => {
               const subcategoryName =
-                subcategoryMap.get(item.subcategory.id) ||
+                subcategoryMap.get(item.subcategoryId) ||
                 t('cart.defaultCategory')
-              const temperature = isValidTemperature(item.selectedTemperature)
-                ? item.selectedTemperature
-                : undefined
 
               return (
                 <MemoizedCartItem
-                  key={cartItemKey}
-                  cartItemKey={cartItemKey}
-                  additionalIngredients={item.selectedAdditionalIngredients}
-                  weight={item.weight}
-                  temperature={temperature}
+                  key={item.id}
+                  itemId={item.id}
+                  additionalIngredients={item.ingredients}
+                  portionName={item.portionName}
+                  temperature={item.temperature}
                   categoryName={subcategoryName}
                   name={item.name}
                   quantity={item.quantity}
                   price={item.price}
-                  image={item.avatar}
-                  isLoading={isItemOperationInProgress(cartItemKey)}
+                  image={item.image}
+                  isLoading={isItemOperationInProgress(item.id)}
                   onRemove={handleRemoveItem}
                   onQuantityChange={handleQuantityChange}
                 />

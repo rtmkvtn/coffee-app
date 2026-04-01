@@ -9,22 +9,19 @@ import ProductImage from '@components/productImage/ProductImage'
 import QuantitySelector from '@components/productSelectionModal/quantitySelector/QuantitySelector'
 import TilesSelect from '@components/tilesSelect/TilesSelect'
 import { formatPrice, getImgUrl } from '@lib/helpers'
-import {
-  LocalizedAdditionalIngredient,
-  LocalizedPortion,
-  LocalizedProduct,
-} from '@models/index'
-import { IProductTemperature } from '@models/product.model'
+import { IProduct } from '@models/index'
+import { IProductPortion } from '@models/portion.model'
+import { ITemperatureOption } from '@models/product.model'
 import classNames from 'classnames'
 
 import styles from './ProductSelectionModal.module.scss'
 
 interface ProductSelectionModalProps {
-  product: LocalizedProduct
+  product: IProduct
   onAddToCart: (config: {
-    portion: LocalizedPortion
-    temperature?: IProductTemperature
-    additionalIngredients: LocalizedAdditionalIngredient[]
+    portionId: number
+    temperatureId?: number
+    ingredientIds: number[]
     quantity: number
   }) => void
 }
@@ -36,9 +33,9 @@ const ProductSelectionModal = ({
   const { t } = useTranslation()
 
   const [selectedTemperature, setSelectedTemperature] =
-    useState<IProductTemperature | null>(product.temperatures[0] || null)
-  const [selectedPortion, setSelectedPortion] = useState<LocalizedPortion>(
-    product.portions.reduce((smallest, current) =>
+    useState<ITemperatureOption | null>(product.temperatures[0] || null)
+  const [selectedPortion, setSelectedPortion] = useState<IProductPortion>(
+    product.prices.reduce((smallest, current) =>
       current.price < smallest.price ? current : smallest
     )
   )
@@ -50,8 +47,8 @@ const ProductSelectionModal = ({
   // Calculate total price
   const totalPrice = useMemo(() => {
     const ingredientsPrice = product.additionalIngredients
-      .filter((ing) => selectedIngredients.has(ing.id))
-      .reduce((sum, ing) => sum + ing.priceModifier, 0)
+      .filter((ing) => selectedIngredients.has(ing.ingredientId))
+      .reduce((sum, ing) => sum + ing.price, 0)
 
     return (selectedPortion.price + ingredientsPrice) * quantity
   }, [
@@ -63,11 +60,11 @@ const ProductSelectionModal = ({
 
   const handleAddToCart = () => {
     onAddToCart({
-      portion: selectedPortion,
-      temperature: selectedTemperature || undefined,
-      additionalIngredients: product.additionalIngredients.filter((ing) =>
-        selectedIngredients.has(ing.id)
-      ),
+      portionId: selectedPortion.portionId,
+      temperatureId: selectedTemperature?.temperatureId || undefined,
+      ingredientIds: product.additionalIngredients
+        .filter((ing) => selectedIngredients.has(ing.ingredientId))
+        .map((ing) => ing.ingredientId),
       quantity,
     })
   }
@@ -78,9 +75,9 @@ const ProductSelectionModal = ({
         {/* Product Image */}
         <div className={styles.imageWrapper}>
           <ProductImage
-            imgSrc={getImgUrl(product.avatar)}
+            imgSrc={getImgUrl(product.image ?? undefined)}
             altText={product.name}
-            temperatures={product.temperatures}
+            temperatures={product.temperatures.map((t) => t.type)}
             isLg
             className={styles.productImage}
           />
@@ -92,28 +89,29 @@ const ProductSelectionModal = ({
           <span className={styles.price}>{formatPrice(totalPrice)}</span>
         </div>
 
-        {/* Portion Weight */}
-        <div className={styles.portionWeight}>{selectedPortion.weight}</div>
+        {/* Portion Name */}
+        <div className={styles.portionWeight}>{selectedPortion.name}</div>
 
         {/* Temperature Selection (if multiple) */}
         {product.temperatures.length > 1 && (
           <div className={styles.temperatureSelector}>
             {product.temperatures.map((temp) => (
               <button
-                key={temp}
+                key={temp.temperatureId}
                 className={classNames(
                   styles.temperatureButton,
-                  selectedTemperature === temp && styles.active
+                  selectedTemperature?.temperatureId === temp.temperatureId &&
+                    styles.active
                 )}
                 onClick={() => setSelectedTemperature(temp)}
               >
-                {temp === 'hot' ? (
+                {temp.type === 'hot' ? (
                   <FireIcon className={styles.icon} />
                 ) : (
                   <IceIcon className={styles.icon} />
                 )}
                 <span>
-                  {temp === 'hot' ? t('product.hot') : t('product.cold')}
+                  {temp.type === 'hot' ? t('product.hot') : t('product.cold')}
                 </span>
               </button>
             ))}
@@ -126,20 +124,22 @@ const ProductSelectionModal = ({
         )}
 
         {/* Portion Selection (if multiple) */}
-        {product.portions.length > 1 && (
+        {product.prices.length > 1 && (
           <TilesSelect
             className={styles.portionSelector}
-            options={product.portions.map((x) => ({
-              label: x.weight,
+            options={product.prices.map((x) => ({
+              label: x.name,
               price: x.price,
-              value: x.weight,
+              value: x.portionId.toString(),
             }))}
             onSelect={(newValues) => {
               setSelectedPortion(
-                product.portions.find((x) => x.weight === newValues[0])!
+                product.prices.find(
+                  (x) => x.portionId.toString() === newValues[0]
+                )!
               )
             }}
-            value={[selectedPortion.weight]}
+            value={[selectedPortion.portionId.toString()]}
           />
         )}
 
@@ -151,8 +151,8 @@ const ProductSelectionModal = ({
               isMulti
               options={product.additionalIngredients.map((x) => ({
                 label: x.name,
-                price: x.priceModifier,
-                value: x.id.toString(),
+                price: x.price,
+                value: x.ingredientId.toString(),
               }))}
               onSelect={(newValues) =>
                 setSelectedIngredients(new Set(newValues.map(Number)))

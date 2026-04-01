@@ -1,6 +1,5 @@
-import { LocalizedString } from '@lib/helpers/locale'
-
 export type IProductPortion = {
-  weight: LocalizedString
+  portionId: number
+  name: string
   price: number
 }

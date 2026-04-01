@@ -10,26 +10,21 @@ import {
 
 import { useTranslation } from 'react-i18next'
 
-import { getLocalizedField, Locale, normalizeLocale } from '@lib/helpers/locale'
-import {
-  ICategory,
-  IProduct,
-  LocalizedCategory,
-  LocalizedProduct,
-} from '@models/index'
+import { Locale, normalizeLocale } from '@lib/helpers/locale'
+import { ICategory, IProduct } from '@models/index'
 import { getCategories } from '@services/categoriesService'
 import { getAllProducts } from '@services/productsService'
 
 type MenuState = {
-  rawCategories: ICategory[]
-  rawProducts: IProduct[]
+  categories: ICategory[]
+  products: IProduct[]
   currentLocale: Locale
   error: string | null
 }
 
 type MenuContextType = {
-  categories: LocalizedCategory[]
-  products: LocalizedProduct[]
+  categories: ICategory[]
+  products: IProduct[]
   currentLocale: Locale
   error: string | null
   refreshProducts: () => Promise<void>
@@ -44,8 +39,8 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
   const currentLocale = normalizeLocale(i18n.language)
 
   const [state, setState] = useState<MenuState>({
-    rawCategories: [],
-    rawProducts: [],
+    categories: [],
+    products: [],
     currentLocale,
     error: null,
   })
@@ -58,7 +53,7 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
       }
       setState((prev) => ({
         ...prev,
-        rawProducts: response.data.data,
+        products: response.data,
         error: null,
       }))
     } catch (error) {
@@ -75,7 +70,7 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
       }
       setState((prev) => ({
         ...prev,
-        rawCategories: response.data.data,
+        categories: response.data,
         error: null,
       }))
     } catch (error) {
@@ -88,60 +83,7 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
     await Promise.all([refreshCategories(), refreshProducts()])
   }, [refreshCategories, refreshProducts])
 
-  // Transform products to localized versions using useMemo
-  const localizedProducts = useMemo<LocalizedProduct[]>(
-    () =>
-      state.rawProducts.map((product) => {
-        const localizedProduct = {
-          ...product,
-          name: getLocalizedField(product.name_by_locale, state.currentLocale),
-          description: getLocalizedField(
-            product.description_by_locale,
-            state.currentLocale
-          ),
-          ingredients: getLocalizedField(
-            product.ingredients_by_locale,
-            state.currentLocale
-          ),
-          portions: product.portions.map((portion) => ({
-            weight: getLocalizedField(portion.weight, state.currentLocale),
-            price: portion.price,
-          })),
-          additionalIngredients: product.additionalIngredients.map((ing) => ({
-            id: ing.id,
-            name: getLocalizedField(ing.name, state.currentLocale),
-            priceModifier: ing.priceModifier,
-            weight: getLocalizedField(ing.weight, state.currentLocale),
-          })),
-        }
-        return localizedProduct
-      }),
-    [state.rawProducts, state.currentLocale]
-  )
-
-  // Transform categories to localized versions using useMemo
-  const localizedCategories = useMemo<LocalizedCategory[]>(
-    () =>
-      state.rawCategories.map((category) => ({
-        ...category,
-        name: getLocalizedField(category.name_by_locale, state.currentLocale),
-        description: getLocalizedField(
-          category.description_by_locale,
-          state.currentLocale
-        ),
-        subcategories: category.subcategories.map((sub) => ({
-          ...sub,
-          name: getLocalizedField(sub.name_by_locale, state.currentLocale),
-          description: getLocalizedField(
-            sub.description_by_locale,
-            state.currentLocale
-          ),
-        })),
-      })),
-    [state.rawCategories, state.currentLocale]
-  )
-
-  // Listen for language changes and update locale state
+  // Refetch data when language changes (server resolves locale)
   useEffect(() => {
     const handleLanguageChange = (lng: string) => {
       const newLocale = normalizeLocale(lng)
@@ -151,27 +93,20 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
         }
         return prev
       })
-
-      // Optionally refetch data when language changes
-      // Since backend now returns all locales, we don't need to refetch
-      // Components will automatically re-render with new locale
+      refreshAll()
     }
-
-    // Sync immediately in case i18n changed before mount
-    handleLanguageChange(i18n.language)
 
     i18n.on('languageChanged', handleLanguageChange)
 
     return () => {
       i18n.off('languageChanged', handleLanguageChange)
     }
-  }, [i18n])
+  }, [i18n, refreshAll])
 
-  // Memoize context value to prevent unnecessary re-renders
   const contextValue = useMemo(
     () => ({
-      categories: localizedCategories,
-      products: localizedProducts,
+      categories: state.categories,
+      products: state.products,
       currentLocale: state.currentLocale,
       error: state.error,
       refreshProducts,
@@ -179,8 +114,8 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
       refreshAll,
     }),
     [
-      localizedCategories,
-      localizedProducts,
+      state.categories,
+      state.products,
       state.currentLocale,
       state.error,
       refreshProducts,

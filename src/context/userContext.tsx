@@ -29,7 +29,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         throw new Error('Authentication failed')
       }
 
-      localStorage.setItem('token', authResponse.data.jwt)
+      localStorage.setItem('token', authResponse.data.accessToken)
       setUser(authResponse.data.user)
     } catch (error) {
       console.error('Authentication error:', error)

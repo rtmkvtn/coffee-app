@@ -1,12 +1,10 @@
 export interface IUser {
-  id: number
-  username: string
-  email: string
-  blocked: boolean
+  id: string
   telegramId: string
-  firstName: string
-  lastName?: string
-  isPremium?: boolean
-  languageCode: string
-  photoUrl?: string
+  username: string | null
+  firstName: string | null
+  lastName: string | null
+  languageCode: string | null
+  photoUrl: string | null
+  isPremium: boolean
 }

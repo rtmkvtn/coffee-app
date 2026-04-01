@@ -17,7 +17,7 @@ const HomePage = () => {
   const { orders } = useOrders()
 
   const hasWaitingPayment = orders.some(
-    (order) => order.state === 'waitingForPayment'
+    (order) => order.state === 'WAITING_FOR_PAYMENT'
   )
   const greetingPeriod = getGreetingPeriod()
 

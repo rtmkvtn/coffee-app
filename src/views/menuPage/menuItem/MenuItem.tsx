@@ -10,18 +10,18 @@ import {
   getSimpleProductConfig,
   isSimpleProduct,
 } from '@lib/helpers'
-import { LocalizedPortion, LocalizedProduct } from '@models/index'
+import { IProduct, IProductPortion } from '@models/index'
 
 import styles from './MenuItem.module.scss'
 import ProductCartButton from './productCartButton/ProductCartButton'
 
 type Props = {
-  product: LocalizedProduct
+  product: IProduct
 }
 
 const MenuItem = ({ product }: Props) => {
   const {
-    cart,
+    items,
     addToCart,
     updateCartItemQuantityByProductId,
     removeFromCartByProductId,
@@ -29,7 +29,7 @@ const MenuItem = ({ product }: Props) => {
   const { showModal, hideModal } = useModal()
 
   const quantityInCart =
-    cart?.items.find((x) => x.id === product.id)?.quantity ?? undefined
+    items.find((x) => x.productId === product.id)?.quantity ?? undefined
 
   const [isPending, startTransition] = useTransition()
 
@@ -41,7 +41,7 @@ const MenuItem = ({ product }: Props) => {
           product={product}
           onAddToCart={(config) => {
             startTransition(async () => {
-              await addToCart(product, config)
+              await addToCart(product.id, config)
               hideModal()
             })
           }}
@@ -54,7 +54,7 @@ const MenuItem = ({ product }: Props) => {
     if (isSimpleProduct(product)) {
       startTransition(async () => {
         const config = getSimpleProductConfig(product)
-        await addToCart(product, config)
+        await addToCart(product.id, config)
       })
     } else {
       handleCardClick()
@@ -72,7 +72,7 @@ const MenuItem = ({ product }: Props) => {
   }
 
   const smallestPortion = useMemo(() => {
-    const portions: LocalizedPortion[] = product.portions
+    const portions: IProductPortion[] = product.prices
     let result = portions[0]
 
     if (portions.length === 1) return result
@@ -83,22 +83,22 @@ const MenuItem = ({ product }: Props) => {
       }
     }
     return result
-  }, [product.portions])
+  }, [product.prices])
 
   return (
     <div className={styles.product}>
       <div className={styles.clickableArea} onClick={handleCardClick}>
         <ProductImage
-          imgSrc={getImgUrl(product.avatar)}
+          imgSrc={getImgUrl(product.image ?? undefined)}
           className={styles.avatar}
           altText={product.name}
-          temperatures={product.temperatures}
+          temperatures={product.temperatures.map((t) => t.type)}
         />
         <div className={styles.info}>
           <div className={styles.header}>
             <p className={styles.name}>{product.name}</p>
-            {smallestPortion?.weight && (
-              <p className={styles.weight}>{smallestPortion.weight}</p>
+            {smallestPortion?.name && (
+              <p className={styles.weight}>{smallestPortion.name}</p>
             )}
           </div>
           <p className={styles.price}>{formatPrice(smallestPortion.price)}</p>

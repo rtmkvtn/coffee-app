@@ -1,27 +1,18 @@
 import { IUser } from '@models/user.model'
 
 import api from './api'
-import { ISingleTypeResponseWrapper } from './services.types'
+import { IResponseWrapper } from './services.types'
 
-interface IAuthResponse {
-  jwt: string
+export interface IAuthResponse {
+  accessToken: string
   user: IUser
-  cart: {
-    id: number
-    documentId: string
-    items: any[]
-    createdAt: string
-    updatedAt: string
-    publishedAt: string
-    locale: string | null
-  }
 }
 
 export const authenticateWithTelegram = async (
   initData: string
-): Promise<ISingleTypeResponseWrapper<IAuthResponse>> => {
+): Promise<IResponseWrapper<IAuthResponse>> => {
   try {
-    const response = await api.post('/api/telegram/auth', { initData })
+    const response = await api.post('/api/auth/telegram', { initData })
 
     return {
       success: true,
