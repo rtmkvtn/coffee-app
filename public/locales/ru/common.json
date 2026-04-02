@@ -54,7 +54,7 @@
     }
   },
   "orders": {
-    "orderNumber": "Заказ №{{id}}",
+    "orderNumber": "Заказ {{id}}",
     "noItems": "В заказе нет товаров",
     "emptyOrders": "У вас пока нет заказов",
     "confirmCancel": "Вы уверены, что хотите отменить заказ?",
@@ -100,7 +100,7 @@
     "cancel": "Отмена"
   },
   "payment": {
-    "selectMethod": "Выберите способ оплаты",
+    "selectMethod": "Способ оплаты",
     "cashAtCounter": "Оплата на кассе",
     "card": "Картой",
     "cardOnPickup": "Картой при получении",

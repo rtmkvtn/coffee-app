@@ -1,5 +1,4 @@
 @use '@assets/styles/constants';
-@use 'sass:color';
 
 /* 1. Use a more-intuitive box-sizing model */
 *,
@@ -137,29 +136,12 @@ a {
   flex-grow: 1;
 }
 
-/* Custom Scrollbar Styles */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: constants.$main-bg-color;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: constants.$secondary-bg-color;
-  border-radius: 4px;
-  transition: background 0.2s ease;
-
-  &:hover {
-    background: color.adjust(constants.$secondary-bg-color, $lightness: 10%);
-  }
-}
-
-/* Firefox scrollbar styles */
+/* Hide all scrollbars */
 * {
-  scrollbar-width: thin;
-  scrollbar-color: constants.$secondary-bg-color constants.$main-bg-color;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
 }

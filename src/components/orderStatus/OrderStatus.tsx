@@ -24,6 +24,8 @@ const statusToI18nKey: Record<OrderStatusType, string> = {
 
 const getStatusColor = (state: OrderStatusType): string => {
   switch (state) {
+    case 'DRAFT':
+      return styles.draft
     case 'PREPARING':
       return styles.preparing
     case 'COMPLETED':

@@ -1,14 +1,17 @@
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useMemo, useState, useTransition } from 'react'
 
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import Button from '@components/button/Button'
 import OrderItem from '@components/orderItem'
+import RadioSelect, { IRadioOption } from '@components/radioSelect/RadioSelect'
 import { ORDER_SUCCESS_PATH, ORDERS_PATH } from '@constants/routes'
 import { useModal } from '@context/modalContext'
 import { useOrders } from '@context/ordersContext'
 import { IPaymentMethod } from '@models/index'
+import CreditCardIcon from '@assets/images/common/credit_card.svg'
+import MoneyWingsIcon from '@assets/images/common/money_wings.svg'
 
 import styles from './OrderPage.module.scss'
 
@@ -21,6 +24,14 @@ const OrderPage = () => {
   const [selectedPayment, setSelectedPayment] = useState<IPaymentMethod>('CASH')
   const [isConfirming, startConfirmTransition] = useTransition()
   const [isCanceling, startCancelTransition] = useTransition()
+
+  const paymentOptions: IRadioOption[] = useMemo(
+    () => [
+      { label: t('payment.cardOnPickup'), value: 'CARD', icon: CreditCardIcon },
+      { label: t('payment.cashOnPickup'), value: 'CASH', icon: MoneyWingsIcon },
+    ],
+    [t]
+  )
 
   useEffect(() => {
     refreshOrders()
@@ -78,34 +89,11 @@ const OrderPage = () => {
         {isDraft && (
           <div className={styles.paymentSection}>
             <h3 className={styles.paymentTitle}>{t('payment.selectMethod')}</h3>
-            <button
-              type="button"
-              className={`${styles.radioOption} ${selectedPayment === 'CARD' ? styles.radioActive : ''}`}
-              onClick={() => setSelectedPayment('CARD')}
-            >
-              <span className={styles.radioCircle}>
-                {selectedPayment === 'CARD' && (
-                  <span className={styles.radioDot} />
-                )}
-              </span>
-              <span className={styles.radioLabel}>
-                {t('payment.cardOnPickup')}
-              </span>
-            </button>
-            <button
-              type="button"
-              className={`${styles.radioOption} ${selectedPayment === 'CASH' ? styles.radioActive : ''}`}
-              onClick={() => setSelectedPayment('CASH')}
-            >
-              <span className={styles.radioCircle}>
-                {selectedPayment === 'CASH' && (
-                  <span className={styles.radioDot} />
-                )}
-              </span>
-              <span className={styles.radioLabel}>
-                {t('payment.cashOnPickup')}
-              </span>
-            </button>
+            <RadioSelect
+              options={paymentOptions}
+              value={selectedPayment}
+              onSelect={(v) => setSelectedPayment(v as IPaymentMethod)}
+            />
           </div>
         )}
       </div>

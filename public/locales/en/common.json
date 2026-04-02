@@ -52,7 +52,7 @@
     }
   },
   "orders": {
-    "orderNumber": "Order #{{id}}",
+    "orderNumber": "Order {{id}}",
     "noItems": "No items in order",
     "emptyOrders": "You don't have any orders yet",
     "confirmCancel": "Are you sure you want to cancel the order?",
@@ -98,7 +98,7 @@
     "cancel": "Cancel"
   },
   "payment": {
-    "selectMethod": "Select payment method",
+    "selectMethod": "Payment method",
     "cashAtCounter": "Pay at counter",
     "card": "Card",
     "cardOnPickup": "Card on pickup",

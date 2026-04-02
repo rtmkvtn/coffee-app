@@ -51,7 +51,7 @@
     }
   },
   "orders": {
-    "orderNumber": "订单 #{{id}}",
+    "orderNumber": "订单 {{id}}",
     "noItems": "订单中没有商品",
     "emptyOrders": "您还没有任何订单",
     "confirmCancel": "您确定要取消订单吗？",
@@ -97,7 +97,7 @@
     "cancel": "取消"
   },
   "payment": {
-    "selectMethod": "选择付款方式",
+    "selectMethod": "付款方式",
     "cashAtCounter": "柜台付款",
     "card": "银行卡",
     "cardOnPickup": "取货时刷卡",

@@ -79,7 +79,7 @@ const OrderItem = memo(({ order }: Props) => {
     <div className={classNames(styles.wrapper, styles.draftBorder)}>
       <div className={styles.header}>
         <span className={styles.orderNumber}>
-          {t('orders.orderNumber', { id: order.id })}
+          {t('orders.orderNumber', { id: order.id.slice(-4) })}
         </span>
         <OrderStatus status={order.state} />
       </div>
