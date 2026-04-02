@@ -27,9 +27,8 @@ const MenuItem = ({ product }: Props) => {
     removeFromCartByProductId,
   } = useCart()
   const { showModal, hideModal } = useModal()
-
   const quantityInCart =
-    items.find((x) => x.productId === product.id)?.quantity ?? undefined
+    items.filter((x) => x.productId === product.id)?.length ?? undefined
 
   const [isPending, startTransition] = useTransition()
 
