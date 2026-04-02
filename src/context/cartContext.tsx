@@ -1,13 +1,14 @@
-import { createContext, ReactNode, useContext, useState } from 'react'
+import { createContext, ReactNode, useContext, useState } from 'react';
 
-import { showToast } from '@lib/toasts/toast'
-import { CartItem } from '@models/cart.model'
-import {
-  addCartItem,
-  getMyCart,
-  removeCartItem,
-  updateCartItemQuantity as updateCartItemQuantityApi,
-} from '@services/cartService'
+
+
+import { showToast } from '@lib/toasts/toast';
+import { CartItem } from '@models/cart.model';
+import { addCartItem, getMyCart, removeCartItem, updateCartItemQuantity as updateCartItemQuantityApi } from '@services/cartService';
+
+
+
+
 
 type CartState = {
   items: CartItem[]
@@ -31,11 +32,7 @@ type CartContextType = CartState & {
     itemId: number,
     newQuantity: number
   ) => Promise<void>
-  removeFromCartByProductId: (productId: number) => Promise<void>
-  updateCartItemQuantityByProductId: (
-    productId: number,
-    newQuantity: number
-  ) => Promise<void>
+  removeLastByProductId: (productId: number) => Promise<void>
   clearCart: () => void
   isItemOperationInProgress: (itemId: number) => boolean
 }
@@ -178,24 +175,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const removeFromCartByProductId = async (productId: number) => {
-    const itemToRemove = state.items.find(
-      (item) => item.productId === productId
-    )
-    if (itemToRemove) {
-      await removeFromCart(itemToRemove.id)
-    }
-  }
+  const removeLastByProductId = async (productId: number) => {
+    const items = state.items.filter(item => item.productId === productId)
+    const lastItem = items[items.length - 1]
+    if (!lastItem) return
 
-  const updateCartItemQuantityByProductId = async (
-    productId: number,
-    newQuantity: number
-  ) => {
-    const itemToUpdate = state.items.find(
-      (item) => item.productId === productId
-    )
-    if (itemToUpdate) {
-      await updateCartItemQuantity(itemToUpdate.id, newQuantity)
+    if (lastItem.quantity > 1) {
+      await updateCartItemQuantity(lastItem.id, lastItem.quantity - 1)
+    } else {
+      await removeFromCart(lastItem.id)
     }
   }
 
@@ -212,8 +200,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         addToCart,
         removeFromCart,
         updateCartItemQuantity,
-        removeFromCartByProductId,
-        updateCartItemQuantityByProductId,
+        removeLastByProductId,
         clearCart,
         isItemOperationInProgress,
       }}

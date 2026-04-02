@@ -5,15 +5,15 @@ import seagulImg from '@assets/images/common/seagull_question.png'
 import styles from './EmptyCart.module.scss'
 
 const EmptyCart = () => {
-  const { t } = useTranslation('cart')
+  const { t } = useTranslation()
 
   return (
     <div className={styles.emptyState}>
       <div className={styles.emptyStateIcon}>
-        <img src={seagulImg} alt={t('empty.altText')} />
+        <img src={seagulImg} alt={t('cart.empty.altText')} />
       </div>
-      <h2 className={styles.emptyStateTitle}>{t('empty.title')}</h2>
-      <p className={styles.emptyStateText}>{t('empty.description')}</p>
+      <h2 className={styles.emptyStateTitle}>{t('cart.empty.title')}</h2>
+      <p className={styles.emptyStateText}>{t('cart.empty.description')}</p>
     </div>
   )
 }

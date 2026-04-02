@@ -1,19 +1,22 @@
-import { useMemo, useTransition } from 'react'
+import { useMemo, useTransition } from 'react';
 
-import ProductImage from '@components/productImage/ProductImage'
-import ProductSelectionModal from '@components/productSelectionModal/ProductSelectionModal'
-import { useCart } from '@context/cartContext'
-import { useModal } from '@context/modalContext'
-import {
-  formatPrice,
-  getImgUrl,
-  getSimpleProductConfig,
-  isSimpleProduct,
-} from '@lib/helpers'
-import { IProduct, IProductPortion } from '@models/index'
 
-import styles from './MenuItem.module.scss'
-import ProductCartButton from './productCartButton/ProductCartButton'
+
+import ProductImage from '@components/productImage/ProductImage';
+import ProductSelectionModal from '@components/productSelectionModal/ProductSelectionModal';
+import { useCart } from '@context/cartContext';
+import { useModal } from '@context/modalContext';
+import { formatPrice, getImgUrl, getSimpleProductConfig, isSimpleProduct } from '@lib/helpers';
+import { IProduct, IProductPortion } from '@models/index';
+
+
+
+import styles from './MenuItem.module.scss';
+import ProductCartButton from './productCartButton/ProductCartButton';
+
+
+
+
 
 type Props = {
   product: IProduct
@@ -23,12 +26,12 @@ const MenuItem = ({ product }: Props) => {
   const {
     items,
     addToCart,
-    updateCartItemQuantityByProductId,
-    removeFromCartByProductId,
+    removeLastByProductId,
   } = useCart()
   const { showModal, hideModal } = useModal()
   const quantityInCart =
-    items.filter((x) => x.productId === product.id)?.length ?? undefined
+    items.filter((x) => x.productId === product.id)
+      .reduce((sum, item) => sum + item.quantity, 0) || undefined
 
   const [isPending, startTransition] = useTransition()
 
@@ -62,11 +65,7 @@ const MenuItem = ({ product }: Props) => {
 
   const handleRemoveFromCart = async (): Promise<void> => {
     startTransition(async () => {
-      if (quantityInCart && quantityInCart === 1) {
-        await removeFromCartByProductId(product.id)
-      } else {
-        await updateCartItemQuantityByProductId(product.id, quantityInCart! - 1)
-      }
+      await removeLastByProductId(product.id)
     })
   }
 

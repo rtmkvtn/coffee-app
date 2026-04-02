@@ -45,7 +45,7 @@ const CartItem: FC<CartItemProps> = ({
   onRemove,
   onQuantityChange,
 }) => {
-  const { t } = useTranslation('cart')
+  const { t } = useTranslation()
   const [isFlashing, setIsFlashing] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
   const [isIngredientsExpanded, setIsIngredientsExpanded] = useState(false)
@@ -118,7 +118,7 @@ const CartItem: FC<CartItemProps> = ({
             type="button"
             className={styles.ingredientsBadge}
             onClick={handleToggleIngredients}
-            aria-label={t('showIngredients', {
+            aria-label={t('cart.showIngredients', {
               count: additionalIngredients.length,
             })}
             aria-expanded={isIngredientsExpanded}
@@ -136,7 +136,7 @@ const CartItem: FC<CartItemProps> = ({
             type="button"
             className={styles.rmBtn}
             onClick={handleRemove}
-            aria-label={t('removeItem', { name })}
+            aria-label={t('cart.removeItem', { name })}
             disabled={isLoading}
           >
             <Icon type="close" size={12} />
@@ -166,8 +166,8 @@ const CartItem: FC<CartItemProps> = ({
           role="region"
           aria-label={
             isIngredientsExpanded
-              ? t('hideIngredients')
-              : t('showIngredients', { count: additionalIngredients.length })
+              ? t('cart.hideIngredients')
+              : t('cart.showIngredients', { count: additionalIngredients.length })
           }
         >
           {additionalIngredients.map((ingredient) => (
