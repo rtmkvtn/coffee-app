@@ -105,10 +105,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         throw new Error('Failed to add item to cart')
       }
 
-      setState((prev) => ({
-        ...prev,
-        items: [...prev.items, response.data],
-      }))
+      setState((prev) => {
+        const existingIndex = prev.items.findIndex(
+          (item) => item.id === response.data.id
+        )
+        if (existingIndex >= 0) {
+          const updatedItems = [...prev.items]
+          updatedItems[existingIndex] = response.data
+          return { ...prev, items: updatedItems }
+        }
+        return { ...prev, items: [...prev.items, response.data] }
+      })
     } catch (error) {
       showToast('Failed to add item to cart', 'error')
       console.error('Error adding to cart:', error)
