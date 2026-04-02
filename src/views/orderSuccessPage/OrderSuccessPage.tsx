@@ -31,13 +31,13 @@ const OrderSuccessPage = () => {
         <Button
           text={t('orderSuccess.menuButton')}
           mode="primary"
-          onClick={() => navigate(MENU_PATH)}
+          onClick={() => navigate(MENU_PATH, { replace: true })}
           className={styles.button}
         />
         <Button
           text={t('orderSuccess.ordersButton')}
           mode="secondary"
-          onClick={() => navigate(ORDERS_PATH)}
+          onClick={() => navigate(ORDERS_PATH, { replace: true })}
           className={styles.button}
         />
       </div>

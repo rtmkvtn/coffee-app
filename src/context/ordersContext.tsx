@@ -1,8 +1,10 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 
 import { showToast } from '@lib/toasts/toast'
-import { IOrder } from '@models/index'
+import { IOrder, IPaymentMethod } from '@models/index'
 import {
+  cancelOrder as cancelOrderService,
+  confirmOrder as confirmOrderService,
   createOrder as createOrderService,
   getOrders,
 } from '@services/ordersService'
@@ -15,7 +17,9 @@ type OrdersState = {
 
 type OrdersContextType = OrdersState & {
   refreshOrders: () => Promise<void>
-  createOrder: () => Promise<void>
+  createOrder: () => Promise<string | null>
+  confirmOrder: (orderId: string, paymentMethod: IPaymentMethod) => Promise<boolean>
+  cancelOrder: (orderId: string) => Promise<boolean>
 }
 
 const OrdersContext = createContext<OrdersContextType | undefined>(undefined)
@@ -25,7 +29,7 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
     orders: [],
   })
 
-  const { clearCart } = useCart()
+  const { clearCart, initializeCart } = useCart()
 
   const refreshOrders = async () => {
     try {
@@ -43,26 +47,74 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const createOrder = async () => {
+  const createOrder = async (): Promise<string | null> => {
     try {
       const response = await createOrderService()
       if (!response.success) {
         throw new Error('Failed to create order')
       }
 
-      // Clear cart locally since backend already moved items to the order
       clearCart()
 
-      // Add new order to the state
       setState((prev) => ({
         ...prev,
         orders: [response.data, ...prev.orders],
       }))
 
-      showToast('Order created successfully', 'success')
+      return response.data.id
     } catch (error) {
       console.error('Error creating order:', error)
       showToast('Failed to create order', 'error')
+      return null
+    }
+  }
+
+  const confirmOrder = async (
+    orderId: string,
+    paymentMethod: IPaymentMethod
+  ): Promise<boolean> => {
+    try {
+      const response = await confirmOrderService(orderId, paymentMethod)
+      if (!response.success) {
+        throw new Error('Failed to confirm order')
+      }
+
+      setState((prev) => ({
+        ...prev,
+        orders: prev.orders.map((o) =>
+          o.id === orderId ? response.data : o
+        ),
+      }))
+
+      return true
+    } catch (error) {
+      console.error('Error confirming order:', error)
+      showToast('Failed to confirm order', 'error')
+      return false
+    }
+  }
+
+  const cancelOrder = async (orderId: string): Promise<boolean> => {
+    try {
+      const response = await cancelOrderService(orderId)
+      if (!response.success) {
+        throw new Error('Failed to cancel order')
+      }
+
+      setState((prev) => ({
+        ...prev,
+        orders: prev.orders.map((o) =>
+          o.id === orderId ? { ...o, state: 'CANCELED' as const } : o
+        ),
+      }))
+
+      initializeCart()
+
+      return true
+    } catch (error) {
+      console.error('Error canceling order:', error)
+      showToast('Failed to cancel order', 'error')
+      return false
     }
   }
 
@@ -72,6 +124,8 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
         ...state,
         refreshOrders,
         createOrder,
+        confirmOrder,
+        cancelOrder,
       }}
     >
       {children}

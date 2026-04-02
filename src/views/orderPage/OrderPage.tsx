@@ -1,23 +1,62 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
+import Button from '@components/button/Button'
 import OrderItem from '@components/orderItem'
+import { ORDER_SUCCESS_PATH, ORDERS_PATH } from '@constants/routes'
+import { useModal } from '@context/modalContext'
 import { useOrders } from '@context/ordersContext'
+import { IPaymentMethod } from '@models/index'
 
 import styles from './OrderPage.module.scss'
 
 const OrderPage = () => {
   const { orderId } = useParams()
   const { t } = useTranslation()
-  const { orders, refreshOrders } = useOrders()
+  const navigate = useNavigate()
+  const { orders, refreshOrders, confirmOrder, cancelOrder } = useOrders()
+  const { showModal, hideModal } = useModal()
+  const [selectedPayment, setSelectedPayment] = useState<IPaymentMethod>('CASH')
+  const [isConfirming, startConfirmTransition] = useTransition()
+  const [isCanceling, startCancelTransition] = useTransition()
 
   useEffect(() => {
     refreshOrders()
   }, [orderId])
 
   const order = orders.find((o) => o.id === orderId)
+
+  const handleConfirm = () => {
+    if (!orderId) return
+    startConfirmTransition(async () => {
+      const success = await confirmOrder(orderId, selectedPayment)
+      if (success) {
+        navigate(ORDER_SUCCESS_PATH, { replace: true })
+      }
+    })
+  }
+
+  const handleCancel = () => {
+    if (!orderId) return
+    showModal({
+      type: 'confirm',
+      content: t('orders.confirmCancel'),
+      confirmText: t('orders.cancelButton'),
+      cancelText: t('orders.cancelButtonNo'),
+      onConfirm: () => {
+        hideModal()
+        startCancelTransition(async () => {
+          const success = await cancelOrder(orderId)
+          if (success) {
+            navigate(ORDERS_PATH)
+          }
+        })
+      },
+      onCancel: () => hideModal(),
+    })
+  }
 
   if (!order) {
     return (
@@ -29,11 +68,72 @@ const OrderPage = () => {
     )
   }
 
+  const isDraft = order.state === 'DRAFT'
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.ordersList}>
         <OrderItem order={order} />
+
+        {isDraft && (
+          <div className={styles.paymentSection}>
+            <h3 className={styles.paymentTitle}>
+              {t('payment.selectMethod')}
+            </h3>
+            <button
+              type="button"
+              className={`${styles.radioOption} ${selectedPayment === 'CARD' ? styles.radioActive : ''}`}
+              onClick={() => setSelectedPayment('CARD')}
+            >
+              <span className={styles.radioCircle}>
+                {selectedPayment === 'CARD' && (
+                  <span className={styles.radioDot} />
+                )}
+              </span>
+              <span className={styles.radioLabel}>
+                {t('payment.cardOnPickup')}
+              </span>
+            </button>
+            <button
+              type="button"
+              className={`${styles.radioOption} ${selectedPayment === 'CASH' ? styles.radioActive : ''}`}
+              onClick={() => setSelectedPayment('CASH')}
+            >
+              <span className={styles.radioCircle}>
+                {selectedPayment === 'CASH' && (
+                  <span className={styles.radioDot} />
+                )}
+              </span>
+              <span className={styles.radioLabel}>
+                {t('payment.cashOnPickup')}
+              </span>
+            </button>
+          </div>
+        )}
       </div>
+
+      {isDraft && (
+        <div className={styles.footer}>
+          <div className={styles.actions}>
+            <Button
+              text={t('orders.cancelOrderButton')}
+              mode="secondary"
+              onClick={handleCancel}
+              className={styles.actionButton}
+              loading={isCanceling}
+              disabled={isConfirming || isCanceling}
+            />
+            <Button
+              text={t('orders.confirmOrderButton')}
+              mode="primary"
+              onClick={handleConfirm}
+              className={styles.actionButton}
+              loading={isConfirming}
+              disabled={isConfirming || isCanceling}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -9,6 +9,7 @@ import {
 } from 'react'
 
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 import Button from '@components/button/Button'
 import { CART_CONSTANTS } from '@constants/cart'
@@ -17,6 +18,7 @@ import { useMenu } from '@context/menuContext'
 import { useOrders } from '@context/ordersContext'
 import { formatPrice } from '@lib/helpers'
 import { toDisplayCartItems } from '@lib/helpers/cartUtils'
+import { ORDER_PATH } from '@constants/routes'
 import classNames from 'classnames'
 
 import Icon from '@assets/images/Icon'
@@ -40,6 +42,7 @@ const CartFooter = () => {
   } = useCart()
   const { categories, products } = useMenu()
   const { createOrder } = useOrders()
+  const navigate = useNavigate()
 
   const hasItems = items.length > 0
   const [isExpanded, setIsExpanded] = useState(false)
@@ -110,10 +113,13 @@ const CartFooter = () => {
 
   const handleOrder = useCallback(() => {
     startTransition(async () => {
-      await createOrder()
-      setIsExpanded(false)
+      const orderId = await createOrder()
+      if (orderId) {
+        setIsExpanded(false)
+        navigate(ORDER_PATH.replace(':orderId', orderId))
+      }
     })
-  }, [createOrder])
+  }, [createOrder, navigate])
 
   // Keyboard navigation handler
   const handleKeyDown = useCallback(

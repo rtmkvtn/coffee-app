@@ -13,13 +13,48 @@ export type RepeatOrderResponse = {
   unavailable: UnavailableItem[]
 }
 
-export const createOrder = async (
-  paymentMethod?: IPaymentMethod
+export const createOrder = async (): Promise<IResponseWrapper<IOrder>> => {
+  try {
+    const response = await api.post('/api/orders', {})
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (e: any) {
+    return {
+      success: false,
+      code: e.status,
+    }
+  }
+}
+
+export const confirmOrder = async (
+  orderId: string,
+  paymentMethod: IPaymentMethod
 ): Promise<IResponseWrapper<IOrder>> => {
   try {
-    const response = await api.post('/api/orders', {
-      ...(paymentMethod && { paymentMethod }),
+    const response = await api.post(`/api/orders/${orderId}/confirm`, {
+      paymentMethod,
     })
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (e: any) {
+    return {
+      success: false,
+      code: e.status,
+    }
+  }
+}
+
+export const cancelOrder = async (
+  orderId: string
+): Promise<IResponseWrapper<{ id: string; state: string }>> => {
+  try {
+    const response = await api.post(`/api/orders/${orderId}/cancel`)
 
     return {
       success: true,
