@@ -170,7 +170,9 @@ const CartItem: FC<CartItemProps> = ({
           aria-label={
             isIngredientsExpanded
               ? t('cart.hideIngredients')
-              : t('cart.showIngredients', { count: additionalIngredients.length })
+              : t('cart.showIngredients', {
+                  count: additionalIngredients.length,
+                })
           }
         >
           {additionalIngredients.map((ingredient) => (

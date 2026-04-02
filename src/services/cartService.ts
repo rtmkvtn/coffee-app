@@ -3,9 +3,7 @@ import { AddCartItemInput, CartItem } from '@models/index'
 import api from './api'
 import { IResponseWrapper } from './services.types'
 
-export const getMyCart = async (): Promise<
-  IResponseWrapper<CartItem[]>
-> => {
+export const getMyCart = async (): Promise<IResponseWrapper<CartItem[]>> => {
   try {
     const response = await api.get('/api/cart')
 

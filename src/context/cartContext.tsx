@@ -1,14 +1,13 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react'
 
-
-
-import { showToast } from '@lib/toasts/toast';
-import { CartItem } from '@models/cart.model';
-import { addCartItem, getMyCart, removeCartItem, updateCartItemQuantity as updateCartItemQuantityApi } from '@services/cartService';
-
-
-
-
+import { showToast } from '@lib/toasts/toast'
+import { CartItem } from '@models/cart.model'
+import {
+  addCartItem,
+  getMyCart,
+  removeCartItem,
+  updateCartItemQuantity as updateCartItemQuantityApi,
+} from '@services/cartService'
 
 type CartState = {
   items: CartItem[]
@@ -28,10 +27,7 @@ type CartContextType = CartState & {
     }
   ) => Promise<void>
   removeFromCart: (itemId: number) => Promise<void>
-  updateCartItemQuantity: (
-    itemId: number,
-    newQuantity: number
-  ) => Promise<void>
+  updateCartItemQuantity: (itemId: number, newQuantity: number) => Promise<void>
   removeLastByProductId: (productId: number) => Promise<void>
   clearCart: () => void
   isItemOperationInProgress: (itemId: number) => boolean
@@ -183,7 +179,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const removeLastByProductId = async (productId: number) => {
-    const items = state.items.filter(item => item.productId === productId)
+    const items = state.items.filter((item) => item.productId === productId)
     const lastItem = items[items.length - 1]
     if (!lastItem) return
 

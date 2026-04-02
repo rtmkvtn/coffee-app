@@ -1,8 +1,7 @@
 export * from './routes'
 export * from './temp'
 
-export const BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:1337'
+export const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:1337'
 
 export const EMOJI = {
   RAISING_HANDS: '\u{1F64C}',

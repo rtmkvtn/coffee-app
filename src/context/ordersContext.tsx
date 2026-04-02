@@ -18,7 +18,10 @@ type OrdersState = {
 type OrdersContextType = OrdersState & {
   refreshOrders: () => Promise<void>
   createOrder: () => Promise<string | null>
-  confirmOrder: (orderId: string, paymentMethod: IPaymentMethod) => Promise<boolean>
+  confirmOrder: (
+    orderId: string,
+    paymentMethod: IPaymentMethod
+  ) => Promise<boolean>
   cancelOrder: (orderId: string) => Promise<boolean>
 }
 
@@ -81,9 +84,7 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
 
       setState((prev) => ({
         ...prev,
-        orders: prev.orders.map((o) =>
-          o.id === orderId ? response.data : o
-        ),
+        orders: prev.orders.map((o) => (o.id === orderId ? response.data : o)),
       }))
 
       return true

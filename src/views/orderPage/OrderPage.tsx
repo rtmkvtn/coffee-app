@@ -77,9 +77,7 @@ const OrderPage = () => {
 
         {isDraft && (
           <div className={styles.paymentSection}>
-            <h3 className={styles.paymentTitle}>
-              {t('payment.selectMethod')}
-            </h3>
+            <h3 className={styles.paymentTitle}>{t('payment.selectMethod')}</h3>
             <button
               type="button"
               className={`${styles.radioOption} ${selectedPayment === 'CARD' ? styles.radioActive : ''}`}

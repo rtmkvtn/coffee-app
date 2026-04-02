@@ -13,12 +13,12 @@ import { useNavigate } from 'react-router-dom'
 
 import Button from '@components/button/Button'
 import { CART_CONSTANTS } from '@constants/cart'
+import { ORDER_PATH } from '@constants/routes'
 import { useCart } from '@context/cartContext'
 import { useMenu } from '@context/menuContext'
 import { useOrders } from '@context/ordersContext'
 import { formatPrice } from '@lib/helpers'
 import { toDisplayCartItems } from '@lib/helpers/cartUtils'
-import { ORDER_PATH } from '@constants/routes'
 import classNames from 'classnames'
 
 import Icon from '@assets/images/Icon'
@@ -143,10 +143,7 @@ const CartFooter = () => {
   // Memoize expensive calculations
   const totalPrice = useMemo(
     () =>
-      displayItems.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-      ),
+      displayItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
     [displayItems]
   )
 

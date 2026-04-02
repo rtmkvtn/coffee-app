@@ -92,20 +92,14 @@ const OrderItem = memo(({ order }: Props) => {
 
             return (
               <div key={item.id} className={styles.item}>
-                <span
-                  className={classNames(styles.itemText, styles.itemQuant)}
-                >
+                <span className={classNames(styles.itemText, styles.itemQuant)}>
                   {item.quantity}x
                 </span>
-                <span
-                  className={classNames(styles.itemText, styles.itemName)}
-                >
+                <span className={classNames(styles.itemText, styles.itemName)}>
                   {/*need this span for dots positioning*/}
                   <span>{item.productSnapshot.name}</span>
                 </span>
-                <span
-                  className={classNames(styles.itemText, styles.itemPrice)}
-                >
+                <span className={classNames(styles.itemText, styles.itemPrice)}>
                   {formatPrice(lineTotal)}
                 </span>
               </div>
