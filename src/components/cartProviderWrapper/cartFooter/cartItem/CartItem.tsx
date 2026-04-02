@@ -77,12 +77,21 @@ const CartItem: FC<CartItemProps> = ({
     }
   }, [isRemoving, itemId])
 
+  const handleRemove = useCallback(() => {
+    if (!isLoading) {
+      setIsRemoving(true)
+    }
+  }, [isLoading])
+
   const handleDecrease = useCallback(() => {
-    if (quantity > CART_CONSTANTS.MIN_QUANTITY && !isLoading) {
+    if (isLoading) return
+    if (quantity > CART_CONSTANTS.MIN_QUANTITY) {
       onQuantityChangeRef.current(itemId, quantity - 1)
       setIsFlashing(true)
+    } else {
+      handleRemove()
     }
-  }, [quantity, itemId, isLoading])
+  }, [quantity, itemId, isLoading, handleRemove])
 
   const handleIncrease = useCallback(() => {
     if (quantity < CART_CONSTANTS.MAX_QUANTITY && !isLoading) {
@@ -90,12 +99,6 @@ const CartItem: FC<CartItemProps> = ({
       setIsFlashing(true)
     }
   }, [quantity, itemId, isLoading])
-
-  const handleRemove = useCallback(() => {
-    if (!isLoading) {
-      setIsRemoving(true)
-    }
-  }, [isLoading])
 
   const handleToggleIngredients = useCallback(() => {
     setIsIngredientsExpanded((prev) => !prev)
