@@ -10,7 +10,7 @@ import { ORDER_SUCCESS_PATH, ORDERS_PATH } from '@constants/routes'
 import { useModal } from '@context/modalContext'
 import { useOrders } from '@context/ordersContext'
 import { IPaymentMethod } from '@models/index'
-import CreditCardIcon from '@assets/images/common/credit_card.svg'
+// import CreditCardIcon from '@assets/images/common/credit_card.svg'
 import MoneyWingsIcon from '@assets/images/common/money_wings.svg'
 
 import styles from './OrderPage.module.scss'
@@ -25,9 +25,9 @@ const OrderPage = () => {
   const [isConfirming, startConfirmTransition] = useTransition()
   const [isCanceling, startCancelTransition] = useTransition()
 
-  const paymentOptions: IRadioOption[] = useMemo(
+  const PAYMENT_OPTIONS: IRadioOption[] = useMemo(
     () => [
-      { label: t('payment.cardOnPickup'), value: 'CARD', icon: CreditCardIcon },
+      // { label: t('payment.cardOnPickup'), value: 'CARD', icon: CreditCardIcon },
       { label: t('payment.cashOnPickup'), value: 'CASH', icon: MoneyWingsIcon },
     ],
     [t]
@@ -90,7 +90,7 @@ const OrderPage = () => {
           <div className={styles.paymentSection}>
             <h3 className={styles.paymentTitle}>{t('payment.selectMethod')}</h3>
             <RadioSelect
-              options={paymentOptions}
+              options={PAYMENT_OPTIONS}
               value={selectedPayment}
               onSelect={(v) => setSelectedPayment(v as IPaymentMethod)}
             />
