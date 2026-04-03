@@ -106,6 +106,7 @@
 
 .description {
   @include constants.text-modal-description;
+  text-align: left;
   margin-top: 12px;
 }
 

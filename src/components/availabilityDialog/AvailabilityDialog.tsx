@@ -1,12 +1,22 @@
-import { FC } from 'react'
+import { FC } from 'react';
 
-import { useTranslation } from 'react-i18next'
 
-import Button from '@components/button/Button'
-import { useModal } from '@context/modalContext'
-import { UnavailableItem } from '@services/ordersService'
 
-import styles from './AvailabilityDialog.module.scss'
+import { useTranslation } from 'react-i18next';
+
+
+
+import Button from '@components/button/Button';
+import { useModal } from '@context/modalContext';
+import { UnavailableItem } from '@services/ordersService';
+
+
+
+import styles from './AvailabilityDialog.module.scss';
+
+
+
+
 
 interface AvailabilityDialogProps {
   unavailableItems: UnavailableItem[]

@@ -16,6 +16,7 @@ export type IOrderItem = {
   ingredientsPrice: number
   productSnapshot: {
     name: string
+    fullName: string
     description: string | null
     image: string | null
   }

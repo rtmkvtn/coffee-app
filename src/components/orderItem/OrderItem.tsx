@@ -116,7 +116,7 @@ const OrderItem = memo(({ order }: Props) => {
                 </span>
                 <span className={classNames(styles.itemText, styles.itemName)}>
                   {/*need this span for dots positioning*/}
-                  <span>{item.productSnapshot.name}</span>
+                  <span>{item.productSnapshot.fullName}</span>
                 </span>
                 <span className={classNames(styles.itemText, styles.itemPrice)}>
                   {formatPrice(lineTotal)}

@@ -24,7 +24,7 @@ const RadioSelect = ({ options, value, onSelect, className }: IProps) => {
           onClick={() => onSelect(option.value)}
         >
           {option.icon && (
-            <img src={option.icon} alt="" className={styles.icon} />
+            <span className={styles.icon}>{option.icon}</span>
           )}
           <span className={styles.label}>{option.label}</span>
           <span className={styles.radioCircle}>
