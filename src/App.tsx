@@ -103,7 +103,7 @@ function App() {
               path={ORDERS_PATH}
               loader={refreshOrders}
               element={
-                <Layout withNavHeader headerText={t('navigation.orders')}>
+                <Layout withNavHeader headerText={t('navigation.orders')} backPath={HOME_PATH}>
                   <OrdersPage />
                 </Layout>
               }

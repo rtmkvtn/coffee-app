@@ -11,6 +11,7 @@ type IProps = {
   withNavHeader?: boolean
   headerText?: string
   noBackOption?: boolean
+  backPath?: string
   withCartProvider?: boolean
   children: ReactNode
 }
@@ -18,6 +19,7 @@ type IProps = {
 const Layout = ({
   withNavHeader,
   noBackOption,
+  backPath,
   headerText,
   withCartProvider,
   children,
@@ -49,7 +51,7 @@ const Layout = ({
       >
         {withNavHeader && (
           <div className={styles.header} ref={headerRef}>
-            <NavHeader text={headerText} noBackOption={noBackOption} />
+            <NavHeader text={headerText} noBackOption={noBackOption} backPath={backPath} />
           </div>
         )}
         <div className={styles.content} ref={contentRef}>

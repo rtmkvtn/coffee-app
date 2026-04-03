@@ -11,11 +11,12 @@ import styles from './NavHeader.module.scss'
 type IProps = {
   className?: string
   noBackOption?: boolean
+  backPath?: string
   text?: string
 }
 
 const NavHeader = forwardRef<HTMLDivElement, IProps>(
-  ({ className, noBackOption, text }, ref) => {
+  ({ className, noBackOption, backPath, text }, ref) => {
     const navigate = useNavigate()
 
     return (
@@ -28,7 +29,7 @@ const NavHeader = forwardRef<HTMLDivElement, IProps>(
             <div
               className={styles.back}
               onClick={() => {
-                navigate(-1)
+                navigate(backPath ?? -1)
               }}
             >
               <Icon type={'arrowRight'} size={24} />
