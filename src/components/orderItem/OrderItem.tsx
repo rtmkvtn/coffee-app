@@ -12,7 +12,11 @@ import { useModal } from '@context/modalContext'
 import { formatPrice } from '@lib/helpers'
 import { showToast } from '@lib/toasts/toast'
 import { IOrder } from '@models/index'
-import { repeatOrder } from '@services/ordersService'
+import {
+  confirmRepeatOrder,
+  repeatOrder,
+  UnavailableItem,
+} from '@services/ordersService'
 import classNames from 'classnames'
 
 import styles from './OrderItem.module.scss'
@@ -24,9 +28,38 @@ type Props = {
 const OrderItem = memo(({ order }: Props) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { clearCart, setItems } = useCart()
+  const { setItems } = useCart()
   const { showModal } = useModal()
   const [repeatLoading, setRepeatLoading] = useState(false)
+
+  const handleConfirm = async () => {
+    const confirmResponse = await confirmRepeatOrder(order.id)
+
+    if (confirmResponse.success) {
+      setItems(confirmResponse.cart)
+      navigate(MENU_PATH)
+      return
+    }
+
+    // Availability changed — re-show dialog with updated data
+    if (confirmResponse.unavailable.length > 0) {
+      showAvailabilityDialog(confirmResponse.unavailable)
+    } else {
+      showToast(t('orders.repeat.noneAvailable'), 'error')
+    }
+  }
+
+  const showAvailabilityDialog = (unavailableItems: UnavailableItem[]) => {
+    showModal({
+      type: 'custom',
+      content: (
+        <AvailabilityDialog
+          unavailableItems={unavailableItems}
+          onAddAvailable={handleConfirm}
+        />
+      ),
+    })
+  }
 
   const handleRepeatOrder = async () => {
     setRepeatLoading(true)
@@ -45,25 +78,11 @@ const OrderItem = memo(({ order }: Props) => {
       }
 
       if (unavailable.length === 0) {
-        clearCart()
-        setItems(available)
-        navigate(MENU_PATH)
+        await handleConfirm()
         return
       }
 
-      showModal({
-        type: 'custom',
-        content: (
-          <AvailabilityDialog
-            unavailableItems={unavailable}
-            onAddAvailable={() => {
-              clearCart()
-              setItems(available)
-              navigate(MENU_PATH)
-            }}
-          />
-        ),
-      })
+      showAvailabilityDialog(unavailable)
     } catch {
       showToast(t('orders.repeat.failed'), 'error')
     } finally {

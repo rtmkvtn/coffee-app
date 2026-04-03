@@ -8,10 +8,28 @@ export type UnavailableItem = {
   reason: string
 }
 
+export type RepeatAvailableItem = {
+  productId: number
+  portionId: number
+  temperatureId: number | null
+  ingredientIds: number[]
+  quantity: number
+  productName: string
+}
+
 export type RepeatOrderResponse = {
-  available: CartItem[]
+  available: RepeatAvailableItem[]
   unavailable: UnavailableItem[]
 }
+
+export type RepeatOrderConfirmResponse =
+  | { success: true; cart: CartItem[] }
+  | {
+      success: false
+      availabilityChanged: true
+      available: RepeatAvailableItem[]
+      unavailable: UnavailableItem[]
+    }
 
 export const createOrder = async (): Promise<IResponseWrapper<IOrder>> => {
   try {
@@ -68,6 +86,11 @@ export const cancelOrder = async (
   }
 }
 
+const mapUnavailable = (
+  items: Array<{ productName: string; reason: string }>
+): UnavailableItem[] =>
+  items.map((i) => ({ name: i.productName, reason: i.reason }))
+
 export const repeatOrder = async (
   orderId: string
 ): Promise<IResponseWrapper<RepeatOrderResponse>> => {
@@ -76,13 +99,40 @@ export const repeatOrder = async (
 
     return {
       success: true,
-      data: response.data,
+      data: {
+        available: response.data.available,
+        unavailable: mapUnavailable(response.data.unavailable),
+      },
     }
   } catch (e: any) {
     return {
       success: false,
       code: e.status,
     }
+  }
+}
+
+export const confirmRepeatOrder = async (
+  orderId: string
+): Promise<RepeatOrderConfirmResponse> => {
+  try {
+    const response = await api.post(`/api/orders/${orderId}/repeat/confirm`)
+
+    return {
+      success: true,
+      cart: response.data.data,
+    }
+  } catch (e: any) {
+    if (e.response?.status === 409) {
+      const body = e.response.data
+      return {
+        success: false,
+        availabilityChanged: true,
+        available: body.available,
+        unavailable: mapUnavailable(body.unavailable),
+      }
+    }
+    throw e
   }
 }
 
