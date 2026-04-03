@@ -33,6 +33,7 @@ export type IOrderItem = {
 
 export type IOrder = {
   id: string
+  orderNumber: number
   items: IOrderItem[]
   amount: number
   state: OrderStatus

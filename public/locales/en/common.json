@@ -52,7 +52,7 @@
     }
   },
   "orders": {
-    "orderNumber": "Order {{id}}",
+    "orderNumber": "Order #{{id}}",
     "noItems": "No items in order",
     "emptyOrders": "You don't have any orders yet",
     "confirmCancel": "Are you sure you want to cancel the order?",

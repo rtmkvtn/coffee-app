@@ -54,7 +54,7 @@
     }
   },
   "orders": {
-    "orderNumber": "Заказ {{id}}",
+    "orderNumber": "Заказ №{{id}}",
     "noItems": "В заказе нет товаров",
     "emptyOrders": "У вас пока нет заказов",
     "confirmCancel": "Вы уверены, что хотите отменить заказ?",
