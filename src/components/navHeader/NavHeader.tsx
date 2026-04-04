@@ -29,7 +29,7 @@ const NavHeader = forwardRef<HTMLDivElement, IProps>(
             <div
               className={styles.back}
               onClick={() => {
-                navigate(backPath ?? -1)
+                backPath ? navigate(backPath) : navigate(-1)
               }}
             >
               <Icon type={'arrowRight'} size={24} />
