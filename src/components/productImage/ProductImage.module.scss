@@ -23,6 +23,19 @@
     overflow: hidden;
   }
 
+  .blurPlaceholder {
+    filter: blur(8px);
+    transform: scale(1.1);
+  }
+
+  .mainImage {
+    transition: opacity 0.3s ease;
+
+    &.loading {
+      opacity: 0;
+    }
+  }
+
   img {
     height: 100%;
   }

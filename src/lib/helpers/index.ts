@@ -3,8 +3,16 @@ import i18n from '@lib/i18n'
 
 import placeholder from '@assets/images/common/logo-round.png'
 
-export const getImgUrl = (mediaUrl?: string) => {
-  return mediaUrl ? `${BASE_URL}${mediaUrl}` : placeholder
+export const getImgUrl = (
+  mediaUrl?: string,
+  variant: 'full' | 'thumb' = 'full'
+) => {
+  if (!mediaUrl) return placeholder
+  if (variant === 'thumb') {
+    const thumbUrl = mediaUrl.replace(/\.webp$/, '.thumb.webp')
+    return `${BASE_URL}${thumbUrl}`
+  }
+  return `${BASE_URL}${mediaUrl}`
 }
 
 export const formatPrice = (price: number | string): string => {

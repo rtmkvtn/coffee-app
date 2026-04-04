@@ -13,6 +13,7 @@ export type IProduct = {
   name: string
   description: string | null
   image: string | null
+  imageBlur: string | null
   basePrice: number
   subcategoryId: number
   prices: IProductPortion[]

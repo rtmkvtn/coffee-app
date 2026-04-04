@@ -75,11 +75,12 @@ const ProductSelectionModal = ({
         {/* Product Image */}
         <div className={styles.imageWrapper}>
           <ProductImage
-            imgSrc={getImgUrl(product.image ?? undefined)}
+            imgSrc={getImgUrl(product.image ?? undefined, 'full')}
             altText={product.name}
             temperatures={product.temperatures.map((t) => t.type)}
             isLg
             className={styles.productImage}
+            blurPlaceholder={product.imageBlur}
           />
         </div>
 

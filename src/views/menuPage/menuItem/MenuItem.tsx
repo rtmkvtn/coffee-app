@@ -81,10 +81,11 @@ const MenuItem = ({ product }: Props) => {
     <div className={styles.product}>
       <div className={styles.clickableArea} onClick={handleCardClick}>
         <ProductImage
-          imgSrc={getImgUrl(product.image ?? undefined)}
+          imgSrc={getImgUrl(product.image ?? undefined, 'thumb')}
           className={styles.avatar}
           altText={product.name}
           temperatures={product.temperatures.map((t) => t.type)}
+          blurPlaceholder={product.imageBlur}
         />
         <div className={styles.info}>
           <div className={styles.header}>

@@ -111,7 +111,7 @@ const CartItem: FC<CartItemProps> = ({
     <div className={classNames(styles.item, isRemoving && styles.removing)}>
       <div className={styles.avatarWrapper}>
         <ProductImage
-          imgSrc={image ? getImgUrl(image) : ''}
+          imgSrc={image ? getImgUrl(image, 'thumb') : ''}
           className={styles.avatar}
           altText={name}
           temperatures={temperature ? [temperature] : []}
