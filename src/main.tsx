@@ -20,7 +20,7 @@ import App from './App.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter
-      basename={import.meta.env.MODE === 'development' ? '/' : '/web-app'}
+      basename="/"
     >
       <UserProvider>
         <MenuProvider>

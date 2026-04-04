@@ -4,7 +4,7 @@ import i18n from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import HttpBackend from 'i18next-http-backend'
 
-const basePath = import.meta.env.MODE === 'development' ? '' : '/web-app'
+const basePath = ''
 const localesVersion =
   import.meta.env.MODE === 'development'
     ? ''
