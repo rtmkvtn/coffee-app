@@ -2,18 +2,23 @@ import { useEffect } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
+import GlobalLoader from '@components/loaders/globalLoader/GlobalLoader'
 import OrderItem from '@components/orderItem'
 import { useOrders } from '@context/ordersContext'
 
 import styles from './OrdersPage.module.scss'
 
 const OrdersPage = () => {
-  const { orders, refreshOrders } = useOrders()
+  const { orders, loading, refreshOrders } = useOrders()
   const { t } = useTranslation()
 
   useEffect(() => {
     refreshOrders()
   }, [])
+
+  if (loading) {
+    return <GlobalLoader />
+  }
 
   return (
     <div className={styles.wrapper}>

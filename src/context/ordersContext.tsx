@@ -1,4 +1,6 @@
-import { createContext, ReactNode, useContext, useState } from 'react'
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react'
+
+import { useTranslation } from 'react-i18next'
 
 import { showToast } from '@lib/toasts/toast'
 import { IOrder, IPaymentMethod } from '@models/index'
@@ -13,6 +15,7 @@ import { useCart } from './cartContext'
 
 type OrdersState = {
   orders: IOrder[]
+  loading: boolean
 }
 
 type OrdersContextType = OrdersState & {
@@ -30,11 +33,13 @@ const OrdersContext = createContext<OrdersContextType | undefined>(undefined)
 export const OrdersProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<OrdersState>({
     orders: [],
+    loading: false,
   })
 
   const { clearCart, initializeCart } = useCart()
+  const { i18n } = useTranslation()
 
-  const refreshOrders = async () => {
+  const refreshOrders = useCallback(async () => {
     try {
       const response = await getOrders()
       if (!response.success) {
@@ -43,12 +48,26 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
       setState((prev) => ({
         ...prev,
         orders: response.data,
+        loading: false,
       }))
     } catch (error) {
+      setState((prev) => ({ ...prev, loading: false }))
       showToast('Failed to refresh orders', 'error')
       console.error('Error refreshing orders:', error)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setState((prev) => ({ ...prev, orders: [], loading: true }))
+      refreshOrders()
+    }
+
+    i18n.on('languageChanged', handleLanguageChange)
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange)
+    }
+  }, [i18n, refreshOrders])
 
   const createOrder = async (): Promise<string | null> => {
     try {
