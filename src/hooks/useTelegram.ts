@@ -27,6 +27,7 @@ export function useTelegram() {
       if (tg) {
         try {
           await tg.ready() // ensure WebApp is initialized
+          tg.expand() // open full screen
           const unsafe = tg.initDataUnsafe
           if (unsafe?.user) {
             setUser(unsafe.user)
