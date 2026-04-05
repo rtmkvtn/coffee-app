@@ -105,22 +105,67 @@ const OrderItem = memo(({ order }: Props) => {
       <div className={styles.content}>
         <div className={styles.items}>
           {order.items.map((item) => {
-            const lineTotal =
-              (Number(item.unitPrice) + Number(item.ingredientsPrice)) *
-              item.quantity
+            const unitTotal = Number(item.unitPrice) * item.quantity
+            const portionTemp = [
+              item.portionSnapshot?.name,
+              item.temperatureSnapshot?.type === 'hot'
+                ? t('product.hot')
+                : item.temperatureSnapshot?.type === 'cold'
+                  ? t('product.cold')
+                  : null,
+            ]
+              .filter(Boolean)
+              .join(' · ')
 
             return (
-              <div key={item.id} className={styles.item}>
-                <span className={classNames(styles.itemText, styles.itemQuant)}>
-                  {item.quantity}x
-                </span>
-                <span className={classNames(styles.itemText, styles.itemName)}>
-                  {/*need this span for dots positioning*/}
-                  <span>{item.productSnapshot.fullName}</span>
-                </span>
-                <span className={classNames(styles.itemText, styles.itemPrice)}>
-                  {formatPrice(lineTotal)}
-                </span>
+              <div key={item.id} className={styles.itemBlock}>
+                <div className={styles.item}>
+                  <span
+                    className={classNames(styles.itemText, styles.itemQuant)}
+                  >
+                    {item.quantity}x
+                  </span>
+                  <span
+                    className={classNames(styles.itemText, styles.itemName)}
+                  >
+                    <span>{item.productSnapshot.fullName}</span>
+                  </span>
+                  <span
+                    className={classNames(styles.itemText, styles.itemPrice)}
+                  >
+                    {formatPrice(unitTotal)}
+                  </span>
+                </div>
+                {portionTemp && (
+                  <div
+                    className={classNames(styles.itemSub, styles.itemSubMeta)}
+                  >
+                    ({portionTemp})
+                  </div>
+                )}
+                {item.ingredientsSnapshot.length > 0 &&
+                  item.ingredientsSnapshot.map((ing) => (
+                    <div key={ing.ingredientId} className={styles.itemSub}>
+                      <span
+                        className={classNames(
+                          styles.itemText,
+                          styles.itemName,
+                          styles.itemIngr
+                        )}
+                      >
+                        <span>+ {ing.name}</span>
+                      </span>
+                      <span
+                        className={classNames(
+                          styles.itemText,
+                          styles.itemPrice,
+                          styles.itemIngr
+                        )}
+                      >
+                        {formatPrice(ing.price)}
+                      </span>
+                    </div>
+                  ))}
               </div>
             )
           })}

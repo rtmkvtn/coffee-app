@@ -73,6 +73,29 @@
   }
 }
 
+.itemBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.itemSub {
+  display: flex;
+  align-items: flex-end;
+  font-size: 12px;
+  gap: 2px;
+  padding-left: 20px;
+
+  &Meta {
+    color: constants.$color-gray;
+    @include constants.text-regular;
+    font-size: 12px;
+  }
+}
+.itemIngr {
+  font-size: 12px;
+}
+
 .dashDivider {
   width: 100%;
   height: 1px;

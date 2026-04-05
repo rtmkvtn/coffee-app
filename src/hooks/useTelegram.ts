@@ -1,13 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
-
-
-import { DEFAULT_TG_USER, MOCK_INIT_DATA } from '@constants/temp';
-import { ITelegramUser } from '@models/tgUser.model';
-
-
-
-
+import { DEFAULT_TG_USER, MOCK_INIT_DATA } from '@constants/temp'
+import { ITelegramUser } from '@models/tgUser.model'
 
 export function useTelegram() {
   const [user, setUser] = useState<ITelegramUser | null>(null)

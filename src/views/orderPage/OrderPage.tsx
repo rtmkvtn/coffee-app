@@ -6,11 +6,11 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@components/button/Button'
 import OrderItem from '@components/orderItem'
 import RadioSelect, { IRadioOption } from '@components/radioSelect/RadioSelect'
+import { EMOJI } from '@constants/index'
 import { ORDER_SUCCESS_PATH, ORDERS_PATH } from '@constants/routes'
 import { useModal } from '@context/modalContext'
 import { useOrders } from '@context/ordersContext'
 import { IPaymentMethod } from '@models/index'
-import { EMOJI } from '@constants/index'
 
 import styles from './OrderPage.module.scss'
 

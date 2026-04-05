@@ -51,7 +51,11 @@ const Layout = ({
       >
         {withNavHeader && (
           <div className={styles.header} ref={headerRef}>
-            <NavHeader text={headerText} noBackOption={noBackOption} backPath={backPath} />
+            <NavHeader
+              text={headerText}
+              noBackOption={noBackOption}
+              backPath={backPath}
+            />
           </div>
         )}
         <div className={styles.content} ref={contentRef}>

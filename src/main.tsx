@@ -19,9 +19,7 @@ import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter
-      basename="/"
-    >
+    <BrowserRouter basename="/">
       <UserProvider>
         <MenuProvider>
           <CartProvider>
