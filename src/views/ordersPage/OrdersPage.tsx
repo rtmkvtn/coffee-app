@@ -31,7 +31,9 @@ const OrdersPage = () => {
         {orders.length === 0 && (
           <div className={styles.emptyState}>
             <h2 className={styles.emptyStateTitle}>{t('orders.emptyTitle')}</h2>
-            <p className={styles.emptyStateText}>{t('orders.emptyDescription')}</p>
+            <p className={styles.emptyStateText}>
+              {t('orders.emptyDescription')}
+            </p>
           </div>
         )}
       </div>
