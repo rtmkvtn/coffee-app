@@ -80,7 +80,7 @@ function App() {
     if (!isInitialized) {
       initScript()
     }
-  }, [tgIsReady, initErrorMessage])
+  }, [initData, tgIsReady, initErrorMessage])
 
   return (
     <div className="main-container">
