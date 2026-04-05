@@ -55,6 +55,8 @@
     "orderNumber": "Order #{{id}}",
     "noItems": "No items in order",
     "emptyOrders": "You don't have any orders yet",
+    "emptyTitle": "All quiet on the lake \uD83C\uDF0A",
+    "emptyDescription": "Your order history will appear here. Place your first — and the lake will come alive.",
     "confirmCancel": "Are you sure you want to cancel the order?",
     "cancelButton": "Cancel",
     "cancelButtonNo": "No",

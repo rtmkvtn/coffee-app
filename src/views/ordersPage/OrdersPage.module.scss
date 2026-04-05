@@ -25,9 +25,18 @@
 }
 
 .emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  color: constants.$text-primary-color;
-  padding: 32px;
-  font-size: 18px;
-  font-weight: 500;
+  margin-top: 64px;
+}
+
+.emptyStateTitle {
+  @include constants.text-h1;
+  margin: 0 0 8px 0;
+}
+
+.emptyStateText {
+  @include constants.text-regular;
 }

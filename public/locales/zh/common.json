@@ -54,6 +54,8 @@
     "orderNumber": "订单 #{{id}}",
     "noItems": "订单中没有商品",
     "emptyOrders": "您还没有任何订单",
+    "emptyTitle": "湖面风平浪静 \uD83C\uDF0A",
+    "emptyDescription": "您的订单历史将显示在这里。下第一单吧——让湖水荡漾起来。",
     "confirmCancel": "您确定要取消订单吗？",
     "cancelButton": "取消",
     "cancelButtonNo": "否",
