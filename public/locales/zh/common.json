@@ -45,6 +45,10 @@
       "description": "添加咖啡或其他美味到您的购物车",
       "altText": "空购物车"
     },
+    "comment": {
+      "label": "订单备注",
+      "placeholder": "想让咖啡像贝加尔湖上的阳光一样温暖？写下你的愿望"
+    },
     "errors": {
       "maxQuantity": "最大数量：{{max}}",
       "minQuantity": "最小数量：{{min}}"

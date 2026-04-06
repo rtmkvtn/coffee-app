@@ -40,4 +40,5 @@ export type IOrder = {
   state: OrderStatus
   createdAt: string
   paymentMethod: IPaymentMethod | null
+  comment: string | null
 }

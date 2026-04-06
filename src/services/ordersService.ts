@@ -31,9 +31,13 @@ export type RepeatOrderConfirmResponse =
       unavailable: UnavailableItem[]
     }
 
-export const createOrder = async (): Promise<IResponseWrapper<IOrder>> => {
+export const createOrder = async (
+  comment?: string
+): Promise<IResponseWrapper<IOrder>> => {
   try {
-    const response = await api.post('/api/orders', {})
+    const response = await api.post('/api/orders', {
+      comment: comment || undefined,
+    })
 
     return {
       success: true,

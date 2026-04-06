@@ -46,6 +46,10 @@
       "description": "Add coffee or something tasty to your cart",
       "altText": "Empty cart"
     },
+    "comment": {
+      "label": "Order comment",
+      "placeholder": "Want your coffee warm like the sun over Baikal? Write your wishes here"
+    },
     "errors": {
       "maxQuantity": "Maximum quantity: {{max}}",
       "minQuantity": "Minimum quantity: {{min}}"

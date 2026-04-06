@@ -20,6 +20,22 @@
   margin-bottom: 24px;
 }
 
+.commentSection {
+  .commentLabel {
+    @include constants.text-medium;
+    margin: 0 0 8px;
+  }
+
+  .commentText {
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px;
+    @include constants.text-regular;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
 .paymentSection {
   .paymentTitle {
     @include constants.text-medium;

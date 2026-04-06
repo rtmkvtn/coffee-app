@@ -47,6 +47,8 @@ const CartFooter = () => {
   const hasItems = items.length > 0
   const [isExpanded, setIsExpanded] = useState(false)
   const [isPending, startTransition] = useTransition()
+  const [comment, setComment] = useState('')
+  const commentRef = useRef<HTMLTextAreaElement>(null)
   const [hasScroll, setHasScroll] = useState(false)
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(true)
   const [isScrolledToTop, setIsScrolledToTop] = useState(true)
@@ -111,15 +113,33 @@ const CartFooter = () => {
     [updateCartItemQuantity]
   )
 
+  const handleCommentChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value
+      if (value.length <= 500) {
+        setComment(value)
+      }
+      if (commentRef.current) {
+        commentRef.current.style.height = 'auto'
+        commentRef.current.style.height = `${commentRef.current.scrollHeight}px`
+      }
+    },
+    []
+  )
+
   const handleOrder = useCallback(() => {
     startTransition(async () => {
-      const orderId = await createOrder()
+      const trimmedComment = comment.trim()
+      const orderId = await createOrder(
+        trimmedComment ? trimmedComment : undefined
+      )
       if (orderId) {
         setIsExpanded(false)
+        setComment('')
         navigate(ORDER_PATH.replace(':orderId', orderId))
       }
     })
-  }, [createOrder, navigate])
+  }, [createOrder, navigate, comment])
 
   // Keyboard navigation handler
   const handleKeyDown = useCallback(
@@ -259,6 +279,20 @@ const CartFooter = () => {
                 />
               )
             })}
+            <div className={styles.commentSection}>
+              <h3 className={styles.commentLabel}>{t('cart.comment.label')}</h3>
+              <textarea
+                ref={commentRef}
+                className={styles.commentTextarea}
+                placeholder={t('cart.comment.placeholder')}
+                value={comment}
+                onChange={handleCommentChange}
+                rows={3}
+              />
+              <span className={styles.commentCounter}>
+                {comment.length}/500
+              </span>
+            </div>
           </div>
         )}
 

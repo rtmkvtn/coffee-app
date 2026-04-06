@@ -27,7 +27,7 @@ type OrdersState = {
 
 type OrdersContextType = OrdersState & {
   refreshOrders: () => Promise<void>
-  createOrder: () => Promise<string | null>
+  createOrder: (comment?: string) => Promise<string | null>
   confirmOrder: (
     orderId: string,
     paymentMethod: IPaymentMethod
@@ -76,9 +76,9 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [i18n, refreshOrders])
 
-  const createOrder = async (): Promise<string | null> => {
+  const createOrder = async (comment?: string): Promise<string | null> => {
     try {
-      const response = await createOrderService()
+      const response = await createOrderService(comment)
       if (!response.success) {
         throw new Error('Failed to create order')
       }

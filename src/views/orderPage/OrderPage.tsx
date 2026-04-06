@@ -85,6 +85,13 @@ const OrderPage = () => {
       <div className={styles.ordersList}>
         <OrderItem order={order} hideActions />
 
+        {isDraft && order.comment && (
+          <div className={styles.commentSection}>
+            <h3 className={styles.commentLabel}>{t('cart.comment.label')}</h3>
+            <p className={styles.commentText}>{order.comment}</p>
+          </div>
+        )}
+
         {isDraft && (
           <div className={styles.paymentSection}>
             <h3 className={styles.paymentTitle}>{t('payment.selectMethod')}</h3>
