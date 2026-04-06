@@ -10,8 +10,10 @@
 
   .emptyStateIcon {
     margin-bottom: 8px;
-    max-width: 176px;
+    width: 176px;
+    aspect-ratio: 352 / 374;
     img {
+      width: 100%;
       object-fit: contain;
     }
   }

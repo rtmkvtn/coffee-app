@@ -22,6 +22,8 @@
 
     .avatar {
       width: 90px;
+      aspect-ratio: 1;
+      flex-shrink: 0;
     }
 
     .info {
