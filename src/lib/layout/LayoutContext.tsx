@@ -19,16 +19,17 @@ type LayoutContextType = LayoutState & {
 
 const LayoutContext = createContext<LayoutContextType | undefined>(undefined)
 
+const CONTENT_PADDING = 24
+
 export const LayoutProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<LayoutState>({
     availableHeight: 0,
-    contentPaddingTop: 0,
-    contentPaddingBottom: 0,
+    contentPaddingTop: CONTENT_PADDING,
+    contentPaddingBottom: CONTENT_PADDING,
     windowHeight: 0,
   })
 
   const updateLayout = () => {
-    // Get --app-height CSS variable
     const appHeightVar = getComputedStyle(document.documentElement)
       .getPropertyValue('--app-height')
       .trim()
@@ -38,46 +39,25 @@ export const LayoutProvider = ({ children }: { children: ReactNode }) => {
         ? parseFloat(appHeightVar)
         : window.innerHeight
 
-    // Get --header-height CSS variable (if header exists)
-    const headerHeightVar = getComputedStyle(document.documentElement)
-      .getPropertyValue('--header-height')
-      .trim()
-
-    const headerHeight =
-      headerHeightVar && headerHeightVar !== ''
-        ? parseFloat(headerHeightVar)
-        : 0
-
-    // Content padding from Layout.module.scss
-    // .content has padding: 24px 16px (top/bottom: 24px)
-    // When withHeader, padding-top is replaced with var(--header-height)
-    const contentPaddingBottom = 24 // from SCSS
-    const contentPaddingTop = headerHeight > 0 ? headerHeight : 24 // from SCSS
-
-    // Calculate available height
-    const availableHeight =
-      windowHeight - contentPaddingTop - contentPaddingBottom
+    const availableHeight = windowHeight - CONTENT_PADDING - CONTENT_PADDING
 
     setState({
       availableHeight,
-      contentPaddingTop,
-      contentPaddingBottom,
+      contentPaddingTop: CONTENT_PADDING,
+      contentPaddingBottom: CONTENT_PADDING,
       windowHeight,
     })
   }
 
   useEffect(() => {
-    // Initial calculation
     updateLayout()
 
-    // Update on window resize
     const handleResize = () => {
       updateLayout()
     }
 
     window.addEventListener('resize', handleResize)
 
-    // Listen for CSS variable changes (--app-height, --header-height)
     const observer = new MutationObserver(() => {
       updateLayout()
     })

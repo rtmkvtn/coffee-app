@@ -22,6 +22,12 @@ declare global {
     themeParams: Record<string, string>
     version: string
     platform: string
+    BackButton: {
+      show(): void
+      hide(): void
+      onClick(cb: () => void): void
+      offClick(cb: () => void): void
+    }
   }
 
   interface TelegramUser {

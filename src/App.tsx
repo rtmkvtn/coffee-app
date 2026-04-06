@@ -17,6 +17,7 @@ import { useCart } from '@context/cartContext'
 import { useMenu } from '@context/menuContext'
 import { useOrders } from '@context/ordersContext'
 import { useUser } from '@context/userContext'
+import { useBackButton } from '@hooks/useBackButton'
 import { useTelegram } from '@hooks/useTelegram'
 import Layout from '@lib/layout/Layout'
 import { showToast } from '@lib/toasts/toast'
@@ -26,6 +27,8 @@ import NotFoundPage from '@views/notFoundPage/NotFoundPage'
 import OrderPage from '@views/orderPage'
 import OrdersPage from '@views/ordersPage/OrdersPage'
 import OrderSuccessPage from '@views/orderSuccessPage/OrderSuccessPage'
+
+import Icon from '@assets/images/Icon'
 
 import './App.scss'
 
@@ -39,6 +42,8 @@ function App() {
   const { refreshCategories, refreshProducts } = useMenu()
   const { refreshOrders } = useOrders()
   const { initializeCart } = useCart()
+
+  const { showDevFallback, onDevBack } = useBackButton()
 
   useEffect(() => {
     const setAppHeight = () => {
@@ -84,17 +89,28 @@ function App() {
 
   return (
     <div className="main-container">
+      {showDevFallback && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 12,
+            left: 12,
+            zIndex: 1000,
+            cursor: 'pointer',
+            transform: 'rotate(180deg)',
+          }}
+          onClick={onDevBack}
+        >
+          <Icon type="arrowRight" size={24} />
+        </div>
+      )}
       {isInitialized ? (
         <Suspense fallback={<GlobalLoader />}>
           <Routes>
             <Route
               path={MENU_PATH}
               element={
-                <Layout
-                  withCartProvider
-                  withNavHeader
-                  headerText={t('navigation.menu')}
-                >
+                <Layout withCartProvider>
                   <MenuPage />
                 </Layout>
               }
@@ -103,11 +119,7 @@ function App() {
               path={ORDERS_PATH}
               loader={refreshOrders}
               element={
-                <Layout
-                  withNavHeader
-                  headerText={t('navigation.orders')}
-                  backPath={HOME_PATH}
-                >
+                <Layout>
                   <OrdersPage />
                 </Layout>
               }
@@ -115,10 +127,7 @@ function App() {
             <Route
               path={ORDER_PATH}
               element={
-                <Layout
-                  withNavHeader
-                  headerText={t('navigation.orderPlacement')}
-                >
+                <Layout>
                   <OrderPage />
                 </Layout>
               }
@@ -126,11 +135,7 @@ function App() {
             <Route
               path={ORDER_SUCCESS_PATH}
               element={
-                <Layout
-                  withNavHeader
-                  noBackOption
-                  headerText={t('navigation.orderPlacement')}
-                >
+                <Layout>
                   <OrderSuccessPage />
                 </Layout>
               }
