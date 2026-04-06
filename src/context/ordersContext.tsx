@@ -43,7 +43,7 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
     loading: false,
   })
 
-  const { clearCart, initializeCart } = useCart()
+  const { clearCart } = useCart()
   const { i18n } = useTranslation()
 
   const refreshOrders = useCallback(async () => {
@@ -134,8 +134,6 @@ export const OrdersProvider = ({ children }: { children: ReactNode }) => {
           o.id === orderId ? { ...o, state: 'CANCELED' as const } : o
         ),
       }))
-
-      initializeCart()
 
       return true
     } catch (error) {
