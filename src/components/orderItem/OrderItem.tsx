@@ -23,9 +23,10 @@ import styles from './OrderItem.module.scss'
 
 type Props = {
   order: IOrder
+  hideActions?: boolean
 }
 
-const OrderItem = memo(({ order }: Props) => {
+const OrderItem = memo(({ order, hideActions }: Props) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { setItems } = useCart()
@@ -180,7 +181,7 @@ const OrderItem = memo(({ order }: Props) => {
           </span>
         </div>
       </div>
-      {order.state === 'DRAFT' && (
+      {!hideActions && order.state === 'DRAFT' && (
         <div className={styles.footer}>
           <Button
             className={styles.footerBtn}
@@ -190,7 +191,7 @@ const OrderItem = memo(({ order }: Props) => {
           />
         </div>
       )}
-      {order.state === 'COMPLETED' && (
+      {!hideActions && order.state === 'COMPLETED' && (
         <div className={styles.footer}>
           <Button
             className={styles.footerBtn}

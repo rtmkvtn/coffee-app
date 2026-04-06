@@ -83,7 +83,7 @@ const OrderPage = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.ordersList}>
-        <OrderItem order={order} />
+        <OrderItem order={order} hideActions />
 
         {isDraft && (
           <div className={styles.paymentSection}>
