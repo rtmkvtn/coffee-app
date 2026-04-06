@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import AvailabilityDialog from '@components/availabilityDialog/AvailabilityDialog'
 import Button from '@components/button/Button'
 import OrderStatus from '@components/orderStatus/OrderStatus'
-import { MENU_PATH } from '@constants/routes'
+import { MENU_PATH, ORDER_PATH } from '@constants/routes'
 import { useCart } from '@context/cartContext'
 import { useModal } from '@context/modalContext'
 import { formatPrice } from '@lib/helpers'
@@ -180,6 +180,16 @@ const OrderItem = memo(({ order }: Props) => {
           </span>
         </div>
       </div>
+      {order.state === 'DRAFT' && (
+        <div className={styles.footer}>
+          <Button
+            className={styles.footerBtn}
+            text={t('orders.confirmOrderButton')}
+            mode="primary"
+            onClick={() => navigate(ORDER_PATH.replace(':orderId', order.id))}
+          />
+        </div>
+      )}
       {order.state === 'COMPLETED' && (
         <div className={styles.footer}>
           <Button
