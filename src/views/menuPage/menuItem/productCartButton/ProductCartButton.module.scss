@@ -14,8 +14,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(constants.$color-orange, 0.1);
-      border-radius: 12px;
+      background: var(--color-orange-alpha-10);
+      border-radius: 6px;
       z-index: 3;
     }
   }
@@ -23,6 +23,7 @@
   .minus,
   .plus {
     z-index: 2;
+    color: var(--color-black);
   }
   .minus {
     position: absolute;
@@ -38,13 +39,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: 6px;
 
     @include constants.text-medium-lg;
-    color: constants.$color-orange;
+    color: var(--color-orange);
 
-    border-top: 1px solid rgba(constants.$color-orange, 0.4);
-    border-bottom: 1px solid rgba(constants.$color-orange, 0.4);
+    border-top: 1px solid var(--color-orange-alpha-40);
+    border-bottom: 1px solid var(--color-orange-alpha-40);
 
     transition: all 0.2s ease-in-out;
   }

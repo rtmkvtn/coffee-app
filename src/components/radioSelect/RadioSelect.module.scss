@@ -15,10 +15,10 @@
   border-radius: 12px;
   cursor: pointer;
   border: none;
-  background: constants.$color-white;
+  background: var(--color-white);
   text-align: left;
   font-size: 15px;
-  color: constants.$text-primary-color;
+  color: var(--text-primary-color);
 }
 
 .icon {
@@ -41,7 +41,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid constants.$secondary-bg-color;
+  border: 2px solid var(--secondary-bg-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,5 +52,5 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: constants.$secondary-bg-color;
+  background-color: var(--secondary-bg-color);
 }

@@ -26,7 +26,7 @@
     border-radius: 12px;
     cursor: pointer;
 
-    border: 1px solid constants.$text-inactive-color;
+    border: 1px solid var(--text-inactive-color);
     background-color: transparent;
 
     &Img {
@@ -51,9 +51,9 @@
     }
 
     &Active {
-      border-color: constants.$secondary-bg-color;
-      background-color: constants.$secondary-bg-color;
-      color: constants.$color-white;
+      border-color: var(--secondary-bg-color);
+      background-color: var(--secondary-bg-color);
+      color: var(--color-white);
       cursor: default;
     }
   }

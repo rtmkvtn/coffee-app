@@ -8,7 +8,7 @@ $height: var(--app-height);
   bottom: 32px;
   height: 60px;
   width: 60px;
-  background-color: constants.$color-cart-blue;
+  background-color: var(--color-cart-blue);
   z-index: 1000;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -43,14 +43,14 @@ $height: var(--app-height);
 
     .totalPrice {
       @include constants.text-medium-lg;
-      color: constants.$color-white;
+      color: #fff;
       position: relative;
       top: 2px;
     }
   }
 
   .icons {
-    color: constants.$color-white;
+    color: #fff;
     position: relative;
     display: flex;
     align-items: center;
@@ -59,7 +59,7 @@ $height: var(--app-height);
     .arrowDown {
       display: block;
       transform: rotate(90deg);
-      color: constants.$text-primary-color;
+      color: var(--text-primary-color);
     }
     .cart {
       display: block;
@@ -96,7 +96,8 @@ $height: var(--app-height);
   }
 
   .commentTextarea {
-    background-color: white;
+    background-color: var(--color-white);
+    color: var(--text-primary-color);
     border-radius: 8px;
     padding: 8px;
     border: none;
@@ -110,7 +111,7 @@ $height: var(--app-height);
 
     &::placeholder {
       @include constants.text-regular;
-      color: constants.$text-inactive-color;
+      color: var(--text-inactive-color);
     }
   }
 
@@ -118,14 +119,14 @@ $height: var(--app-height);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 13px;
     line-height: 18px;
-    color: constants.$text-inactive-color;
+    color: var(--text-inactive-color);
     text-align: right;
     margin-top: 4px;
   }
 
   .orderFooter {
     padding: 14px 16px 52px;
-    background-color: constants.$color-white;
+    background-color: var(--color-white);
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     z-index: 1;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
@@ -175,7 +176,7 @@ $height: var(--app-height);
     width: 100%;
     height: $height;
     border-radius: 0;
-    background-color: constants.$main-bg-color;
+    background-color: var(--main-bg-color);
 
     .widthWrapper {
       max-width: 680px;
@@ -185,7 +186,7 @@ $height: var(--app-height);
     .header {
       padding: 16px;
       justify-content: center;
-      background-color: constants.$main-bg-color;
+      background-color: var(--main-bg-color);
 
       .icons {
         position: absolute;
@@ -209,13 +210,13 @@ $height: var(--app-height);
 
       .itemsCount {
         display: block;
-        color: constants.$main-bg-color;
+        color: var(--main-bg-color);
         font-size: 14px;
         font-weight: 500;
       }
 
       .totalPrice {
-        color: constants.$secondary-bg-color;
+        color: var(--secondary-bg-color);
         font-size: 18px;
         font-weight: 600;
       }
@@ -223,7 +224,7 @@ $height: var(--app-height);
 
     .icons {
       padding: 10px;
-      color: constants.$text-primary-color;
+      color: var(--text-primary-color);
       background-color: transparent;
       border-radius: 50%;
 

@@ -9,7 +9,7 @@
   align-items: center;
   gap: 24px;
   text-align: center;
-  color: constants.$text-primary-color;
+  color: var(--text-primary-color);
 }
 
 .icon {
@@ -27,7 +27,7 @@
   font-size: 16px;
   margin: 0;
   line-height: 1.4;
-  color: constants.$text-inactive-color;
+  color: var(--text-inactive-color);
 }
 
 .button {

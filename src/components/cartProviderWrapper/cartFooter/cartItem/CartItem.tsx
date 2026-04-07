@@ -46,7 +46,6 @@ const CartItem: FC<CartItemProps> = ({
   onQuantityChange,
 }) => {
   const { t } = useTranslation()
-  const [isFlashing, setIsFlashing] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
   const [isIngredientsExpanded, setIsIngredientsExpanded] = useState(false)
 
@@ -58,15 +57,6 @@ const CartItem: FC<CartItemProps> = ({
     onRemoveRef.current = onRemove
     onQuantityChangeRef.current = onQuantityChange
   }, [onRemove, onQuantityChange])
-
-  useEffect(() => {
-    if (isFlashing) {
-      const timer = setTimeout(() => {
-        setIsFlashing(false)
-      }, CART_CONSTANTS.ANIMATION.PRICE_FLASH)
-      return () => clearTimeout(timer)
-    }
-  }, [isFlashing])
 
   useEffect(() => {
     if (isRemoving) {
@@ -87,7 +77,6 @@ const CartItem: FC<CartItemProps> = ({
     if (isLoading) return
     if (quantity > CART_CONSTANTS.MIN_QUANTITY) {
       onQuantityChangeRef.current(itemId, quantity - 1)
-      setIsFlashing(true)
     } else {
       handleRemove()
     }
@@ -96,7 +85,6 @@ const CartItem: FC<CartItemProps> = ({
   const handleIncrease = useCallback(() => {
     if (quantity < CART_CONSTANTS.MAX_QUANTITY && !isLoading) {
       onQuantityChangeRef.current(itemId, quantity + 1)
-      setIsFlashing(true)
     }
   }, [quantity, itemId, isLoading])
 

@@ -15,7 +15,7 @@
 }
 
 .modal {
-  background-color: constants.$color-white;
+  background-color: var(--color-white);
   border-radius: 16px;
   padding: 16px;
   width: 100%;
@@ -61,19 +61,19 @@
   right: 10px;
   border: none;
   cursor: pointer;
-  color: constants.$color-black;
+  color: var(--color-black);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease-in-out;
-  background-color: #fff;
+  background-color: var(--color-white);
   z-index: 100;
 }
 
 .title {
   font-size: 20px;
   font-weight: 600;
-  color: constants.$main-bg-color;
+  color: var(--main-bg-color);
   margin: 0 0 16px;
   padding-right: 32px;
 }

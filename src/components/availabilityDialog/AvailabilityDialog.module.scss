@@ -17,7 +17,7 @@
 
 .description {
   @include constants.text-modal-description;
-  color: constants.$text-inactive-color;
+  color: var(--text-inactive-color);
   text-align: center;
   margin: 0 0 16px;
   line-height: 20px;
@@ -36,7 +36,7 @@
   display: flex;
   align-items: center;
   padding: 8px 12px;
-  background: constants.$main-bg-color;
+  background: var(--main-bg-color);
   border-radius: 8px;
 }
 

@@ -2,26 +2,17 @@
 
 $main-font-family: 'Helvetica Neue', sans-serif, serif;
 
-$main-bg-color: #f5f5f5;
-$secondary-bg-color: #006db6;
-
-$color-black: #000;
-$color-white: #fff;
+// Non-theme colors (unchanged between light/dark)
 $color-gray: #7a7a7a;
 $color-green: #62ae1c;
 $color-green-dark: #027a22;
 $color-green-light: #34a853;
 $color-red: #ff5151;
 $color-pink: #cf3dff;
-$color-orange: #914a20;
 $color-orange-light: rgba(145, 74, 32, 0.4);
 $color-beige: #ebddbd;
 $color-cream: #f5e6d3;
 $color-overlay: rgba(60, 60, 67, 0.32);
-$color-cart-blue: #2562a7;
-
-$text-primary-color: $color-black;
-$text-inactive-color: rgba(60, 60, 67, 0.6);
 
 //sidebar
 $sidebar-width: 320px;
@@ -29,7 +20,7 @@ $sidebar-width-mobile: 282px;
 
 @mixin text-h1 {
   font-family: $main-font-family;
-  color: $text-primary-color;
+  color: var(--text-primary-color);
   font-weight: 700;
   font-size: 28px;
   line-height: 32px;
@@ -37,7 +28,7 @@ $sidebar-width-mobile: 282px;
 
 @mixin text-regular {
   font-family: $main-font-family;
-  color: $text-primary-color;
+  color: var(--text-primary-color);
   font-weight: 400;
   font-size: 17px;
   line-height: 24px;
@@ -45,7 +36,7 @@ $sidebar-width-mobile: 282px;
 
 @mixin text-medium {
   font-family: $main-font-family;
-  color: $text-primary-color;
+  color: var(--text-primary-color);
   font-size: 17px;
   line-height: 24px;
   font-weight: 500;
@@ -53,7 +44,7 @@ $sidebar-width-mobile: 282px;
 
 @mixin text-medium-lg {
   font-family: $main-font-family;
-  color: $text-primary-color;
+  color: var(--text-primary-color);
   font-size: 21px;
   line-height: 32px;
   font-weight: 500;
@@ -61,7 +52,7 @@ $sidebar-width-mobile: 282px;
 
 @mixin text-sm-inactive {
   font-family: $main-font-family;
-  color: $text-inactive-color;
+  color: var(--text-inactive-color);
   font-weight: 400;
   font-size: 11px;
   line-height: 14px;
@@ -69,7 +60,7 @@ $sidebar-width-mobile: 282px;
 
 @mixin text-modal-title {
   font-family: $main-font-family;
-  color: $text-primary-color;
+  color: var(--text-primary-color);
   font-weight: 500;
   font-size: 22px;
   line-height: 20px;
@@ -77,7 +68,7 @@ $sidebar-width-mobile: 282px;
 
 @mixin text-modal-description {
   font-family: $main-font-family;
-  color: $text-primary-color;
+  color: var(--text-primary-color);
   font-weight: 400;
   font-size: 15px;
   line-height: 14px;

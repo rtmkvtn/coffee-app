@@ -16,17 +16,17 @@
     cursor: pointer;
     @include constants.text-regular;
     text-align: center;
-    color: constants.$text-inactive-color;
-    border-bottom: 1px solid constants.$text-inactive-color;
+    color: var(--text-inactive-color);
+    border-bottom: 1px solid var(--text-inactive-color);
 
     &Active {
-      color: constants.$color-black;
-      border-bottom: 1px solid constants.$color-black;
+      color: var(--color-black);
+      border-bottom: 1px solid var(--color-black);
 
       cursor: default;
       @media (hover: hover) {
         &:hover {
-          color: constants.$color-black;
+          color: var(--color-black);
           cursor: default;
         }
       }

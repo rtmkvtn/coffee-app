@@ -15,7 +15,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: constants.$color-orange;
+    color: var(--color-orange);
 
     &.disabled {
       color: constants.$color-orange-light;
@@ -25,7 +25,7 @@
   .quantityValue {
     @include constants.text-medium;
     font-weight: 700;
-    color: constants.$color-orange;
+    color: var(--color-orange);
     position: relative;
     top: 2px;
     width: 32px;

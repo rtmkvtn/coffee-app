@@ -10,6 +10,7 @@ import { CartProvider } from '@context/cartContext'
 import { MenuProvider } from '@context/menuContext'
 import { ModalProvider } from '@context/modalContext'
 import { OrdersProvider } from '@context/ordersContext'
+import { ThemeProvider } from '@context/themeContext'
 import { UserProvider } from '@context/userContext'
 import '@lib/i18n'
 import { toastConfig } from '@lib/toasts/toast'
@@ -20,19 +21,21 @@ import App from './App.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter basename="/">
-      <UserProvider>
-        <MenuProvider>
-          <CartProvider>
-            <OrdersProvider>
-              <ModalProvider>
-                <App />
-                <Modal />
-              </ModalProvider>
-              <ToastContainer {...toastConfig} />
-            </OrdersProvider>
-          </CartProvider>
-        </MenuProvider>
-      </UserProvider>
+      <ThemeProvider>
+        <UserProvider>
+          <MenuProvider>
+            <CartProvider>
+              <OrdersProvider>
+                <ModalProvider>
+                  <App />
+                  <Modal />
+                </ModalProvider>
+                <ToastContainer {...toastConfig} />
+              </OrdersProvider>
+            </CartProvider>
+          </MenuProvider>
+        </UserProvider>
+      </ThemeProvider>
     </BrowserRouter>
   </StrictMode>
 )

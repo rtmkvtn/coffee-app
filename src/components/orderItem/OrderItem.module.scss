@@ -1,7 +1,7 @@
 @use '@assets/styles/constants';
 
 .wrapper {
-  background: constants.$color-white;
+  background: var(--color-white);
   border-radius: 16px;
   padding: 16px;
 }
@@ -118,7 +118,7 @@
 
 .emptyState {
   text-align: center;
-  color: constants.$text-inactive-color;
+  color: var(--text-inactive-color);
   padding: 16px;
   font-size: 14px;
   font-weight: 500;

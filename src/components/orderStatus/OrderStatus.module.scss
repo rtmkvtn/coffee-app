@@ -43,11 +43,11 @@
   }
 
   &.processing {
-    background: rgba(constants.$color-orange, 0.15);
-    color: constants.$color-orange;
-    border: 1px solid constants.$color-orange;
+    background: var(--color-orange-alpha-15);
+    color: var(--color-orange);
+    border: 1px solid var(--color-orange);
     &:before {
-      background-color: constants.$color-orange;
+      background-color: var(--color-orange);
     }
   }
 
@@ -61,11 +61,11 @@
   }
 
   &.preparing {
-    background: rgba(constants.$color-orange, 0.15);
-    color: constants.$color-orange;
-    border: 1px solid constants.$color-orange;
+    background: var(--color-orange-alpha-15);
+    color: var(--color-orange);
+    border: 1px solid var(--color-orange);
     &:before {
-      background-color: constants.$color-orange;
+      background-color: var(--color-orange);
     }
   }
 

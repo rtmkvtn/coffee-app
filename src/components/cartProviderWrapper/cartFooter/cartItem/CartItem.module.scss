@@ -1,23 +1,5 @@
 @use '@assets/styles/constants';
 
-@keyframes flash {
-  0% {
-    color: constants.$secondary-bg-color;
-  }
-  25% {
-    color: rgba(constants.$color-green, 0.5);
-  }
-  50% {
-    color: constants.$color-green;
-  }
-  75% {
-    color: rgba(constants.$color-green, 0.5);
-  }
-  100% {
-    color: constants.$secondary-bg-color;
-  }
-}
-
 @keyframes slideOut {
   0% {
     transform: translateX(0);
@@ -37,7 +19,7 @@
   gap: 12px;
   row-gap: 0;
   padding: 8px;
-  background-color: constants.$color-white;
+  background-color: var(--color-white);
   border-radius: 12px;
   transition:
     transform 0.3s ease-out,
@@ -60,8 +42,8 @@
       position: absolute;
       bottom: 4px;
       left: 4px;
-      background-color: constants.$color-orange;
-      color: constants.$color-white;
+      background-color: var(--color-orange);
+      color: var(--color-white);
       padding: 2px 6px;
       border-radius: 10px;
       font-size: 11px;
@@ -116,7 +98,7 @@
         max-width: calc(100% - 18px);
       }
       .rmBtn {
-        color: constants.$text-inactive-color;
+        color: var(--text-inactive-color);
         position: absolute;
         right: 0;
         top: 0;
@@ -184,7 +166,7 @@
       align-items: center;
       gap: 8px;
       padding: 6px 8px;
-      background-color: constants.$main-bg-color;
+      background-color: var(--main-bg-color);
       border-radius: 8px;
 
       .ingredientName {
@@ -200,7 +182,7 @@
       .ingredientPrice {
         @include constants.text-medium;
         font-size: 14px;
-        color: constants.$color-orange;
+        color: var(--color-orange);
       }
     }
   }
@@ -211,14 +193,10 @@
     gap: 12px;
 
     .itemPrice {
-      color: constants.$secondary-bg-color;
+      color: var(--secondary-bg-color);
       font-size: 16px;
       font-weight: 600;
       transition: color 0.3s ease-in-out;
-
-      &.flash {
-        animation: flash 0.5s ease-out;
-      }
     }
 
     .removeButton {

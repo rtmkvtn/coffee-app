@@ -16,7 +16,7 @@
   gap: 14px;
   cursor: pointer;
   height: 44px;
-  background-color: constants.$color-white;
+  background-color: var(--color-white);
   border: 1px solid transparent;
 
   .checkbox {
@@ -46,10 +46,10 @@
   }
 
   &.selected {
-    border: 1px solid constants.$color-orange;
+    border: 1px solid var(--color-orange);
 
     .checkbox {
-      border-color: constants.$color-orange;
+      border-color: var(--color-orange);
       position: relative;
       &:before {
         display: block;
@@ -61,7 +61,7 @@
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background-color: constants.$color-orange;
+        background-color: var(--color-orange);
       }
     }
   }
@@ -86,7 +86,7 @@
       width: 16px;
       height: 16px;
       min-width: 16px;
-      border: 2px solid constants.$secondary-bg-color;
+      border: 2px solid var(--secondary-bg-color);
     }
 
     .label {
@@ -105,14 +105,14 @@
     }
 
     &.selected {
-      border: 1px solid constants.$secondary-bg-color;
+      border: 1px solid var(--secondary-bg-color);
 
       .checkbox {
         position: relative;
         &:before {
           width: 8px;
           height: 8px;
-          background-color: constants.$secondary-bg-color;
+          background-color: var(--secondary-bg-color);
         }
       }
     }

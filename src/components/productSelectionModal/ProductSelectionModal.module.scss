@@ -75,10 +75,10 @@
     justify-content: flex-start;
     height: 36px;
     padding: 0 8px;
-    border: 1px solid constants.$color-orange;
+    border: 1px solid var(--color-orange);
     border-radius: 8px;
     background: transparent;
-    color: constants.$color-orange;
+    color: var(--color-orange);
     cursor: pointer;
     transition: all 0.2s ease;
     opacity: 0.5;

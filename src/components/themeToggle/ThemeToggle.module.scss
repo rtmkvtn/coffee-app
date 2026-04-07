@@ -1,0 +1,13 @@
+@use '@assets/styles/constants';
+
+.toggle {
+  margin-top: 16px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--text-inactive-color);
+  background: var(--color-white);
+  cursor: pointer;
+  @include constants.text-regular;
+  font-size: 14px;
+  text-transform: capitalize;
+}

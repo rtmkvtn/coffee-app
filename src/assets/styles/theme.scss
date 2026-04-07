@@ -1,0 +1,41 @@
+:root {
+  --main-bg-color: #f5f5f5;
+  --secondary-bg-color: #2562a7;
+  --color-black: #000;
+  --color-white: #fff;
+  --text-primary-color: #000;
+  --text-inactive-color: rgba(60, 60, 67, 0.6);
+  --color-orange: #914a20;
+  --color-cart-blue: #2562a7;
+
+  // Derived values (replace compile-time SCSS functions)
+  --secondary-bg-color-hover: #1c4a7d;
+  --color-white-darkened: #e6e6e6;
+  --color-orange-hover: #673517;
+  --color-orange-alpha-10: rgba(145, 74, 32, 0.1);
+  --color-orange-alpha-15: rgba(145, 74, 32, 0.15);
+  --color-orange-alpha-40: rgba(145, 74, 32, 0.4);
+  --color-white-alpha-50: rgba(255, 255, 255, 0.5);
+  --menu-item-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+[data-theme='dark'] {
+  --main-bg-color: #171717;
+  --secondary-bg-color: #006db6;
+  --color-black: #fff;
+  --color-white: #272727;
+  --text-primary-color: #fff;
+  --text-inactive-color: rgba(255, 255, 255, 0.6);
+  --color-orange: #b87f5d;
+  --color-cart-blue: #006db6;
+
+  // Derived values
+  --secondary-bg-color-hover: #004e83;
+  --color-white-darkened: #0e0e0e;
+  --color-orange-hover: #9d6645;
+  --color-orange-alpha-10: rgba(184, 127, 93, 0.1);
+  --color-orange-alpha-15: rgba(184, 127, 93, 0.15);
+  --color-orange-alpha-40: rgba(184, 127, 93, 0.4);
+  --color-white-alpha-50: rgba(39, 39, 39, 0.5);
+  --menu-item-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}

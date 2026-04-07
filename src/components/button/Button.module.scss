@@ -58,6 +58,7 @@
   &.iconSized {
     width: 40px;
     height: 40px;
+    border-radius: 6px;
   }
 }
 
@@ -79,79 +80,73 @@
   }
 
   &.yellow {
-    background-color: constants.$color-orange;
+    background-color: var(--color-orange);
   }
 }
 
 //Colors
 .primary {
-  background-color: constants.$secondary-bg-color;
-  color: constants.$color-white;
-  border-color: constants.$secondary-bg-color;
+  background-color: var(--secondary-bg-color);
+  color: #fff;
+  border-color: var(--secondary-bg-color);
 
   @media (hover: hover) {
     button:hover {
-      background-color: color.adjust(
-        constants.$secondary-bg-color,
-        $lightness: -10%
-      );
+      background-color: var(--secondary-bg-color-hover);
     }
   }
 
   &:active {
-    background-color: color.adjust(
-      constants.$secondary-bg-color,
-      $lightness: -10%
-    );
+    background-color: var(--secondary-bg-color-hover);
   }
 
   .loader {
-    color: constants.$text-primary-color;
+    color: var(--text-primary-color);
   }
 }
 .secondary {
   background-color: constants.$color-beige;
-  color: constants.$color-black;
+  color: #000;
   border-color: constants.$color-beige;
 
   @media (hover: hover) {
     button:hover {
-      background-color: color.adjust(constants.$color-white, $lightness: -10%);
+      background-color: var(--color-white-darkened);
     }
   }
 
   &:active {
-    background-color: color.adjust(constants.$color-white, $lightness: -10%);
+    background-color: var(--color-white-darkened);
   }
 
   .loader {
-    color: constants.$text-primary-color;
+    color: var(--text-primary-color);
   }
 }
 
 .orange {
-  background-color: constants.$color-orange;
-  color: constants.$color-white;
-  border-color: constants.$color-orange;
+  background-color: var(--color-orange);
+  color: var(--color-white);
+  border-color: var(--color-orange);
 
   @media (hover: hover) {
     button:hover {
-      background-color: color.adjust(constants.$color-orange, $lightness: -10%);
+      background-color: var(--color-orange-hover);
     }
   }
 
   &:active {
-    background-color: color.adjust(constants.$color-orange, $lightness: -10%);
+    background-color: var(--color-orange-hover);
   }
 
   .loader {
-    color: constants.$color-white;
+    color: var(--color-white);
   }
 }
 
 .success {
   background-color: constants.$color-green;
-  color: constants.$text-primary-color;
+  color: var(--text-primary-color);
   border-color: constants.$color-green;
 
   @media (hover: hover) {
@@ -165,7 +160,7 @@
   }
 
   .loader {
-    color: constants.$text-primary-color;
+    color: var(--text-primary-color);
   }
 }
 

@@ -19,6 +19,7 @@ declare global {
     close(): void
     expand(): void
     isExpanded: boolean
+    colorScheme: 'light' | 'dark'
     themeParams: Record<string, string>
     version: string
     platform: string
