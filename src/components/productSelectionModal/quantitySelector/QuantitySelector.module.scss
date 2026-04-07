@@ -33,4 +33,20 @@
     align-items: center;
     justify-content: center;
   }
+
+  [data-theme='dark'] & {
+    border-color: rgba(255, 255, 255, 0.4);
+
+    .quantityButton {
+      color: #fff;
+
+      &.disabled {
+        color: rgba(255, 255, 255, 0.4);
+      }
+    }
+
+    .quantityValue {
+      color: #fff;
+    }
+  }
 }

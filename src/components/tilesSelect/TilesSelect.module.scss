@@ -25,7 +25,7 @@
     min-width: 18px;
     flex-shrink: 0;
     border-radius: 50%;
-    border: 2px solid rgba(49, 49, 49, 0.56);
+    border: 2px solid var(--text-inactive-color);
   }
 
   .label {
