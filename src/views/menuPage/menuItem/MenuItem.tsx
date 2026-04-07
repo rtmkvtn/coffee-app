@@ -1,5 +1,6 @@
-import { useMemo, useTransition } from 'react'
+import { useMemo } from 'react'
 
+import ProductCartButton from '@components/productCartButton/ProductCartButton'
 import ProductImage from '@components/productImage/ProductImage'
 import ProductSelectionModal from '@components/productSelectionModal/ProductSelectionModal'
 import { useCart } from '@context/cartContext'
@@ -13,7 +14,6 @@ import {
 import { IProduct, IProductPortion } from '@models/index'
 
 import styles from './MenuItem.module.scss'
-import ProductCartButton from '@components/productCartButton/ProductCartButton'
 
 type Props = {
   product: IProduct
@@ -27,19 +27,15 @@ const MenuItem = ({ product }: Props) => {
       .filter((x) => x.productId === product.id)
       .reduce((sum, item) => sum + item.quantity, 0) || undefined
 
-  const [isPending, startTransition] = useTransition()
-
   const handleCardClick = (): void => {
     showModal({
       type: 'custom',
       content: (
         <ProductSelectionModal
           product={product}
-          onAddToCart={(config) => {
-            startTransition(async () => {
-              await addToCart(product.id, config)
-              hideModal()
-            })
+          onAddToCart={async (config) => {
+            await addToCart(product.id, config)
+            hideModal()
           }}
         />
       ),
@@ -48,19 +44,15 @@ const MenuItem = ({ product }: Props) => {
 
   const handleAddToCart = (): void => {
     if (isSimpleProduct(product)) {
-      startTransition(async () => {
-        const config = getSimpleProductConfig(product)
-        await addToCart(product.id, config)
-      })
+      const config = getSimpleProductConfig(product)
+      void addToCart(product.id, config)
     } else {
       handleCardClick()
     }
   }
 
-  const handleRemoveFromCart = async (): Promise<void> => {
-    startTransition(async () => {
-      await removeLastByProductId(product.id)
-    })
+  const handleRemoveFromCart = (): void => {
+    void removeLastByProductId(product.id)
   }
 
   const smallestPortion = useMemo(() => {
@@ -98,7 +90,6 @@ const MenuItem = ({ product }: Props) => {
         </div>
       </div>
       <ProductCartButton
-        loading={isPending}
         quantity={quantityInCart}
         onAddToCart={handleAddToCart}
         onRemoveFromCart={handleRemoveFromCart}

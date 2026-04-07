@@ -147,34 +147,42 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     itemId: number,
     newQuantity: number
   ) => {
-    if (state.operationsInProgress.has(itemId)) {
-      return
-    }
-
-    if (newQuantity < 1 || newQuantity > 99) {
+    if (newQuantity > 99) {
       showToast('Quantity must be between 1 and 99', 'warning')
       return
     }
 
-    addOperationInProgress(itemId)
+    // Save previous quantity for rollback
+    const previousQuantity = state.items.find(
+      (item) => item.id === itemId
+    )?.quantity
+    if (previousQuantity === undefined) return
+
+    // Optimistic update — UI changes immediately
+    setState((prev) => ({
+      ...prev,
+      items: prev.items.map((item) =>
+        item.id === itemId ? { ...item, quantity: newQuantity } : item
+      ),
+    }))
 
     try {
       const response = await updateCartItemQuantityApi(itemId, newQuantity)
       if (!response.success) {
         throw new Error('Failed to update item quantity')
       }
-
+    } catch (error) {
+      // Revert on failure
       setState((prev) => ({
         ...prev,
         items: prev.items.map((item) =>
-          item.id === itemId ? { ...item, quantity: newQuantity } : item
+          item.id === itemId
+            ? { ...item, quantity: previousQuantity }
+            : item
         ),
       }))
-    } catch (error) {
       showToast('Failed to update item quantity', 'error')
       console.error('Error updating item quantity:', error)
-    } finally {
-      removeOperationInProgress(itemId)
     }
   }
 
