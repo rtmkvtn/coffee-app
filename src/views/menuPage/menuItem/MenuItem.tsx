@@ -13,7 +13,7 @@ import {
 import { IProduct, IProductPortion } from '@models/index'
 
 import styles from './MenuItem.module.scss'
-import ProductCartButton from './productCartButton/ProductCartButton'
+import ProductCartButton from '@components/productCartButton/ProductCartButton'
 
 type Props = {
   product: IProduct

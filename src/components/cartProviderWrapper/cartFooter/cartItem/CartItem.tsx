@@ -7,7 +7,7 @@ import { CART_CONSTANTS } from '@constants/cart'
 import { formatPrice, getImgUrl } from '@lib/helpers'
 import { DisplayCartItem } from '@models/cart.model'
 import { IProductTemperature } from '@models/product.model'
-import ProductCartButton from '@views/menuPage/menuItem/productCartButton/ProductCartButton'
+import ProductCartButton from '@components/productCartButton/ProductCartButton'
 import classNames from 'classnames'
 
 import Icon from '@assets/images/Icon'
