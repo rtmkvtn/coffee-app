@@ -6,7 +6,7 @@ export type Locale = 'ru' | 'en' | 'zh'
 /**
  * Default locale (fallback)
  */
-export const DEFAULT_LOCALE: Locale = 'ru'
+export const DEFAULT_LOCALE: Locale = 'en'
 
 /**
  * Check if a string is a valid locale code

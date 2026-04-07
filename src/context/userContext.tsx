@@ -1,7 +1,11 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 
+import { Locale } from '@lib/helpers/locale'
 import { IUser } from '@models/index'
-import { authenticateWithTelegram } from '@services/userService'
+import {
+  authenticateWithTelegram,
+  updateUserLanguage,
+} from '@services/userService'
 
 type UserState = {
   user: IUser | null
@@ -9,7 +13,8 @@ type UserState = {
 
 type UserContextType = UserState & {
   setUser: (user: IUser | null) => void
-  authenticate: (initData: string) => Promise<void>
+  authenticate: (initData: string) => Promise<IUser>
+  updateLanguage: (languageCode: Locale) => void
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
@@ -22,7 +27,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const setUser = (user: IUser | null) =>
     setState((prev) => ({ ...prev, user }))
 
-  const authenticate = async (initData: string) => {
+  const authenticate = async (initData: string): Promise<IUser> => {
     try {
       const authResponse = await authenticateWithTelegram(initData)
       if (!authResponse.success) {
@@ -31,10 +36,18 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
       localStorage.setItem('token', authResponse.data.accessToken)
       setUser(authResponse.data.user)
+      return authResponse.data.user
     } catch (error) {
       console.error('Authentication error:', error)
       throw error
     }
+  }
+
+  const updateLanguage = (languageCode: Locale) => {
+    setState((prev) =>
+      prev.user ? { ...prev, user: { ...prev.user, languageCode } } : prev
+    )
+    void updateUserLanguage(languageCode)
   }
 
   return (
@@ -43,6 +56,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         ...state,
         setUser,
         authenticate,
+        updateLanguage,
       }}
     >
       {children}

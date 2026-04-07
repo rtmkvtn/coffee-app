@@ -18,8 +18,7 @@ void i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'ru',
-    lng: 'ru',
+    fallbackLng: 'en',
     supportedLngs: ['ru', 'en', 'zh'],
     defaultNS: 'common',
     ns: ['common'],

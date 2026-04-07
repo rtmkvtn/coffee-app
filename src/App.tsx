@@ -19,6 +19,7 @@ import { useOrders } from '@context/ordersContext'
 import { useUser } from '@context/userContext'
 import { useBackButton } from '@hooks/useBackButton'
 import { useTelegram } from '@hooks/useTelegram'
+import { normalizeLocale } from '@lib/helpers/locale'
 import Layout from '@lib/layout/Layout'
 import { showToast } from '@lib/toasts/toast'
 import HomePage from '@views/homePage/HomePage'
@@ -34,7 +35,7 @@ import './App.scss'
 
 function App() {
   const [isInitialized, setIsInitialized] = useState(false)
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const initErrorMessage = t('errors.init')
 
   const { initData, isReady: tgIsReady } = useTelegram()
@@ -68,7 +69,9 @@ function App() {
     const initScript = async () => {
       if (initData) {
         try {
-          await authenticate(initData)
+          const user = await authenticate(initData)
+          const locale = normalizeLocale(user.languageCode ?? '')
+          await i18n.changeLanguage(locale)
           await Promise.all([
             refreshCategories(),
             refreshProducts(),
